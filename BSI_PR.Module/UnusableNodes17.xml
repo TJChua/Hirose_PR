@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <DetailView Id="PurchaseOrderDetails_DetailView">
+      <Layout Id="Layout">
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="PurchaseOrderDetails">
+              <LayoutGroup Id="PurchaseOrderDetails_col1">
+                <LayoutItem Id="Quantity" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="PurchaseOrderDetails_col2">
+                <LayoutItem Id="Amount" RelativeSize="100" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>

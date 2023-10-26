@@ -1,0 +1,183 @@
+USE [BSI_PR]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_GetApproval]    Script Date: 11/23/2018 3:51:49 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER procedure
+[dbo].[sp_GetApproval] 
+@usercode nvarchar(50),
+@docid int,
+@objtype nvarchar(50)
+AS
+begin
+
+	DECLARE @newtable TABLE
+	(
+		UserID uniqueidentifier,
+		Email nvarchar(max),
+		Url nvarchar(max),
+		EmailBody nvarchar(max)
+	)
+	
+	DECLARE @apptype int
+        --Budget = 0,
+        --Document = 1,
+        --SQL = 2
+
+	declare @userid uniqueidentifier
+	DECLARE @company int
+	DECLARE @project int
+	DECLARE @department int
+	DECLARE @employee int
+	DECLARE @doctype int
+	declare @budget numeric(20,6)
+	declare @total numeric(20,6)
+	declare @appdocamount numeric(20,6)
+	declare @withinbudget bit
+	declare @approval int
+	declare @budgetmasteroid int
+	declare @budgetoid int
+	declare @url nvarchar(max)
+	declare @body nvarchar(max)
+	declare @cnt int
+	declare @docdate datetime
+	declare @datefrom datetime
+	declare @dateto datetime
+
+	select @userid = Oid from PermissionPolicyUser where UserName = @usercode
+
+	if @objtype = 'PurchaseRequests'
+	begin		
+		select @url = '#ViewID=PurchaseRequests_DetailView&ObjectKey=' + CONVERT(nvarchar, @docid) + '&ObjectClassName=FT_EClaim.Module.BusinessObjects.PurchaseRequests&mode=View'		
+
+		--insert into @newtable
+		--( UserID, Email, Url, EmailBody )
+		--values
+		--( @userid, 'ykw@myfastrack.net', @url, @body)
+		--select UserID, Email, Url, EmailBody from @newtable
+		--return
+
+		select @company = Company, @doctype = DocType, @docdate = DocDate from PurchaseRequests where OID = @docid
+
+		DECLARE db_cursor CURSOR FOR 
+		select OID, AppType, DocAmount, IsWithinBudget
+		from Approvals where IsActive = 1 and DocType = @doctype
+		order by AppType, ApprovalLevel
+
+		OPEN db_cursor  
+		FETCH NEXT FROM db_cursor INTO @approval, @apptype, @appdocamount, @withinbudget
+
+		WHILE @@FETCH_STATUS = 0  
+		BEGIN
+
+			select @total = 0
+			select @budget = 0
+
+			if @apptype = 0 --Budget = 0
+			begin
+				select top 1 @budgetoid = T9.OID
+				from BudgetMasters T8
+				inner join BudgetMastersBudgetMaster_ApprovalsApproval T7 on T7.Approval = @approval and T7.BudgetMaster = T8.OID
+				inner join Budgets T9 on T8.OID = T9.BudgetMaster and T9.DateFrom <= @docdate and T9.DateTo >= @docdate				
+				inner join (select isnull(T1.Amount,0) + isnull(T1.TaxAmount,0) as Amt, T0.Department
+				from PurchaseRequests T0 inner join PurchaseRequestDetails T1 on T0.OID = T1.PurchaseRequest and T0.IsPassed = 1
+				where T0.IsBudget = 1 and T0.OID = @docid) T5 
+				on ((T8.Department is not null and T8.Department = T5.Department) or T8.Department is null) 
+				where T8.IsActive = 1
+				order by T9.DateFrom, T9.OID
+
+				if @budgetoid > 0
+				begin
+					select @budget = Amount, @datefrom = DateFrom, @dateto = DateTo, @budgetmasteroid = BudgetMaster from Budgets where OID = @budgetoid
+
+					select @total = sum(T5.Amt)
+					from BudgetMasters T8
+					inner join Budgets T9 on T8.OID = T9.BudgetMaster and T9.OID = @budgetoid and T8.OID = @budgetmasteroid
+					inner join (select isnull(T1.Amount,0) + isnull(T1.TaxAmount,0) as Amt, T0.Department
+					from PurchaseRequests T0 inner join PurchaseRequestDetails T1 on T0.OID = T1.PurchaseRequest and T0.IsPassed = 1
+					where T0.IsBudget = 1 and 
+						T0.DocDate >= @datefrom and 
+						T0.DocDate <= @dateto) T5 
+					on ((T8.Department is not null and T8.Department = T5.Department) or T8.Department is null) 
+					where T8.IsActive = 1
+				end
+			end
+			if @apptype = 1 --Document = 0
+			begin
+				select @budget = @appdocamount
+				select @total = sum(isnull(T1.Amount,0) + isnull(T1.TaxAmount,0)) 
+				from
+				PurchaseRequests T0 left join PurchaseRequestDetails T1 on T0.OID = T1.PurchaseRequest
+				where T0.IsAccepted = 1 and 
+				T0.IsBudget = 0 and
+				T0.OID = @docid 
+			end
+
+			select @cnt = count(*) from @newtable
+
+			if @total > 0 and @budget > 0
+			begin
+				if @total > @budget and @withinbudget = 0 -- over budget or over document amount
+				begin
+					insert into PurchaseRequestAppStages
+					( Approval, PurchaseRequest, OptimisticLockField )
+					values
+					( @approval, @docid, 0 )
+
+
+					if @cnt = 0
+						insert into @newtable
+						( UserID, Email, Url, EmailBody )
+						select T3.Oid, T3.UserEmail, @url, @body
+						from Approvals T0
+						inner join SystemUsersApprovalUser_ApprovalsUserApproval T2 on T0.OID = T2.UserApproval
+						inner join SystemUsers T3 on T2.ApprovalUser = T3.Oid
+						left join @newtable T9 on T9.UserID = T3.Oid
+						where T0.OID = @approval and
+							T9.UserID is null
+
+	 --       Not_Applicable = 0,
+	 --       Approved = 1,
+	 --       Required_Approval = 2,
+	 --       Rejected = 3
+					update PurchaseRequests set ApprovalStatus = 2 where ApprovalStatus = 0 and OID = @docid
+				end
+				if @total <= @budget and @withinbudget = 1 -- over budget
+				begin
+					insert into PurchaseRequestAppStages
+					( Approval, PurchaseRequest, OptimisticLockField )
+					values
+					( @approval, @docid, 0 )
+
+
+					if @cnt = 0
+						insert into @newtable
+						( UserID, Email, Url, EmailBody )
+						select T3.Oid, T3.UserEmail, @url, @body
+						from Approvals T0
+						inner join SystemUsersApprovalUser_ApprovalsUserApproval T2 on T0.OID = T2.UserApproval
+						inner join SystemUsers T3 on T2.ApprovalUser = T3.Oid
+						left join @newtable T9 on T9.UserID = T3.Oid
+						where T0.OID = @approval and
+							T9.UserID is null
+
+	 --       Not_Applicable = 0,
+	 --       Approved = 1,
+	 --       Required_Approval = 2,
+	 --       Rejected = 3
+					update PurchaseRequests set ApprovalStatus = 2 where ApprovalStatus = 0 and OID = @docid
+				end
+			end
+
+			FETCH NEXT FROM db_cursor INTO @approval, @apptype, @appdocamount, @withinbudget
+
+		end
+
+		CLOSE db_cursor  
+		DEALLOCATE db_cursor 
+	end
+
+	select UserID, Email, Url, EmailBody from @newtable
+end

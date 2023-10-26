@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <ListView Id="PurchaseOrder_ListView_PendingApp">
+      <Columns Id="Columns">
+        <ColumnInfo Id="ApprovalUser" PropertyName="ApprovalUser" Width="70" Index="-1" />
+      </Columns>
+    </ListView>
+    <ListView Id="PurchaseOrder_ListView_Approved">
+      <Columns Id="Columns">
+        <ColumnInfo Id="ApprovalUser" PropertyName="ApprovalUser" Width="70" Index="-1" />
+      </Columns>
+    </ListView>
+  </Views>
+</Application>

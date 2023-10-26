@@ -1,0 +1,504 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5F15837D-D1E5-44DC-92F0-4F2EBE9C3F8D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BSI_PR.Module</RootNamespace>
+    <AssemblyName>BSI_PR.Module</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EasyTest|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\EasyTest\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EASYTEST</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v21.2.Core, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v21.2.Core, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v21.2.UI, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Images.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.AuditTrail.Xpo.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Chart.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.CloneObject.Xpo.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ConditionalAppearance.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Dashboards.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Objects.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.PivotChart.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.PivotGrid.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ReportsV2.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Security.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Security.Xpo.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.TreeListEditors.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Validation.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ViewVariantsModule.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Xpo.v21.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v21.2.Core, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v21.2.Core">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Data.v21.2">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.v21.2">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Persistent.Base.v21.2">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Persistent.BaseImpl.Xpo.v21.2">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v21.2.Core, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v21.2.UI, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v21.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v21.2.Wizard, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v21.2.Extensions, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Interop.SAPbobsCOM">
+      <HintPath>..\Interop.SAPbobsCOM.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessObjects\APInvoice.cs" />
+    <Compile Include="BusinessObjects\APInvoiceAttachment.cs" />
+    <Compile Include="BusinessObjects\APInvoiceDetails.cs" />
+    <Compile Include="BusinessObjects\APInvoiceDocStatues.cs" />
+    <Compile Include="BusinessObjects\Approvals.cs" />
+    <Compile Include="BusinessObjects\BudgetCategory.cs" />
+    <Compile Include="BusinessObjects\BudgetCategoryAmount.cs" />
+    <Compile Include="BusinessObjects\BudgetCategoryData.cs" />
+    <Compile Include="BusinessObjects\BudgetCategoryDetails.cs" />
+    <Compile Include="BusinessObjects\BudgetCategoryReport.cs" />
+    <Compile Include="BusinessObjects\BudgetMasters.cs" />
+    <Compile Include="BusinessObjects\ClosePO.cs" />
+    <Compile Include="BusinessObjects\JPApprovalTemplate.cs" />
+    <Compile Include="BusinessObjects\LeaveApplication.cs" />
+    <Compile Include="BusinessObjects\OpenPO.cs" />
+    <Compile Include="BusinessObjects\Currency.cs" />
+    <Compile Include="BusinessObjects\GoodReceipt.cs" />
+    <Compile Include="BusinessObjects\GoodReceiptAttachment.cs" />
+    <Compile Include="BusinessObjects\GoodReceiptDetails.cs" />
+    <Compile Include="BusinessObjects\GoodReceiptDocStatus.cs" />
+    <Compile Include="BusinessObjects\GoodsReturn.cs" />
+    <Compile Include="BusinessObjects\GoodsReturnAttachements.cs" />
+    <Compile Include="BusinessObjects\GoodsReturnDetails.cs" />
+    <Compile Include="BusinessObjects\GoodsReturnDocStatus.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrder.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderAppStages.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderAppStatuses.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderAttachments.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderDetails.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderDocStatuses.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderJapan.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderJapanAppStages.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderJapanAppStatuses.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderJapanAttachments.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderJapanDetails.cs" />
+    <Compile Include="BusinessObjects\PurchaseOrderJapanDocStatuses.cs" />
+    <Compile Include="BusinessObjects\VendorTransaction.cs" />
+    <Compile Include="BusinessObjects\Budgets.cs" />
+    <Compile Include="BusinessObjects\EmailSents.cs" />
+    <Compile Include="BusinessObjects\PurchaseRequestAppStages.cs" />
+    <Compile Include="BusinessObjects\PurchaseRequestAppStatuses.cs" />
+    <Compile Include="BusinessObjects\PurchaseRequestAttachments.cs" />
+    <Compile Include="BusinessObjects\PurchaseRequestDetails.cs" />
+    <Compile Include="BusinessObjects\PurchaseRequestDocStatuses.cs" />
+    <Compile Include="BusinessObjects\BudgetReport.cs" />
+    <Compile Include="BusinessObjects\PurchaseRequests.cs" />
+    <Compile Include="BusinessObjects\vw_Currency.cs" />
+    <Compile Include="BusinessObjects\vw_GRN.cs" />
+    <Compile Include="BusinessObjects\vw_GRNInv.cs" />
+    <Compile Include="BusinessObjects\vw_InvoiceBudget.cs" />
+    <Compile Include="BusinessObjects\vw_ItemSeries.cs" />
+    <Compile Include="BusinessObjects\vw_items.cs" />
+    <Compile Include="BusinessObjects\vw_POBudget.cs" />
+    <Compile Include="BusinessObjects\vw_POInv.cs" />
+    <Compile Include="BusinessObjects\vw_PR.cs" />
+    <Compile Include="BusinessObjects\vw_RecvPO.cs" />
+    <Compile Include="BusinessObjects\vw_DepartmentUser.cs" />
+    <Compile Include="BusinessObjects\vw_ReportDepartments.cs" />
+    <Compile Include="BusinessObjects\vw_PaymentTerms.cs" />
+    <Compile Include="BusinessObjects\vw_taxes.cs" />
+    <Compile Include="BusinessObjects\vw_costcenter.cs" />
+    <Compile Include="BusinessObjects\vw_PO.cs" />
+    <Compile Include="BusinessObjects\vw_SAPPostingPeriod.cs" />
+    <Compile Include="BusinessObjects\vw_vendors.cs" />
+    <Compile Include="BusinessObjects\Companies.cs" />
+    <Compile Include="BusinessObjects\DepartmentDocs.cs" />
+    <Compile Include="BusinessObjects\Departments.cs" />
+    <Compile Include="BusinessObjects\DocTypes.cs" />
+    <Compile Include="BusinessObjects\DocumentEnums.cs" />
+    <Compile Include="BusinessObjects\NonPersistentObjects.cs" />
+    <Compile Include="BusinessObjects\SystemUsers.cs" />
+    <Compile Include="Controllers\AccFilterController.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\AccFilterController.designer.cs">
+      <DependentUpon>AccFilterController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\ButtonController.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\ButtonController.Designer.cs">
+      <DependentUpon>ButtonController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\ClosePOController.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\ClosePOController.Designer.cs">
+      <DependentUpon>ClosePOController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\JapanPODetailsViewControllers.cs" />
+    <Compile Include="Controllers\JapanPODetailsViewControllers.Designer.cs">
+      <DependentUpon>JapanPODetailsViewControllers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\OpenPOController.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\OpenPOController.Designer.cs">
+      <DependentUpon>OpenPOController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\PODetailsViewControllers.cs" />
+    <Compile Include="Controllers\PODetailsViewControllers.Designer.cs">
+      <DependentUpon>PODetailsViewControllers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\VendorTransactionController.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\VendorTransactionController.Designer.cs">
+      <DependentUpon>VendorTransactionController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\GenControllers.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\GenControllers.designer.cs">
+      <DependentUpon>GenControllers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\BudgetController.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\BudgetController.Designer.cs">
+      <DependentUpon>BudgetController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\NavigationControllercs.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\NavigationControllercs.Designer.cs">
+      <DependentUpon>NavigationControllercs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\PRControllers.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\PRControllers.Designer.cs">
+      <DependentUpon>PRControllers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\PRDetailObjectViewControllers.cs" />
+    <Compile Include="Controllers\PRDetailObjectViewControllers.Designer.cs">
+      <DependentUpon>PRDetailObjectViewControllers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\PRObjectViewControllers.cs" />
+    <Compile Include="Controllers\PRObjectViewControllers.Designer.cs">
+      <DependentUpon>PRObjectViewControllers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseUpdate\Updater.cs" />
+    <Compile Include="GeneralSettings.cs" />
+    <Compile Include="Module.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Module.Designer.cs">
+      <DependentUpon>Module.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controllers\ButtonController.resx">
+      <DependentUpon>ButtonController.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\ClosePOController.resx">
+      <DependentUpon>ClosePOController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\OpenPOController.resx">
+      <DependentUpon>OpenPOController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\VendorTransactionController.resx">
+      <DependentUpon>VendorTransactionController.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\BudgetController.resx">
+      <DependentUpon>BudgetController.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\PRControllers.resx">
+      <DependentUpon>PRControllers.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model.DesignedDiffs.xafml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Module.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Module.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DatabaseUpdate\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BusinessObjects\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Controllers\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FunctionalTests\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FunctionalTests\sample.ets" />
+    <None Include="Images\ReadMe.txt" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FunctionalTests\config.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UnusableNodes.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Images\250px-Hirose_Electric_company_logo.svg.png" />
+    <EmbeddedResource Include="Images\HRS.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Include="UnusableNodes1.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes2.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes3.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes4.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes5.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes6.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes7.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes8.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes9.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes10.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes11.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes12.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes13.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes14.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes15.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes16.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes17.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes18.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes19.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes20.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="UnusableNodes21.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Welcome.html" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

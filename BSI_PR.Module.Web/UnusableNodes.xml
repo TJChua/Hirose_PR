@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <DetailView Id="GoodReceipt_DetailView">
+      <Layout Id="Layout">
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="GoodReceipt">
+              <LayoutGroup Id="GoodReceipt_col1">
+                <LayoutItem Id="DocNum" RelativeSize="29.032258064516128" />
+                <LayoutItem Id="Vendor" RelativeSize="20.967741935483872" />
+                <LayoutItem Id="DOInvoice" RelativeSize="20.967741935483872" />
+              </LayoutGroup>
+              <LayoutGroup Id="GoodReceipt_col2">
+                <LayoutItem Id="POScanner" RelativeSize="29.032258064516128" />
+                <LayoutItem Id="Remarks" RelativeSize="20.967741935483872" />
+                <LayoutItem Id="GoodReceiptStatus" RelativeSize="50" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs">
+            <LayoutGroup Id="GoodReceiptDetails">
+              <LayoutItem Id="Amount" RelativeSize="9.6514745308310985" />
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>

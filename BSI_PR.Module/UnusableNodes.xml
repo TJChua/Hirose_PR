@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <ListView Id="PurchaseRequests_ListView_Travel">
+      <Columns Id="Columns">
+        <ColumnInfo Id="ClaimStatus" PropertyName="ClaimStatus" Width="70" Index="8" />
+      </Columns>
+    </ListView>
+    <ListView Id="PurchaseRequests_ListView_Gift">
+      <Columns Id="Columns">
+        <ColumnInfo Id="ClaimStatus" PropertyName="ClaimStatus" Width="70" Index="8" />
+      </Columns>
+    </ListView>
+    <DetailView Id="PurchaseRequests_DetailView_Travel">
+      <Items Id="Items">
+        <PropertyEditor Id="ClaimStatus" PropertyName="ClaimStatus" />
+      </Items>
+      <Layout Id="Layout">
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="PurchaseRequests">
+              <LayoutGroup Id="PurchaseRequests_col2">
+                <LayoutItem Id="ClaimStatus" ViewItem="ClaimStatus" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="PurchaseRequests_DetailView_Gift">
+      <Items Id="Items">
+        <PropertyEditor Id="ClaimStatus" PropertyName="ClaimStatus" />
+      </Items>
+    </DetailView>
+  </Views>
+</Application>

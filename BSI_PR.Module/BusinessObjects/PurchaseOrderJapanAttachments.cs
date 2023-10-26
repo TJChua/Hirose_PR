@@ -1,0 +1,150 @@
+﻿using System;
+using System.Linq;
+using System.Text;
+using DevExpress.Xpo;
+using DevExpress.ExpressApp;
+using System.ComponentModel;
+using DevExpress.ExpressApp.DC;
+using DevExpress.Data.Filtering;
+using DevExpress.Persistent.Base;
+using System.Collections.Generic;
+using DevExpress.ExpressApp.Model;
+using DevExpress.Persistent.BaseImpl;
+using DevExpress.Persistent.Validation;
+using DevExpress.ExpressApp.ConditionalAppearance;
+
+namespace BSI_PR.Module.BusinessObjects
+{
+    [DefaultClassOptions]
+    [Appearance("PurchaseRequestAttachments1", AppearanceItemType = "Action", TargetItems = "Link", Context = "ListView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
+    [Appearance("PurchaseRequestAttachments2", AppearanceItemType = "Action", TargetItems = "Unlink", Context = "ListView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
+    [RuleCriteria("FileNameSaveRule3", DefaultContexts.Save, "IsValid = 0", "Invalid file name. File Name should not include symbol as !*'();:@&=+$,/?#[]")]
+
+    [XafDisplayName("Attachment(Japan)")]
+    public class PurchaseOrderJapanAttachments : FileAttachmentBase
+    { // Inherit from a different class to provide a custom primary key, concurrency and deletion behavior, etc. (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument113146.aspx).
+        public PurchaseOrderJapanAttachments(Session session)
+            : base(session)
+        {
+        }
+        public override void AfterConstruction()
+        {
+            base.AfterConstruction();
+            // Place your initialization code here (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112834.aspx).
+            CreateUser = Session.GetObjectByKey<SystemUsers>(SecuritySystem.CurrentUserId);
+            CreateDate = DateTime.Now;
+            Remainder = "The maximum supported file size: 5.00 MB (5,242,880 bytes).   File Name should not include symbol as !*'();:@&=+$,/?#[]";
+        }
+
+        private SystemUsers _CreateUser;
+        [XafDisplayName("Create User")]
+        //[ModelDefault("EditMask", "(000)-00"), VisibleInListView(false)]
+        [Index(300), VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
+        public SystemUsers CreateUser
+        {
+            get { return _CreateUser; }
+            set
+            {
+                SetPropertyValue("CreateUser", ref _CreateUser, value);
+            }
+        }
+
+        private DateTime? _CreateDate;
+        [Index(301), VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
+        public DateTime? CreateDate
+        {
+            get { return _CreateDate; }
+            set
+            {
+                SetPropertyValue("CreateDate", ref _CreateDate, value);
+            }
+        }
+
+        private SystemUsers _UpdateUser;
+        [XafDisplayName("Update User"), ToolTip("Enter Text")]
+        //[ModelDefault("EditMask", "(000)-00"), VisibleInListView(false)]
+        [Index(302), VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
+        public SystemUsers UpdateUser
+        {
+            get { return _UpdateUser; }
+            set
+            {
+                SetPropertyValue("UpdateUser", ref _UpdateUser, value);
+            }
+        }
+
+        private DateTime? _UpdateDate;
+        [Index(303), VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
+        public DateTime? UpdateDate
+        {
+            get { return _UpdateDate; }
+            set
+            {
+                SetPropertyValue("UpdateDate", ref _UpdateDate, value);
+            }
+        }
+
+        //[ExpandObjectMembers(ExpandObjectMembers.Never)]
+        //[FileTypeFilter("DocumentFiles", 1, "*.txt", "*.doc")]
+        //[FileTypeFilter("AllFiles", 2, "*.*")]
+        //public FileData AttachFile { get; set; }
+
+        private string _Remarks;
+        [Index(4), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
+        //[Appearance("RefNo", Enabled = false, Criteria = "(not IsNew and not IsRequestorChecking) or DocPassed or Accepted")]
+        public string Remarks
+        {
+            get { return _Remarks; }
+            set
+            {
+                SetPropertyValue("Remarks", ref _Remarks, value);
+            }
+        }
+
+        [NonPersistent]
+        [Appearance("Remainder", Enabled = false, FontColor = "Red")]
+        public string Remainder { get; set; }
+
+        private PurchaseOrderJapan _PurchaseOrderJapan;
+        [Association("PurchaseOrderJapan-PurchaseOrderJapanAttachments")]
+        [Index(99), VisibleInListView(false), VisibleInDetailView(true), VisibleInLookupListView(false)]
+        [Appearance("PurchaseOrderJapan", Enabled = false)]
+        public PurchaseOrderJapan PurchaseOrderJapan
+        {
+            get { return _PurchaseOrderJapan; }
+            set { SetPropertyValue("PurchaseOrderJapan", ref _PurchaseOrderJapan, value); }
+        }
+
+        [Browsable(false)]
+        public bool IsValid
+        {
+            get
+            {
+                if (this.File.FileName == "" || this.File.FileName.Contains('!') || this.File.FileName.Contains('*') || this.File.FileName.Contains('(') || this.File.FileName.Contains(')') || this.File.FileName.Contains(';') || this.File.FileName.Contains(':') || this.File.FileName.Contains('@') || this.File.FileName.Contains('&') || this.File.FileName.Contains('=') || this.File.FileName.Contains('+') || this.File.FileName.Contains('$') || this.File.FileName.Contains(',') || this.File.FileName.Contains('/') || this.File.FileName.Contains('?') || this.File.FileName.Contains('#') || this.File.FileName.Contains('[') || this.File.FileName.Contains(']'))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        protected override void OnSaving()
+        {
+            base.OnSaving();
+            if (!(Session is NestedUnitOfWork)
+                && (Session.DataLayer != null)
+                    && (Session.ObjectLayer is SimpleObjectLayer)
+                        )
+            {
+                UpdateUser = Session.GetObjectByKey<SystemUsers>(SecuritySystem.CurrentUserId);
+                UpdateDate = DateTime.Now;
+
+                if (Session.IsNewObject(this))
+                {
+
+                }
+            }
+        }
+    }
+}

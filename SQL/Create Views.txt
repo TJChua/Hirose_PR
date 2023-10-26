@@ -1,0 +1,28 @@
+create view vw_vendors
+AS
+select cardcode as BoCode, cardname as BoName from
+[SBODemoUS]..OCRD where CardType = 'S'
+
+go
+
+create view vw_items
+AS
+select itemcode as BoCode, itemname as BoName from
+[SBODemoUS]..OITM where InvntItem = 'Y'
+
+go
+
+create view vw_taxes
+AS
+select code as BoCode, name as BoName from
+[SBODemoUS]..OVTG
+where Category = 'I'
+
+go
+
+create view vw_costcenter
+AS
+select prccode as BoCode, prcname as BoName, DimCode as CostLevel from
+[SBODemoUS]..OPRC
+
+go

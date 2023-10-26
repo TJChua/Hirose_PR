@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Options xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" TestRunTimeLimit="3" EnableUpperCase="BSI_PR.Web">
+	<Applications>
+		<!-- Win -->
+		<Application
+			Name="BSI_PR.Win"
+			FileName="[WinAppBin]\BSI_PR.Win.exe"
+			AdapterAssemblyName="[WinAdapterAssemblyName]"
+			CommunicationPort="4100"/>
+		<!-- Web -->
+		<Application
+			Name="BSI_PR.Web"
+			UseIISExpress="True"
+			Url="http://localhost:4030"
+			PhysicalPath="[WebAppBin]"
+			AdapterAssemblyName="[WebAdapterAssemblyName]"/>
+		<!-- For IIS -->
+		<!--Application
+			Name="BSI_PR.Web"
+			Url="http://localhost/BSI_PR.Web/Default.aspx"
+			AdapterAssemblyName="[WebAdapterAssemblyName]"/-->
+	</Applications>
+	<TestDatabases>
+		<Database xsi:type="TestMSSQLDatabase" Server="(localdb)\mssqllocaldb" DBName="BSI_PREasyTest"/>
+	</TestDatabases>
+
+	<Aliases>
+		<Alias Name="DomainUserName" Value="%USERDOMAIN%\%USERNAME%" />
+		<Alias Name="WinAdapterAssemblyName" Value="DevExpress.ExpressApp.EasyTest.WinAdapter.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+		<Alias Name="WebAdapterAssemblyName" Value="DevExpress.ExpressApp.EasyTest.WebAdapter.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+		<Alias Name="WinAppBin" Value="[ConfigPath]\..\..\BSI_PR.Win\Bin\EasyTest" />
+		<Alias Name="WebAppBin" Value="[ConfigPath]\..\..\BSI_PR.Web" />
+	</Aliases>
+</Options>

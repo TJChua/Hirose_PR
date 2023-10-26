@@ -1,0 +1,204 @@
+USE [BSI_PR]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_Approval]    Script Date: 11/19/2018 3:09:20 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER procedure
+[dbo].[sp_Approval] 
+@usercode nvarchar(50),
+@docid int,
+@objtype nvarchar(50),
+@appstatus int
+AS
+begin
+	DECLARE @newtable TABLE
+	(
+		UserID uniqueidentifier,
+		Email nvarchar(max),
+		Url nvarchar(max),
+		EmailBody nvarchar(max)
+	)
+ --@appstatus
+ --       Not_Applicable = 0,
+ --       Approved = 1,
+ --       Required_Approval = 2,
+ --       Rejected = 3
+ 	declare @approval int
+ 	declare @approvalcnt int
+ 	declare @appstagecnt int
+ 	declare @appdonecnt int
+ 	declare @temp int
+ 	declare @url nvarchar(max)
+	declare @body nvarchar(max)
+	declare @maxapplevel nvarchar(max)
+	declare @minapplevel nvarchar(max)
+	declare @currapplevel nvarchar(max)
+	declare @tempapplevel nvarchar(max)
+	declare @approvalinmiddle int
+
+	declare @userid uniqueidentifier
+
+	select @userid = Oid from PermissionPolicyUser where UserName = @usercode
+	select @approvalinmiddle = 0
+
+	if @objtype = 'PurchaseRequests'
+	begin
+		select @url = '#ViewID=PurchaseRequests_DetailView&ObjectKey=' + CONVERT(nvarchar, @docid) + '&ObjectClassName=FT_EClaim.Module.BusinessObjects.PurchaseRequests&mode=View'
+
+		if @appstatus = 0
+		begin
+			delete from @newtable
+		end
+
+		if @appstatus = 1 or @appstatus = 2
+		begin
+			select @appdonecnt = 0
+
+			select @maxapplevel = max(T9.ApprovalLevel), @minapplevel = min(T9.ApprovalLevel)
+			from PurchaseRequests T0 inner join PurchaseRequestAppStages T1 on T0.OID = T1.PurchaseRequest
+				inner join Approvals T9 on T1.Approval = T9.OID and T9.IsActive = 1
+			where T0.OID = @docid
+
+			select @appstagecnt = count(*)
+			from PurchaseRequests T0 inner join PurchaseRequestAppStages T1 on T0.OID = T1.PurchaseRequest
+				inner join Approvals T9 on T1.Approval = T9.OID and T9.IsActive = 1
+			where T0.OID = @docid
+
+			if (@appstagecnt = 1 and @maxapplevel = @minapplevel)
+			begin
+				select @approval = T9.OID, @approvalcnt = T9.ApprovalCnt, @tempapplevel = T9.ApprovalLevel
+				from PurchaseRequests T0 inner join PurchaseRequestAppStages T1 on T0.OID = T1.PurchaseRequest
+					inner join Approvals T9 on T1.Approval = T9.OID and T9.IsActive = 1
+				where T0.OID = @docid
+
+				select @temp = count(*) 
+				from Approvals T1 
+				inner join SystemUsersApprovalUser_ApprovalsUserApproval T2 on T1.OID = T2.UserApproval
+				inner join (
+				select CreateUser, max(OID) as OID from PurchaseRequestAppStatuses 
+				where PurchaseRequest = @docid 
+				group by CreateUser
+				) T5 on T5.CreateUser = T2.ApprovalUser
+				inner join PurchaseRequestAppStatuses T9 on T9.PurchaseRequest = @docid and T9.OID = T5.OID
+				where T1.OID = @approval and
+					T9.AppStatus = 1 -- approved
+
+				if @temp >= @approvalcnt
+				begin
+					select @appdonecnt = @appdonecnt + 1
+				end
+			end
+			if (@appstagecnt > 1 and @maxapplevel > @minapplevel)
+			begin
+				select @currapplevel = @maxapplevel + '1'
+
+				while (@currapplevel > @minapplevel)
+				begin
+					select top 1 @approval = T9.OID, @approvalcnt = T9.ApprovalCnt, @tempapplevel = T9.ApprovalLevel
+					from PurchaseRequests T0 inner join PurchaseRequestAppStages T1 on T0.OID = T1.PurchaseRequest
+						inner join Approvals T9 on T1.Approval = T9.OID and T9.IsActive = 1
+					where T0.OID = @docid and
+						T9.ApprovalLevel < @currapplevel
+					order by T9.ApprovalLevel desc
+
+					select @temp = count(*) 
+					from Approvals T1 
+					inner join SystemUsersApprovalUser_ApprovalsUserApproval T2 on T1.OID = T2.UserApproval
+					inner join (
+					select CreateUser, max(OID) as OID from PurchaseRequestAppStatuses 
+					where PurchaseRequest = @docid 
+					group by CreateUser
+					) T5 on T5.CreateUser = T2.ApprovalUser
+					inner join PurchaseRequestAppStatuses T9 on T9.PurchaseRequest = @docid and T9.OID = T5.OID
+					where T1.OID = @approval and
+						T9.AppStatus = 1 -- approved
+
+					if @temp >= @approvalcnt
+					begin
+						select @appdonecnt = @appdonecnt + 1
+					end
+
+					if (@temp = 0)
+					begin
+						select @approvalinmiddle = 1
+						break
+					end
+
+					select @currapplevel = @tempapplevel
+
+				end
+
+			end
+
+
+			if @appdonecnt >= @appstagecnt
+			begin
+				update PurchaseRequests set ApprovalStatus = 1 where OID = @docid
+				if @appstatus = 1
+				begin
+					select @body = 'Dear Sir,' + CHAR(13)+CHAR(10) + CHAR(13)+CHAR(10) + 'Please click following link to close the Claim Document.'
+
+					insert into @newtable
+					( UserID, Email, Url, EmailBody )
+					select T10.Oid, T10.UserEmail, @url, @body
+					from PurchaseRequests T0 inner join PurchaseRequestAppStages T1 on T0.OID = T1.PurchaseRequest
+					inner join Approvals T9 on T1.Approval = T9.OID and T9.IsActive = 1 and T9.ApprovalLevel = @minapplevel
+					inner join SystemUsersTriggerUser_ApprovalsTriggerApproval T5 on T5.TriggerApproval = T9.OID
+					inner join SystemUsers T10 on T5.TriggerUser = T10.Oid
+					where T0.OID = @docid
+					group by T10.Oid, T10.UserEmail
+				end
+
+			end
+			else
+			begin
+				update PurchaseRequests set ApprovalStatus = 2 where OID = @docid
+				delete from @newtable
+
+				if (@appstatus = 1 and @approvalinmiddle = 1)
+				begin
+					select @body = 'Dear Sir,' + CHAR(13)+CHAR(10) + CHAR(13)+CHAR(10) + 'Please click following link to approve the Claim Document.'
+
+					insert into @newtable
+					( UserID, Email, Url, EmailBody )
+					select T10.Oid, T10.UserEmail, @url, @body
+					from PurchaseRequests T0 inner join PurchaseRequestAppStages T1 on T0.OID = T1.PurchaseRequest
+					inner join Approvals T9 on T1.Approval = T9.OID and T9.IsActive = 1 and T9.ApprovalLevel = @currapplevel
+					inner join SystemUsersApprovalUser_ApprovalsUserApproval T5 on T5.UserApproval = T9.OID
+					inner join SystemUsers T10 on T5.ApprovalUser = T10.Oid
+					where T0.OID = @docid
+					group by T10.Oid, T10.UserEmail
+									
+				end
+			end
+		end
+
+		if @appstatus = 3 -- rejected
+		begin
+			update PurchaseRequests
+			set ApprovalStatus = @appstatus
+			where OID = @docid
+
+			select @body = 'Dear Sir,' + CHAR(13)+CHAR(10) + CHAR(13)+CHAR(10) + 'Please click following link to reject the Claim Document.'
+
+			insert into @newtable
+			( UserID, Email, Url, EmailBody )
+			select T10.Oid, T10.UserEmail, @url, @body
+			from PurchaseRequests T0 inner join PurchaseRequestAppStages T1 on T0.OID = T1.PurchaseRequest
+			inner join Approvals T9 on T1.Approval = T9.OID and T9.IsActive = 1 and T9.ApprovalLevel = @maxapplevel
+			inner join SystemUsersTriggerUser_ApprovalsTriggerApproval T5 on T5.TriggerApproval = T9.OID
+			inner join SystemUsers T10 on T5.TriggerUser = T10.Oid
+			where isnull(T10.UserEmail,'') <> '' and
+			T0.OID = @docid
+			group by T10.Oid, T10.UserEmail
+
+		end
+
+
+	end
+
+	select UserID, Email, Url, EmailBody from @newtable
+  
+end

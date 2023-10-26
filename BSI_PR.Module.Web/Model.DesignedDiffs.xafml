@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Options CollectionsEditMode="Edit" />
+  <SchemaModules>
+    <SchemaModule Name="CloneObjectModule" Version="20.2.5.0" IsNewNode="True" />
+    <SchemaModule Name="SystemAspNetModule" Version="20.2.5.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="20.2.5.0" IsNewNode="True" />
+  </SchemaModules>
+  <ViewItems>
+    <PropertyEditor Name="PropertyEditors">
+      <RegisteredPropertyEditor PropertyType="System.Drawing.Color" EditorType="DevExpress.ExpressApp.Web.Editors.ASPx.ASPxColorPickerPropertyEditor" />
+    </PropertyEditor>
+  </ViewItems>
+  <Views>
+    <DetailView Id="ClosePO_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="ClosePO">
+              <LayoutGroup Id="ClosePO_col1" RelativeSize="83.5180055401662">
+                <LayoutItem Id="showAll" RelativeSize="69.6969696969697" />
+                <LayoutItem Id="YesNo" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="ClosePO_col2" RelativeSize="16.481994459833796" />
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="GoodReceipt_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="28.907563025210084">
+            <LayoutGroup Id="GoodReceipt" RelativeSize="100">
+              <LayoutGroup Id="GoodReceipt_col1" RelativeSize="49.904942965779469">
+                <LayoutItem Id="Department" ViewItem="Department" Index="3" RelativeSize="29.032258064516128" IsNewNode="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="GoodReceipt_col2" RelativeSize="50.095057034220531" />
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" RelativeSize="71.092436974789919">
+            <LayoutGroup Id="GoodReceiptDetails">
+              <LayoutItem Id="GoodReceiptDetails" RelativeSize="90.3485254691689" />
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="GoodsReturnDetails_ListView">
+      <Columns>
+        <ColumnInfo Id="GRND" Width="81" />
+        <ColumnInfo Id="PODocNum" Width="87" />
+        <ColumnInfo Id="ItemCode" Width="83" />
+        <ColumnInfo Id="ItemDescrip" Width="117" />
+        <ColumnInfo Id="UOM" Width="51" />
+        <ColumnInfo Id="Quantity" Width="71" />
+      </Columns>
+    </ListView>
+    <DetailView Id="PurchaseOrderDetails_DetailView">
+      <Items>
+        <PropertyEditor Id="LineAmount" DisplayFormat="{0:n6}" />
+      </Items>
+    </DetailView>
+    <ListView Id="PurchaseRequests_PurchaseRequestDetail_ListView">
+      <PivotSettings Settings="" />
+    </ListView>
+  </Views>
+</Application>

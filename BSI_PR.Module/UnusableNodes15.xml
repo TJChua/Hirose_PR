@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <BOModel Id="BOModel">
+    <Class Name="BSI_PR.Module.BusinessObjects.HistoryPriceChecker" DefaultListViewAllowEdit="False" />
+  </BOModel>
+  <NavigationItems Id="NavigationItems">
+    <Items Id="Items">
+      <Item Id="History Price Checker" Removed="True" />
+      <Item Id="Reports">
+        <Items Id="Items">
+          <Item Id="HistoryPriceChecker_DetailView" ViewId="HistoryPriceChecker_DetailView" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
+</Application>

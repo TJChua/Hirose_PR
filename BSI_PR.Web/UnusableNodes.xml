@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <DetailView Id="PurchaseOrder_DetailView">
+      <Layout Id="Layout">
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="PurchaseOrder">
+              <LayoutGroup Id="PurchaseOrder_col1">
+                <LayoutItem Id="Adress" Index="2" RelativeSize="18.906942392909897" ShowCaption="False" />
+              </LayoutGroup>
+              <LayoutGroup Id="PurchaseOrder_col2">
+                <LayoutItem Id="Remarks" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs">
+            <LayoutGroup Id="PurchaseOrderDetails">
+              <LayoutGroup Id="Auto8c3c360c-6de4-463e-987e-fbc2253b48ff">
+                <LayoutGroup Id="Auto091d816a-dc6c-4dc0-9112-26d910a16657">
+                  <LayoutItem Id="Remarks" RelativeSize="95.327102803738313" CaptionLocation="Top" Index="0" ShowCaption="True" />
+                </LayoutGroup>
+                <LayoutGroup Id="Auto0fcf89e7-0888-4516-bae6-395979dbf412">
+                  <LayoutGroup Id="Autobb8de7da-1bfa-44c0-b2e6-3d68760a42ce">
+                    <LayoutGroup Id="Autodef6f5b0-7ce4-490f-b624-daef98a95389">
+                      <LayoutItem Id="FinalAmount" RelativeSize="25.700934579439252" />
+                    </LayoutGroup>
+                  </LayoutGroup>
+                </LayoutGroup>
+              </LayoutGroup>
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>

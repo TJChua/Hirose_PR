@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <DetailView Id="ClosePO_DetailView">
+      <Layout Id="Layout">
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="ClosePO">
+              <LayoutItem Id="DocDate2" RelativeSize="5.6692913385826769" />
+              <LayoutItem Id="DocDate3" RelativeSize="4.0944881889763778" />
+              <LayoutItem Id="Department" RelativeSize="4.0944881889763778" />
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="PurchaseOrder_DetailView">
+      <Layout Id="Layout">
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="PurchaseOrder">
+              <LayoutGroup Id="PurchaseOrder_col1">
+                <LayoutItem Id="Remarks" RelativeSize="58.666666666666664" Index="1" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="PurchaseOrder_col2">
+                <LayoutItem Id="Adress" RelativeSize="11.403508771929825" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>

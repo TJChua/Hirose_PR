@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <BOModel>
+    <Class Name="BSI_PR.Module.BusinessObjects.APInvoiceDetails">
+      <OwnMembers>
+        <Member Name="ItemDescrip" Size="254" />
+      </OwnMembers>
+    </Class>
+    <Class Name="BSI_PR.Module.BusinessObjects.PurchaseOrderDetails">
+      <OwnMembers>
+        <Member Name="ItemDesc" Size="254" />
+      </OwnMembers>
+    </Class>
+  </BOModel>
+  <NavigationItems StartupNavigationItem="MyDetails" />
+  <SchemaModules>
+    <SchemaModule Name="CloneObjectModule" Version="20.2.5.0" IsNewNode="True" />
+    <SchemaModule Name="SystemAspNetModule" Version="20.2.5.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="20.2.5.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <DetailView Id="APInvoice_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="40.082079343365251">
+            <LayoutGroup Id="APInvoice">
+              <LayoutGroup Id="APInvoice_col1" RelativeSize="66.97722567287785">
+                <LayoutGroup Id="Autodeaaff36-ce81-4538-b273-d3df225c3365" RelativeSize="100">
+                  <LayoutGroup Id="Autoa43177ef-b4d9-400e-9db8-e461f3eca556">
+                    <LayoutGroup Id="Auto327ee4a3-4036-4aa2-ba47-12341a6b3348" RelativeSize="49.1499227202473">
+                      <LayoutItem Id="Vendor" RelativeSize="22.448979591836736" />
+                      <LayoutItem Id="Adress" RelativeSize="77.551020408163268" />
+                    </LayoutGroup>
+                    <LayoutGroup Id="Auto60546532-b662-4e72-92d9-60d5f89a8648" RelativeSize="50.8500772797527">
+                      <LayoutItem Id="Department" RelativeSize="22.448979591836736" />
+                      <LayoutItem Id="DOInvoice" RelativeSize="18.367346938775512" />
+                      <LayoutItem Id="Item3" RelativeSize="59.183673469387756" />
+                    </LayoutGroup>
+                  </LayoutGroup>
+                </LayoutGroup>
+                <LayoutItem Id="SAPINVNum" CaptionLocation="Top" RelativeSize="21.739130434782609" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="APInvoice_col2" RelativeSize="33.02277432712215">
+                <LayoutItem Id="DocNum" RelativeSize="22.448979591836736" />
+                <LayoutItem Id="DocDate" RelativeSize="18.367346938775512" />
+                <LayoutItem Id="APInvoiceStatus" RelativeSize="18.367346938775512" />
+                <LayoutItem Id="DeliveryNo" RelativeSize="18.367346938775512" />
+                <LayoutItem Id="SAPINVNum1" ViewItem="SAPINVNum" CaptionLocation="Top" Index="4" RelativeSize="22.448979591836736" IsNewNode="True" />
+                <LayoutItem Id="SAPINVNum" RelativeSize="18.402777777777779" Index="5" ShowCaption="False" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" RelativeSize="59.917920656634749">
+            <LayoutGroup Id="APInvoiceDetails">
+              <LayoutItem Id="APInvoiceDetails" RelativeSize="46.907216494845358" />
+              <LayoutGroup Id="Auto2e2ab2a0-b4ca-47ac-9151-6b06910ecd1f" RelativeSize="53.092783505154642">
+                <LayoutItem Id="Remarks" RelativeSize="30.848861283643892" />
+                <LayoutItem Id="Item1" RelativeSize="17.080745341614907" />
+                <LayoutGroup Id="Auto507a89e3-8062-4b6f-a4a1-1a93204e6117" RelativeSize="19.979296066252587" />
+                <LayoutGroup Id="Autoa7f64465-5b47-4a85-8f18-c8dd52b1d3b2" RelativeSize="32.091097308488614">
+                  <LayoutGroup Id="Autob11af14b-82d2-44fb-9166-fea0d0d169b3">
+                    <LayoutItem Id="Subtotal" RelativeSize="94.516129032258064" />
+                    <LayoutItem Id="Item4" RelativeSize="5.4838709677419351" />
+                  </LayoutGroup>
+                </LayoutGroup>
+              </LayoutGroup>
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="PurchaseOrder_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="40.082079343365251">
+            <LayoutGroup Id="PurchaseOrder">
+              <LayoutGroup Id="PurchaseOrder_col1" RelativeSize="70.082815734989651">
+                <LayoutGroup Id="Autoe10caa51-17e8-4767-aa38-6d4628138a10" RelativeSize="49.187592319054652">
+                  <LayoutItem Id="Vendor" RelativeSize="22.448979591836736" />
+                  <LayoutItem Id="Adress" RelativeSize="77.551020408163268" />
+                </LayoutGroup>
+                <LayoutGroup Id="Auto96f5cbd7-9c2b-4a7d-ab4c-8d4cb8327b66" RelativeSize="31.905465288035451">
+                  <LayoutItem Id="Department" RelativeSize="22.448979591836736" />
+                  <LayoutItem Id="RefNo" RelativeSize="18.367346938775512" />
+                  <LayoutItem Id="PaymentTerms" RelativeSize="59.183673469387756" />
+                </LayoutGroup>
+              </LayoutGroup>
+              <LayoutGroup Id="PurchaseOrder_col2" RelativeSize="29.917184265010352">
+                <LayoutItem Id="DocNum" RelativeSize="22.448979591836736" />
+                <LayoutItem Id="DocDate" RelativeSize="18.367346938775512" />
+                <LayoutItem Id="PurchaseRequestStatus" RelativeSize="18.367346938775512" />
+                <LayoutItem Id="ApprovalStatus" RelativeSize="18.367346938775512" />
+                <LayoutItem Id="Escalate" RelativeSize="22.448979591836736" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" RelativeSize="59.917920656634749">
+            <LayoutGroup Id="PurchaseOrderDetails">
+              <LayoutItem Id="PurchaseOrderDetails" RelativeSize="44.845360824742265" />
+              <LayoutGroup Id="Auto8c3c360c-6de4-463e-987e-fbc2253b48ff" RelativeSize="55.154639175257735">
+                <LayoutGroup Id="Auto091d816a-dc6c-4dc0-9112-26d910a16657" RelativeSize="46.8944099378882" Direction="Vertical">
+                  <LayoutItem Id="Item1" Index="1" RelativeSize="4.6728971962616823" IsNewNode="True" />
+                </LayoutGroup>
+                <LayoutGroup Id="Auto0fcf89e7-0888-4516-bae6-395979dbf412" RelativeSize="53.1055900621118">
+                  <LayoutGroup Id="Autobb8de7da-1bfa-44c0-b2e6-3d68760a42ce">
+                    <LayoutGroup Id="Auto8979afd0-4283-4395-ad80-b460f5aa7e1f" RelativeSize="32.358674463937625">
+                      <LayoutItem Id="Currency" RelativeSize="24.766355140186917" />
+                      <LayoutItem Id="CurrRate" RelativeSize="75.233644859813083" />
+                    </LayoutGroup>
+                    <LayoutGroup Id="Autodef6f5b0-7ce4-490f-b624-daef98a95389" RelativeSize="67.641325536062382">
+                      <LayoutItem Id="Amount" RelativeSize="24.766355140186917" />
+                      <LayoutGroup Id="Autoc220d287-8085-43fe-a933-58bfc5f5be05" RelativeSize="28.504672897196262" />
+                      <LayoutItem Id="TotalTaxAmount" RelativeSize="21.028037383177569" />
+                    </LayoutGroup>
+                  </LayoutGroup>
+                </LayoutGroup>
+              </LayoutGroup>
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="PurchaseOrder_ListView">
+      <Columns>
+        <ColumnInfo Id="DocDiscAmount" Width="114" />
+      </Columns>
+    </ListView>
+    <ListView Id="PurchaseOrder_ListView_Approved">
+      <Columns>
+        <ColumnInfo Id="DocDiscAmount" Caption="Discount Amount" />
+      </Columns>
+    </ListView>
+    <ListView Id="PurchaseOrder_ListView_PendingApp">
+      <Columns>
+        <ColumnInfo Id="DocDiscAmount" Caption="Discount Amount" />
+      </Columns>
+    </ListView>
+    <DetailView Id="PurchaseOrderDetails_DetailView">
+      <Items>
+        <PropertyEditor Id="LineAmount" DisplayFormat="{0:n6}" />
+      </Items>
+    </DetailView>
+    <DetailView Id="vw_POInv_DetailView">
+      <Items>
+        <PropertyEditor Id="OpenQty" DisplayFormat="{0:n}" EditMask="{0:n}" />
+        <PropertyEditor Id="Quantity" DisplayFormat="{0:n}" EditMask="{0:n}" />
+      </Items>
+    </DetailView>
+    <ListView Id="vw_POInv_ListView">
+      <Columns>
+        <ColumnInfo Id="OpenQty" DisplayFormat="{0:n}" EditMask="{0:n}" />
+        <ColumnInfo Id="Quantity" DisplayFormat="{0:n}" EditMask="{0:n}" />
+      </Columns>
+    </ListView>
+    <ListView Id="vw_POInv_LookupListView">
+      <Columns>
+        <ColumnInfo Id="OpenQty" DisplayFormat="{0:n}" EditMask="{0:n}" />
+        <ColumnInfo Id="Quantity" DisplayFormat="{0:n}" EditMask="{0:n}" />
+      </Columns>
+    </ListView>
+  </Views>
+</Application>

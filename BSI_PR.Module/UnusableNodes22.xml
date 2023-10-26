@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <DetailView Id="SystemUsers_DetailView">
+      <Layout Id="Layout">
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="SystemUsers">
+              <LayoutItem Id="FName" RelativeSize="22.429906542056074" />
+              <LayoutItem Id="UserEmail" Index="2" RelativeSize="22.429906542056074" />
+              <LayoutItem Id="DefaultDept" Index="3" RelativeSize="25.233644859813083" />
+              <LayoutItem Id="Vendor" Index="3" RelativeSize="25.233644859813083" Removed="True" />
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>
