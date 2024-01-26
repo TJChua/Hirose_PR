@@ -14,6 +14,7 @@ using DevExpress.Persistent.Validation;
 using DevExpress.ExpressApp.ConditionalAppearance;
 
 // 2023-09-26 default applicant and date ver 0.1
+// 2024-01-18 allow to change fromdate ver 0.2
 
 namespace BSI_PR.Module.BusinessObjects
 {
@@ -25,6 +26,9 @@ namespace BSI_PR.Module.BusinessObjects
     [RuleCriteria("EscalateUserOnleaveValidation", DefaultContexts.Save, "IsValid = 0", "User attended escalate task on his/her holiday date range.")]
     [RuleCriteria("UserOnleaveValidation", DefaultContexts.Save, "IsValid1 = 0", "User on leave on that period.")]
     [RuleCriteria("DateOnleaveValidation", DefaultContexts.Save, "IsValid2 = 0", "No backdate allow.")]
+    // Start ver 0.2
+    [RuleCriteria("FromDateValidation", DefaultContexts.Save, "IsValid3 = 0", "From Date no backdate allow.")]
+    // End ver 0.2
     public class LeaveApplication : XPObject
     { // Inherit from a different class to provide a custom primary key, concurrency and deletion behavior, etc. (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument113146.aspx).
         public LeaveApplication(Session session)
@@ -111,7 +115,9 @@ namespace BSI_PR.Module.BusinessObjects
         private DateTime _FromDate;
         [Index(5), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
         [RuleRequiredField(DefaultContexts.Save)]
-        [Appearance("FromDate", Enabled = false)]
+        // Start ver 0.2
+        //[Appearance("FromDate", Enabled = false)]
+        // End ver 0.2
         [XafDisplayName("From Date")]
         public DateTime FromDate
         {
@@ -241,6 +247,22 @@ namespace BSI_PR.Module.BusinessObjects
                 return false;
             }
         }
+
+        // Start ver 0.2
+        [Browsable(false)]
+        public bool IsValid3
+        {
+            get
+            {
+                if (this.FromDate < DateTime.Today)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+        // End ver 0.2
 
         protected override void OnSaving()
         {

@@ -38,6 +38,8 @@ using DevExpress.ExpressApp.Model;
 // TJC - 20230607 - add Japan PO ver 0.8
 // TJC - 20230628 - Cancel/Reject PO add back the budget ver 0.9
 // TJC - 20230926 - not allow submit if over budget ver 0.10
+// TJC - 20231109 - budget convert with exchange rate ver 0.11
+// TJC - 20240126 - add export excel report ver 0.12
 
 #endregion
 
@@ -103,6 +105,10 @@ namespace BSI_PR.Module.Controllers
             this.DuplicateBudget.Active.SetItemValue("Enabled", false);
             this.DuplicateBudgetData.Active.SetItemValue("Enabled", false);
             // End ver 0.7
+
+            // Start ver 0.12
+            this.PrintDepartmentBudgetExcel.Active.SetItemValue("Enabled", false);
+            // End ver 0.12
 
 
             ListViewController controller = Frame.GetController<ListViewController>();
@@ -361,6 +367,9 @@ namespace BSI_PR.Module.Controllers
                     if (View.Id == "BudgetCategoryReport_DetailView")
                     {
                         this.PrintDepartmentBudget.Active.SetItemValue("Enabled", true);
+                        // Start ver 0.12
+                        this.PrintDepartmentBudgetExcel.Active.SetItemValue("Enabled", true);
+                        // End ver 0.12
                     }
                 }
             }
@@ -621,7 +630,7 @@ namespace BSI_PR.Module.Controllers
                 // Start ver 0.10
                 if (selectedObject.BudgetCategoryData != null)
                 {
-                    if (selectedObject.MonthlyBudgetBalance < (double)selectedObject.Amount)
+                    if (selectedObject.BudgetBalance < (double)selectedObject.Amount)
                     {
                         genCon.showMsg("Error", "Over budget.", InformationType.Error);
                         return;
@@ -782,8 +791,17 @@ namespace BSI_PR.Module.Controllers
                 PurchaseOrder trx = pos.FindObject<PurchaseOrder>(new BinaryOperator("Oid", selectedObject.Oid));
                 if (trx.BudgetCategoryData != null)
                 {
+                    // Start ver 0.11
+                    decimal amount = trx.Amount;
+                    if (trx.CurrRate != 0)
+                    {
+                        amount = amount * (decimal)trx.CurrRate;
+                    }
+                    //genCon.UpdateBudget(trx.Department.Oid, trx.BudgetCategoryData.BudgetCategoryName,
+                    //    trx.DocDate.Month, trx.DocDate.Year.ToString(), trx.Amount, pos, "Add");
                     genCon.UpdateBudget(trx.Department.Oid, trx.BudgetCategoryData.BudgetCategoryName,
-                        trx.DocDate.Month, trx.DocDate.Year.ToString(), trx.Amount, pos, "Add");
+                        trx.DocDate.Month, trx.DocDate.Year.ToString(), amount, pos, "Add");
+                    // End ver 0.11
                 }
                 // End ver 0.9
 
@@ -1198,8 +1216,17 @@ namespace BSI_PR.Module.Controllers
                             // Start ver 0.9
                             if (po.BudgetCategoryData != null)
                             {
-                                genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName,
-                                    po.DocDate.Month, po.DocDate.Year.ToString(), po.Amount, pos, "Cancel");
+                                // Start ver 0.11
+                                decimal amount = po.Amount;
+                                if (po.CurrRate != 0)
+                                {
+                                    amount = amount * (decimal)po.CurrRate;
+                                }
+                                //genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName,
+                                //    po.DocDate.Month, po.DocDate.Year.ToString(), po.Amount, pos, "Cancel");
+                                genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName, 
+                                    po.DocDate.Month, po.DocDate.Year.ToString(), amount, pos, "Cancel");
+                                // End ver 0.11
                             }
                             // End ver 0.9
                         }
@@ -2101,8 +2128,17 @@ namespace BSI_PR.Module.Controllers
                     {
                         if (trx.BudgetCategoryData != null)
                         {
-                            genCon.UpdateBudget(trx.Department.Oid, trx.BudgetCategoryData.BudgetCategoryName,
-                                trx.DocDate.Month, trx.DocDate.Year.ToString(), trx.Amount, pos, "Cancel");
+                            // Start ver 0.11
+                            decimal amount = trx.Amount;
+                            if (trx.CurrRate != 0)
+                            {
+                                amount = amount * (decimal)trx.CurrRate;
+                            }
+                            //genCon.UpdateBudget(trx.Department.Oid, trx.BudgetCategoryData.BudgetCategoryName,
+                            //    trx.DocDate.Month, trx.DocDate.Year.ToString(), trx.Amount, pos, "Cancel");
+                            genCon.UpdateBudget(trx.Department.Oid, trx.BudgetCategoryData.BudgetCategoryName, 
+                                trx.DocDate.Month, trx.DocDate.Year.ToString(), amount, pos, "Cancel");
+                            // End ver 0.11
                         }
                     }
                     // End ver 0.9
@@ -3550,5 +3586,97 @@ namespace BSI_PR.Module.Controllers
             }
         }
         // End ver 0.7
+
+        // Start ver 0.12
+        private void PrintDepartmentBudgetExcel_Execute(object sender, SimpleActionExecuteEventArgs e)
+        {
+            BudgetCategoryReport selectedObject = (BudgetCategoryReport)e.CurrentObject;
+
+            string strServer;
+            string strDatabase;
+            string strUserID;
+            string strPwd;
+            string filename;
+
+            if (e.SelectedObjects.Count > 0)
+            {
+                BudgetCategoryReport budget = (BudgetCategoryReport)View.CurrentObject;
+                SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
+
+                try
+                {
+                    ReportDocument doc = new ReportDocument();
+                    if (budget.SummaryDetails == false)
+                    {
+                        doc.Load(HttpContext.Current.Server.MapPath("~\\Reports\\BudgetCategory.rpt"));
+                    }
+                    else
+                    {
+                        doc.Load(HttpContext.Current.Server.MapPath("~\\Reports\\BudgetCategoryDetails.rpt"));
+                    }
+                    strServer = GeneralSettings.B1Server;
+                    //strDatabase = GeneralSettings.B1CompanyDB;
+                    strDatabase = "HRS_PR";
+                    strUserID = GeneralSettings.B1DbUserName;
+                    strPwd = GeneralSettings.B1DbPassword;
+                    doc.DataSourceConnections[0].SetConnection(strServer, strDatabase, strUserID, strPwd);
+
+                    if (budget.Department != null)
+                    {
+                        doc.SetParameterValue("Department@", budget.Department.BoCode);
+                    }
+                    doc.SetParameterValue("FromDate@", budget.FromDate.Date);
+                    doc.SetParameterValue("ToDate@", budget.ToDate.Date);
+                    if (budget.BudgetCategory != null)
+                    {
+                        doc.SetParameterValue("BudgetCategoryOid@", budget.BudgetCategory.Oid);
+                    }
+
+                    filename = GeneralSettings.ReportPath.ToString() + GeneralSettings.B1CompanyDB.ToString()
+                       + "_DepBudget_" + budget.Department + "_" + user.UserName + "_"
+                       + DateTime.Now.ToString("hhmmss") + ".xls";
+
+                    doc.ExportToDisk(ExportFormatType.Excel, filename);
+                    doc.Close();
+                    doc.Dispose();
+
+                    WebWindow.CurrentRequestWindow.RegisterStartupScript("DownloadFile", GetScriptExcel(filename));
+                }
+                catch (Exception ex)
+                {
+                    MsgBox(ex.Message);
+                }
+            }
+            else
+            {
+                genCon.showMsg("Fail", "No Department Selected.", InformationType.Error);
+            }
+        }
+
+        protected string GetScriptExcel(string filename)
+        {
+            FileInfo fileInfo = new FileInfo(filename);
+
+            ////To Download PDF
+            //return @"var mainDocument = window.parent.document;
+            //var iframe = mainDocument.getElementById('reportout');
+            //if (iframe != null) {
+            //  mainDocument.body.removeChild(iframe);
+            //}
+            //iframe = mainDocument.createElement('iframe');
+            //iframe.setAttribute('id', 'reportout');
+            //iframe.style.width = 0 + 'px';
+            //iframe.style.height = 0 + 'px';
+            //iframe.style.display = 'none';
+            //mainDocument.body.appendChild(iframe);
+            //mainDocument.getElementById('reportout').contentWindow.location = 'DownloadExcel.aspx?filename=" + fileInfo.Name + "';";
+
+            ////To View Excel
+            return @"var newWindow = window.open();
+            newWindow.document.write('<iframe src=""DownloadExcel.aspx?filename=" + fileInfo.Name + @""" frameborder =""0"" allowfullscreen style=""width: 100%;height: 100%""></iframe>');
+            ";
+
+        }
+        // End ver 0.12
     }
 }

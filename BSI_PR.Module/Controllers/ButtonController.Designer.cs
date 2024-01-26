@@ -69,6 +69,7 @@ namespace BSI_PR.Module.Controllers
             this.CompareAttJapan = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             this.DuplicateBudget = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             this.DuplicateBudgetData = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
+            this.PrintDepartmentBudgetExcel = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             // 
             // Pass
             // 
@@ -457,6 +458,14 @@ namespace BSI_PR.Module.Controllers
             this.DuplicateBudgetData.ToolTip = null;
             this.DuplicateBudgetData.Execute += new DevExpress.ExpressApp.Actions.SimpleActionExecuteEventHandler(this.DuplicateBudgetData_Execute);
             // 
+            // PrintDepartmentBudgetExcel
+            // 
+            this.PrintDepartmentBudgetExcel.Caption = "Excel Export";
+            this.PrintDepartmentBudgetExcel.ConfirmationMessage = null;
+            this.PrintDepartmentBudgetExcel.Id = "PrintDepartmentBudgetExcel";
+            this.PrintDepartmentBudgetExcel.ToolTip = null;
+            this.PrintDepartmentBudgetExcel.Execute += new DevExpress.ExpressApp.Actions.SimpleActionExecuteEventHandler(this.PrintDepartmentBudgetExcel_Execute);
+            // 
             // ButtonController
             // 
             this.Actions.Add(this.Pass);
@@ -498,6 +507,7 @@ namespace BSI_PR.Module.Controllers
             this.Actions.Add(this.CompareAttJapan);
             this.Actions.Add(this.DuplicateBudget);
             this.Actions.Add(this.DuplicateBudgetData);
+            this.Actions.Add(this.PrintDepartmentBudgetExcel);
 
         }
 
@@ -542,5 +552,6 @@ namespace BSI_PR.Module.Controllers
         private DevExpress.ExpressApp.Actions.SimpleAction CompareAttJapan;
         private DevExpress.ExpressApp.Actions.SimpleAction DuplicateBudget;
         private DevExpress.ExpressApp.Actions.SimpleAction DuplicateBudgetData;
+        private DevExpress.ExpressApp.Actions.SimpleAction PrintDepartmentBudgetExcel;
     }
 }
