@@ -42,6 +42,7 @@ namespace BSI_PR.Module.BusinessObjects
     [RuleCriteria("POJapanOutsideRange", DefaultContexts.Save, "IsValid3 = 1", "Posting Period Locked")]
 
     [Appearance("HideDuplicatePO", AppearanceItemType = "Action", TargetItems = "Duplicate_POJapan", Criteria = "IsValid4 = 1", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
+
     public class PurchaseOrderJapan : XPObject
     { // Inherit from a different class to provide a custom primary key, concurrency and deletion behavior, etc. (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument113146.aspx).
         public PurchaseOrderJapan(Session session)
@@ -756,6 +757,7 @@ namespace BSI_PR.Module.BusinessObjects
 
         private JPApprovalTemplate _JPApprovalTemplate;
         [XafDisplayName("JP Approval Template")]
+        [RuleRequiredField(DefaultContexts.Save)]
         [Index(68), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(false)]
         public JPApprovalTemplate JPApprovalTemplate
         {
