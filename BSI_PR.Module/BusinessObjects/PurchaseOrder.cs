@@ -699,7 +699,7 @@ namespace BSI_PR.Module.BusinessObjects
         private vw_BudgetData _BudgetCategoryData;
         [ImmediatePostData]
         [NoForeignKey]
-        //[RuleRequiredField(DefaultContexts.Save)]
+        [RuleRequiredField(DefaultContexts.Save)]
         [Index(58), VisibleInListView(false), VisibleInDetailView(true), VisibleInLookupListView(false)]
         [Appearance("BudgetCategoryData", Enabled = false, Criteria = "IsPassed")]
         [DataSourceCriteria("Department = '@this.Department.BoName' and IsActive = '1'")]
