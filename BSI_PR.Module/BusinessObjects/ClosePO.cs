@@ -57,14 +57,14 @@ namespace BSI_PR.Module.BusinessObjects
             if (ReportSuperUserRole != null)
             {
                 IsReportUser = true;
-
+                UserName = "All";
             }
             else
             {
                 IsReportUser = false;
+                UserName = user.FName;
             }
 
-            UserName = user.FName;
             Department = Session.FindObject<vw_ReportDepartments>(new BinaryOperator("BoCode", user.CurrDept, BinaryOperatorType.Equal));
             //YesNo = YesNo.Y;
             DocDate2 = DateTime.Today;
@@ -115,7 +115,7 @@ namespace BSI_PR.Module.BusinessObjects
         //[ModelDefault("EditMask", "(000)-00"), VisibleInListView(false)]
         //[DataSourceProperty("user.Department")]
         [Index(21), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
-        [Appearance("Department", Enabled = false, Criteria = "not IsReportUser")]    
+        //[Appearance("Department", Enabled = false, Criteria = "not IsReportUser")]    
         [DataSourceCriteria("username = '@this.UserName'")]
         //[RuleRequiredField(DefaultContexts.Save)]
         public vw_ReportDepartments Department

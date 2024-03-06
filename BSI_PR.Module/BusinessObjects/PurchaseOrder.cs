@@ -40,7 +40,8 @@ namespace BSI_PR.Module.BusinessObjects
     [RuleCriteria("POCurrencyRateRule", DefaultContexts.Save, "IsValid2 = 0", "Incorrect currency rate.")]
    // [Appearance("HidePrintPO", AppearanceItemType = "Action", TargetItems = "PrintPO1", Criteria = "(PurchaseRequestStatus = 'Cancel') or  (ApprovalStatus = 'Required_Approval') or (ApprovalStatus = 'Rejected') or (ApprovalStatus <> 'Approved')", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [RuleCriteria("POOutsideRange", DefaultContexts.Save, "IsValid3 = 1", "Posting Period Locked")]
-   
+    [RuleCriteria("POBudgetData", DefaultContexts.Save, "IsValid5 = 1", "Budget cannot N/A.")]
+
     [Appearance("HideDuplicatePO", AppearanceItemType = "Action", TargetItems = "Duplicate_PO", Criteria = "IsValid4 = 1", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
 
     //[Appearance("HideCompareAtt", AppearanceItemType = "Action", TargetItems = "SwitchToEditMode;CompareAtt", Criteria = "1=1", Context = "DetailView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
@@ -699,7 +700,7 @@ namespace BSI_PR.Module.BusinessObjects
         private vw_BudgetData _BudgetCategoryData;
         [ImmediatePostData]
         [NoForeignKey]
-        [RuleRequiredField(DefaultContexts.Save)]
+        //[RuleRequiredField(DefaultContexts.Save)]
         [Index(58), VisibleInListView(false), VisibleInDetailView(true), VisibleInLookupListView(false)]
         [Appearance("BudgetCategoryData", Enabled = false, Criteria = "IsPassed")]
         [DataSourceCriteria("Department = '@this.Department.BoName' and IsActive = '1'")]
@@ -1136,6 +1137,20 @@ namespace BSI_PR.Module.BusinessObjects
                 SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
 
                 if (user.Roles.Where(p => p.Name == GeneralSettings.ApprovalRole).Count() > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsValid5
+        {
+            get
+            {
+                if (DocDate.Date < DateTime.Today.Date)
                 {
                     return true;
                 }
