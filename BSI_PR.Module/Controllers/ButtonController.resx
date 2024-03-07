@@ -118,25 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="Pass.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>513, 60</value>
+    <value>197, 60</value>
   </metadata>
   <metadata name="Accept_PO.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>421, 103</value>
+    <value>17, 103</value>
   </metadata>
   <metadata name="Pass_GRN.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>609, 146</value>
+    <value>173, 146</value>
   </metadata>
   <metadata name="Pass_GoodsReturn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>612, 189</value>
+    <value>162, 189</value>
   </metadata>
   <metadata name="CopyFromPR.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>467, 189</value>
+    <value>649, 189</value>
   </metadata>
   <metadata name="CopyFromPO.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>320, 189</value>
+    <value>502, 189</value>
   </metadata>
   <metadata name="CopyFromGRN.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>162, 189</value>
+    <value>344, 189</value>
   </metadata>
   <metadata name="Approval_PO.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 189</value>
@@ -154,13 +154,13 @@
     <value>733, 146</value>
   </metadata>
   <metadata name="EscalateUser_PO.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>441, 146</value>
+    <value>565, 146</value>
   </metadata>
   <metadata name="Closed_PO.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>312, 146</value>
+    <value>436, 146</value>
   </metadata>
   <metadata name="Cancel_GRN.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>173, 146</value>
+    <value>297, 146</value>
   </metadata>
   <metadata name="Cancel_Invoice.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 146</value>
@@ -184,13 +184,13 @@
     <value>551, 103</value>
   </metadata>
   <metadata name="PrintPO1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>304, 103</value>
+    <value>434, 103</value>
   </metadata>
   <metadata name="Duplicate_PO.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>156, 103</value>
+    <value>286, 103</value>
   </metadata>
   <metadata name="CompareAtt.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 103</value>
+    <value>147, 103</value>
   </metadata>
   <metadata name="CancelLeave.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>1293, 60</value>
@@ -208,10 +208,10 @@
     <value>599, 60</value>
   </metadata>
   <metadata name="Closed_POJapan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>345, 60</value>
+    <value>431, 60</value>
   </metadata>
   <metadata name="PrintPOJapan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>197, 60</value>
+    <value>283, 60</value>
   </metadata>
   <metadata name="EscalateUserJapan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 60</value>
@@ -223,19 +223,19 @@
     <value>1004, 17</value>
   </metadata>
   <metadata name="Approval_POJapan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>567, 17</value>
+    <value>820, 17</value>
   </metadata>
   <metadata name="CompareAttJapan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>389, 17</value>
+    <value>642, 17</value>
   </metadata>
   <metadata name="DuplicateBudget.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>219, 17</value>
+    <value>472, 17</value>
   </metadata>
   <metadata name="DuplicateBudgetData.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>270, 17</value>
   </metadata>
   <metadata name="PrintDepartmentBudgetExcel.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>751, 17</value>
+    <value>17, 17</value>
   </metadata>
   <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>

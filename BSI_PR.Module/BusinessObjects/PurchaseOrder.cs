@@ -40,7 +40,7 @@ namespace BSI_PR.Module.BusinessObjects
     [RuleCriteria("POCurrencyRateRule", DefaultContexts.Save, "IsValid2 = 0", "Incorrect currency rate.")]
    // [Appearance("HidePrintPO", AppearanceItemType = "Action", TargetItems = "PrintPO1", Criteria = "(PurchaseRequestStatus = 'Cancel') or  (ApprovalStatus = 'Required_Approval') or (ApprovalStatus = 'Rejected') or (ApprovalStatus <> 'Approved')", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [RuleCriteria("POOutsideRange", DefaultContexts.Save, "IsValid3 = 1", "Posting Period Locked")]
-    [RuleCriteria("POBudgetData", DefaultContexts.Save, "IsValid5 = 1", "Budget cannot N/A.")]
+    [RuleCriteria("POBudgetData", DefaultContexts.Save, "IsValid5 = 0", "Budget cannot N/A.")]
 
     [Appearance("HideDuplicatePO", AppearanceItemType = "Action", TargetItems = "Duplicate_PO", Criteria = "IsValid4 = 1", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
 
@@ -1150,7 +1150,7 @@ namespace BSI_PR.Module.BusinessObjects
         {
             get
             {
-                if (DocDate.Date < DateTime.Today.Date)
+                if (DocDate.Date >= DateTime.Today.Date && BudgetCategoryData == null)
                 {
                     return true;
                 }
