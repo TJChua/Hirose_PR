@@ -630,7 +630,7 @@ namespace BSI_PR.Module.Controllers
                 // Start ver 0.10
                 if (selectedObject.BudgetCategoryData != null)
                 {
-                    if (selectedObject.BudgetBalance < (double)selectedObject.Amount)
+                    if (selectedObject.BudgetBalance < (double)selectedObject.Amount * selectedObject.CurrRate)
                     {
                         genCon.showMsg("Error", "Over budget.", InformationType.Error);
                         return;
