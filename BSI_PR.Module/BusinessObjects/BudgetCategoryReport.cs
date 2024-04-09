@@ -38,33 +38,37 @@ namespace BSI_PR.Module.BusinessObjects
         {
             base.AfterConstruction();
             // Place your initialization code here (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112834.aspx).
+            SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
             PermissionPolicyRole ReportSuperUserRole = Session.FindObject<PermissionPolicyRole>(CriteriaOperator.Parse("IsCurrentUserInRole('ReportSuperUserRole')"));
             if (ReportSuperUserRole != null)
             {
                 IsReportUser = true;
+                UserName = "All";
 
             }
             else
             {
                 IsReportUser = false;
+                UserName = user.FName;
             }
 
-            Department = Session.FindObject<vw_BudgetDepartment>(CriteriaOperator.Parse("BoCode = ?","All"));
+            Department = Session.FindObject<vw_ReportDepartments>(new BinaryOperator("BoCode", user.CurrDept, BinaryOperatorType.Equal));
             BudgetCategory = Session.FindObject<vw_BudgetCategory>(CriteriaOperator.Parse("BoCode = ?", "All"));
             FromDate = DateTime.Today;
             ToDate = DateTime.Today;
         }
 
-        private vw_BudgetDepartment _Department;
+        private vw_ReportDepartments _Department;
         [ImmediatePostData]
         [NoForeignKey]
         [NonPersistent]
         [XafDisplayName("Department"), ToolTip("Enter Text")]
         [LookupEditorMode(LookupEditorMode.AllItems)]
         [Index(1), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
-        [Appearance("Department", Enabled = false, Criteria = "not IsReportUser")]
+        //[Appearance("Department", Enabled = false, Criteria = "not IsReportUser")]
+        [DataSourceCriteria("username = '@this.UserName'")]
         //[RuleRequiredField(DefaultContexts.Save)]
-        public vw_BudgetDepartment Department
+        public vw_ReportDepartments Department
         {
             get { return _Department; }
             set
@@ -137,6 +141,21 @@ namespace BSI_PR.Module.BusinessObjects
             set
             {
                 SetPropertyValue("IsReportUser", ref _IsReportUser, value);
+            }
+        }
+
+        private string _UserName;
+        [NonPersistent]
+        [XafDisplayName("UserName")]
+        [Index(28), VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
+        //[RuleRequiredField(DefaultContexts.Save)]
+        [Appearance("UserName", Enabled = true)]
+        public string UserName
+        {
+            get { return _UserName; }
+            set
+            {
+                SetPropertyValue("UserName", ref _UserName, value);
             }
         }
     }

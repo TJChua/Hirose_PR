@@ -174,7 +174,6 @@ namespace BSI_PR.Module.BusinessObjects
         }
 
         private string _UserName;
-        [ImmediatePostData]
         [NonPersistent]
         [XafDisplayName("UserName")]
         [Index(28), VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
@@ -188,6 +187,5 @@ namespace BSI_PR.Module.BusinessObjects
                 SetPropertyValue("UserName", ref _UserName, value);
             }
         }
-
     }
 }

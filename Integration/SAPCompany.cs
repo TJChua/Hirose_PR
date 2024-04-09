@@ -58,7 +58,7 @@ namespace Integration
             oCom.CompanyDB = ConfigurationManager.AppSettings.Get("CompanyDB");
             oCom.UserName = ConfigurationManager.AppSettings.Get("UserName");
             oCom.Password = ConfigurationManager.AppSettings.Get("Password");
-            oCom.LicenseServer = ConfigurationManager.AppSettings.Get("LicenseServer");
+            //oCom.LicenseServer = ConfigurationManager.AppSettings.Get("LicenseServer");
             oCom.language = SAPbobsCOM.BoSuppLangs.ln_English;
 
             if (oCom.Connect() != 0)
