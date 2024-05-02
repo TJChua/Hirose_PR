@@ -40,10 +40,18 @@ namespace Integration
             {
                 oCom.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2014;
             }
-            //else if (dbServerType == "MSSQL2016")
-            //{
-            //    oCom.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2016;
-            //}
+            else if (dbServerType == "MSSQL2016")
+            {
+                oCom.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2016;
+            }
+            else if (dbServerType == "MSSQL2017")
+            {
+                oCom.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2017;
+            }
+            else if (dbServerType == "MSSQL2019")
+            {
+                oCom.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2019;
+            }
             else if (dbServerType == "HANADB")
             {
                 oCom.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_HANADB;
