@@ -42,6 +42,7 @@ namespace Integration
             AuthenticationStandard authentication = new AuthenticationStandard();
             SecurityStrategyComplex security = new SecurityStrategyComplex(typeof(PermissionPolicyUser), typeof(PermissionPolicyRole), authentication);
             //security.RegisterXPOAdapterProviders();
+            security.AllowAnonymousAccess = true;
             string connectionString = ConfigurationManager.ConnectionStrings["DataSourceConnectionString"].ConnectionString;
             IObjectSpaceProvider objectSpaceProvider = new SecuredObjectSpaceProvider(security, connectionString, null);
 

@@ -249,7 +249,7 @@ namespace Integration
                                     sap.oCom.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_Commit);
 
                                 string DocEntry = "";
-                                DocEntry = GeneralSettings.oCompany.GetNewObjectKey();
+                                DocEntry = sap.oCom.GetNewObjectKey();
                                 apobj.IsPosted = true;
                                 apobj.SAPINVNum = DocEntry;
                                 DocEntry = null;
@@ -345,18 +345,18 @@ namespace Integration
                     // Create and display the value of two GUIDs.
                     g = Guid.NewGuid();
 
-                    if (oTargetDoc.APInvoiceAttachment != null && oTargetDoc.APInvoiceAttachment.Count > 0)
-                    {
-                        foreach (APInvoiceAttachment obj in oTargetDoc.APInvoiceAttachment)
-                        {
-                            string fullpath = GeneralSettings.B1AttachmentPath + "[" + g.ToString() + "]" + obj.File.FileName;
-                            //string fullpath = GeneralSettings.B1AttachmentPath + obj.File.FileName;
-                            using (System.IO.FileStream fs = System.IO.File.OpenWrite(fullpath))
-                            {
-                                obj.File.SaveToStream(fs);
-                            }
-                        }
-                    }
+                    //if (oTargetDoc.APInvoiceAttachment != null && oTargetDoc.APInvoiceAttachment.Count > 0)
+                    //{
+                    //    foreach (APInvoiceAttachment obj in oTargetDoc.APInvoiceAttachment)
+                    //    {
+                    //        string fullpath = GeneralSettings.B1AttachmentPath + "[" + g.ToString() + "]" + obj.File.FileName;
+                    //        //string fullpath = GeneralSettings.B1AttachmentPath + obj.File.FileName;
+                    //        using (System.IO.FileStream fs = System.IO.File.OpenWrite(fullpath))
+                    //        {
+                    //            obj.File.SaveToStream(fs);
+                    //        }
+                    //    }
+                    //}
 
                     int sapempid = 0;
                     SAPbobsCOM.Documents oDoc = null;
@@ -430,8 +430,8 @@ namespace Integration
 
                     //Budget Part
 
-                    if (GeneralSettings.B1APPRseries > 0)
-                        oDoc.Series = GeneralSettings.B1APPRseries;
+                    //if (GeneralSettings.B1APPRseries > 0)
+                    //    oDoc.Series = GeneralSettings.B1APPRseries;
 
                     int cnt = 0;
                     //string acctcode = "";
@@ -453,7 +453,10 @@ namespace Integration
                             oDoc.Lines.ItemDetails = dtl.ItemDescrip;
                             oDoc.Lines.Quantity = (double)dtl.Quantity;
                             if (dtl.UOM != "") oDoc.Lines.MeasureUnit = dtl.UOM;
-                            oDoc.Lines.VatGroup = dtl.Tax.BoCode;
+                            if (dtl.Tax != null)
+                            {
+                                oDoc.Lines.VatGroup = dtl.Tax.BoCode;
+                            }
 
                             // oDoc.Lines.DiscountPercent = 0;
 
@@ -488,7 +491,10 @@ namespace Integration
                             if (dtl.Series != null)
                             {
                                 if (dtl.Series.CostLevel == "2")
-                                    oDoc.Lines.CostingCode2 = dtl.Series.BoCode;
+                                    if (dtl.Series != null)
+                                    {
+                                        oDoc.Lines.CostingCode2 = dtl.Series.BoCode;
+                                    }
                             }
 
                         }
@@ -505,65 +511,65 @@ namespace Integration
 
                     }
 
-                    if (oTargetDoc.APInvoiceAttachment != null && oTargetDoc.APInvoiceAttachment.Count > 0)
-                    {
-                        cnt = 0;
-                        SAPbobsCOM.Attachments2 oAtt = (SAPbobsCOM.Attachments2)GeneralSettings.oCompany.GetBusinessObject(BoObjectTypes.oAttachments2);
-                        foreach (APInvoiceAttachment dtl in oTargetDoc.APInvoiceAttachment)
-                        {
+                    //if (oTargetDoc.APInvoiceAttachment != null && oTargetDoc.APInvoiceAttachment.Count > 0)
+                    //{
+                    //    cnt = 0;
+                    //    SAPbobsCOM.Attachments2 oAtt = (SAPbobsCOM.Attachments2)GeneralSettings.oCompany.GetBusinessObject(BoObjectTypes.oAttachments2);
+                    //    foreach (APInvoiceAttachment dtl in oTargetDoc.APInvoiceAttachment)
+                    //    {
 
-                            cnt++;
-                            if (cnt == 1)
-                            {
-                                if (oAtt.Lines.Count == 0)
-                                    oAtt.Lines.Add();
-                            }
-                            else
-                                oAtt.Lines.Add();
+                    //        cnt++;
+                    //        if (cnt == 1)
+                    //        {
+                    //            if (oAtt.Lines.Count == 0)
+                    //                oAtt.Lines.Add();
+                    //        }
+                    //        else
+                    //            oAtt.Lines.Add();
 
-                            string attfile = "";
-                            string[] fexe = dtl.File.FileName.Split('.');
-                            if (fexe.Length <= 2)
-                                attfile = fexe[0];
-                            else
-                            {
-                                for (int x = 0; x < fexe.Length - 1; x++)
-                                {
-                                    if (attfile == "")
-                                        attfile = fexe[x];
-                                    else
-                                        attfile += "." + fexe[x];
-                                }
-                            }
-                            oAtt.Lines.FileName = "[" + g.ToString() + "]" + attfile;
-                            //oAtt.Lines.FileName = attfile;
-                            if (fexe.Length > 1)
-                                oAtt.Lines.FileExtension = fexe[fexe.Length - 1];
-                            string path = GeneralSettings.B1AttachmentPath;
+                    //        string attfile = "";
+                    //        string[] fexe = dtl.File.FileName.Split('.');
+                    //        if (fexe.Length <= 2)
+                    //            attfile = fexe[0];
+                    //        else
+                    //        {
+                    //            for (int x = 0; x < fexe.Length - 1; x++)
+                    //            {
+                    //                if (attfile == "")
+                    //                    attfile = fexe[x];
+                    //                else
+                    //                    attfile += "." + fexe[x];
+                    //            }
+                    //        }
+                    //        oAtt.Lines.FileName = "[" + g.ToString() + "]" + attfile;
+                    //        //oAtt.Lines.FileName = attfile;
+                    //        if (fexe.Length > 1)
+                    //            oAtt.Lines.FileExtension = fexe[fexe.Length - 1];
+                    //        string path = GeneralSettings.B1AttachmentPath;
 
-                            path = path.Replace("\\\\", "\\");
-                            path = path.Substring(0, path.Length - 1);
-                            oAtt.Lines.SourcePath = path;
-                            oAtt.Lines.Override = SAPbobsCOM.BoYesNoEnum.tNO;
-                        }
-                        int iAttEntry = -1;
-                        if (oAtt.Add() == 0)
-                        {
-                            iAttEntry = int.Parse(sap.oCom.GetNewObjectKey());
-                        }
-                        else
-                        {
-                            string temp = sap.oCom.GetLastErrorDescription();
-                            if (sap.oCom.InTransaction)
-                            {
-                                sap.oCom.EndTransaction(BoWfTransOpt.wf_RollBack);
-                            }
+                    //        path = path.Replace("\\\\", "\\");
+                    //        path = path.Substring(0, path.Length - 1);
+                    //        oAtt.Lines.SourcePath = path;
+                    //        oAtt.Lines.Override = SAPbobsCOM.BoYesNoEnum.tNO;
+                    //    }
+                    //    int iAttEntry = -1;
+                    //    if (oAtt.Add() == 0)
+                    //    {
+                    //        iAttEntry = int.Parse(sap.oCom.GetNewObjectKey());
+                    //    }
+                    //    else
+                    //    {
+                    //        string temp = sap.oCom.GetLastErrorDescription();
+                    //        if (sap.oCom.InTransaction)
+                    //        {
+                    //            sap.oCom.EndTransaction(BoWfTransOpt.wf_RollBack);
+                    //        }
 
-                            WriteLog("[Error]", "Message: AP Invoice Posting - " + oTargetDoc.Oid + "-" + temp);
-                            return -1;
-                        }
-                        oDoc.AttachmentEntry = iAttEntry;
-                    }
+                    //        WriteLog("[Error]", "Message: AP Invoice Posting - " + oTargetDoc.Oid + "-" + temp);
+                    //        return -1;
+                    //    }
+                    //    oDoc.AttachmentEntry = iAttEntry;
+                    //}
 
 
                     oDoc.HandleApprovalRequest();
