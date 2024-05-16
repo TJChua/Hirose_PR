@@ -630,7 +630,7 @@ namespace BSI_PR.Module.Controllers
                 // Start ver 0.10
                 if (selectedObject.BudgetCategoryData != null)
                 {
-                    if (selectedObject.BudgetBalance < (double)selectedObject.Amount * selectedObject.CurrRate)
+                    if (selectedObject.BudgetBalance < (double)selectedObject.FinalAmount * selectedObject.CurrRate)
                     {
                         genCon.showMsg("Error", "Over budget.", InformationType.Error);
                         return;
@@ -2124,7 +2124,7 @@ namespace BSI_PR.Module.Controllers
                     IObjectSpace pos = Application.CreateObjectSpace();
                     PurchaseOrder trx = pos.FindObject<PurchaseOrder>(new BinaryOperator("Oid", selectedObject.Oid));
 
-                    if (trx.IsCancelled == true)
+                    if (trx.IsCancelled == true && trx.IsPassed == true)
                     {
                         if (trx.BudgetCategoryData != null)
                         {

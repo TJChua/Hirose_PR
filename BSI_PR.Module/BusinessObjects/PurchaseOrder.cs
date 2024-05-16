@@ -815,7 +815,7 @@ namespace BSI_PR.Module.BusinessObjects
         [Index(63), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(false)]
         [XafDisplayName("Monthly Budget Balance")]
         [Appearance("MonthlyBudgetBalance", Enabled = false)]
-        [Appearance("MonthlyBudgetBalance1", BackColor = "#FF4433", FontColor = "Black", Criteria = "MonthlyBudgetBalance < Amount")]
+        [Appearance("MonthlyBudgetBalance1", BackColor = "#FF4433", FontColor = "Black", Criteria = "IsValid6")]
         [DbType("numeric(19,6)")]
         [ModelDefault("DisplayFormat", "{0:n4}")]
         public double MonthlyBudgetBalance
@@ -1153,6 +1153,23 @@ namespace BSI_PR.Module.BusinessObjects
                 if (DocDate.Date >= DateTime.Today.Date && BudgetCategoryData == null)
                 {
                     return true;
+                }
+
+                return false;
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsValid6
+        {
+            get
+            {
+                if (BudgetCategoryData != null)
+                {
+                    if (BudgetBalance < (double)FinalAmount * CurrRate)
+                    {
+                        return true;
+                    }
                 }
 
                 return false;
