@@ -36,7 +36,7 @@ namespace BSI_PR.Module.BusinessObjects
     //[Appearance("HideEscalate1", AppearanceItemType = "Action", TargetItems = "EscalateUser_PO", Criteria = "(PurchaseRequestStatus = 'New') or (PurchaseRequestStatus = 'Cancelled') or (PurchaseRequestStatus = 'Posted') or (PurchaseRequestStatus = 'Closed') or ((PurchaseRequestStatus == 'Accepted') and (ApprovalStatus != 'Required_Approval'))", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideClosed", AppearanceItemType = "Action", TargetItems = "Closed_PO", Criteria = "(ApprovalStatus != 'Approved') OR (PurchaseRequestStatus = 'Closed') OR (PurchaseRequestStatus = 'Cancel')", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideDelete", AppearanceItemType = "Action", TargetItems = "Delete", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
-    [Appearance("HideCancel", AppearanceItemType = "Action", TargetItems = "Cancel_PO", Criteria = "(PurchaseRequestStatus = 'Cancel') or (ApprovalStatus = 'Required_Approval') or IsValid = 1 or IsNew = 1", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
+    [Appearance("HideCancel", AppearanceItemType = "Action", TargetItems = "Cancel_PO", Criteria = "(PurchaseRequestStatus = 'Cancel') or (ApprovalStatus = 'Required_Approval') or IsValid = 0 or IsNew = 1", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [RuleCriteria("POCurrencyRateRule", DefaultContexts.Save, "IsValid2 = 0", "Incorrect currency rate.")]
    // [Appearance("HidePrintPO", AppearanceItemType = "Action", TargetItems = "PrintPO1", Criteria = "(PurchaseRequestStatus = 'Cancel') or  (ApprovalStatus = 'Required_Approval') or (ApprovalStatus = 'Rejected') or (ApprovalStatus <> 'Approved')", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [RuleCriteria("POOutsideRange", DefaultContexts.Save, "IsValid3 = 1", "Posting Period Locked")]
@@ -1075,7 +1075,7 @@ namespace BSI_PR.Module.BusinessObjects
                     {
                         if (InvItem.APInvoice != null)
                         {
-                            if (PRitem.Oid == InvItem.LinkOid)
+                            if (PRitem.Oid == InvItem.LinkOid && InvItem.APInvoice.IsCancel == true)
                             {
                                 return true;
                             }
