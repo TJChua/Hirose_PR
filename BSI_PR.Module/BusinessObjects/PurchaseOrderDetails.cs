@@ -13,6 +13,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+// 20240926 - new enhancement - ver 0.1
+
 namespace BSI_PR.Module.BusinessObjects
 {
     [DefaultClassOptions]
@@ -188,7 +190,10 @@ namespace BSI_PR.Module.BusinessObjects
         private string _ItemDesc;
         [RuleRequiredField(DefaultContexts.Save)]
         [XafDisplayName("Item Description")]
-        [Size(254)]
+        // Start ver 0.1
+        //[Size(254)]
+        [Size(1000)]
+        // End ver 0.1
         [Index(11), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
         //[Appearance("RefNo", Enabled = false, Criteria = "(not IsNew and not IsRequestorChecking) or DocPassed or Accepted")]
         public string ItemDesc

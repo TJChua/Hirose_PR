@@ -26,6 +26,8 @@ using DevExpress.ExpressApp.Web;
 using System.Configuration;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.ExpressApp.Model;
+using System.Data.SqlClient;
+using System.Data;
 
 
 #region update log
@@ -40,6 +42,7 @@ using DevExpress.ExpressApp.Model;
 // TJC - 20230926 - not allow submit if over budget ver 0.10
 // TJC - 20231109 - budget convert with exchange rate ver 0.11
 // TJC - 20240126 - add export excel report ver 0.12
+// TJC - 20240926 - new enhancement - ver 0.13
 
 #endregion
 
@@ -109,6 +112,9 @@ namespace BSI_PR.Module.Controllers
             // Start ver 0.12
             this.PrintDepartmentBudgetExcel.Active.SetItemValue("Enabled", false);
             // End ver 0.12
+            // Start ver 0.13
+            this.DuplicateBudgetAmt.Active.SetItemValue("Enabled", false);
+            // End ver 0.13
 
 
             ListViewController controller = Frame.GetController<ListViewController>();
@@ -495,6 +501,16 @@ namespace BSI_PR.Module.Controllers
                 }
             }
             // End ver 0.7
+
+            // Start ver 0.13
+            if (typeof(BudgetCategoryDetails).IsAssignableFrom(View.ObjectTypeInfo.Type))
+            {
+                if (View.ObjectTypeInfo.Type == typeof(BudgetCategoryDetails))
+                {
+                    this.DuplicateBudgetAmt.Active.SetItemValue("Enabled", true);
+                }
+            }
+            // End ver 0.13
         }
         protected override void OnViewControlsCreated()
         {
@@ -2819,7 +2835,10 @@ namespace BSI_PR.Module.Controllers
                                    //selectedObject.CreateUser.FName.ToString();
                                    "E-PO System";
 
-                            emailsubject = "Purchase Order Japan Approval";
+                            // Start ver 0.13
+                            //emailsubject = "Purchase Order Japan Approval";
+                            emailsubject = "Purchase Order Japan Approval (承　認　申　請　書)";
+                            // End ver 0.13
                             emailaddress = row.Values[1].ToString();
                             emailuser = (Guid)row.Values[0];
 
@@ -3097,7 +3116,10 @@ namespace BSI_PR.Module.Controllers
                                 "Regards," + System.Environment.NewLine +
                                 po.CreateUser.FName;
 
-                            emailsubject = "Purchase Order Japan Approval";
+                            // Start ver 0.13
+                            //emailsubject = "Purchase Order Japan Approval";
+                            emailsubject = "Purchase Order Japan Approval (承　認　申　請　書)";
+                            // End ver 0.13
                             emailaddress = po.Escalate.UserEmail;
                             emailuser = po.Escalate.Oid;
 
@@ -3324,9 +3346,19 @@ namespace BSI_PR.Module.Controllers
                                         "E-PO System";
 
                                     if (appstatus == ApprovalStatuses.Approved)
-                                        emailsubject = "Purchase Order Japan Approval";
+                                    // Start ver 0.13
+                                    {
+                                        //emailsubject = "Purchase Order Japan Approval";
+                                        emailsubject = "Purchase Order Japan Approval (承　認　申　請　書)";
+                                    }
+                                    // End ver 0.13
                                     else if (appstatus == ApprovalStatuses.Rejected)
-                                        emailsubject = "Purchase Order Japan Approval Rejected";
+                                    {
+                                        // Start ver 0.13
+                                        //emailsubject = "Purchase Order Japan Approval Rejected";
+                                        emailsubject = "Purchase Order Japan Approval (承　認　申　請　書)";
+                                        // End ver 0.13
+                                    }
 
                                     emailaddress = row.Values[1].ToString();
                                     emailuser = (Guid)row.Values[0];
@@ -3678,5 +3710,73 @@ namespace BSI_PR.Module.Controllers
 
         }
         // End ver 0.12
+
+        // Staet ver 0.13
+        private void DuplicateBudgetAmt_Execute(object sender, SimpleActionExecuteEventArgs e)
+        {
+            if (e.SelectedObjects.Count > 0)
+            {
+                try
+                {
+                    SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ToString());
+                    string maxyear = null;
+                    BudgetCategoryDetails budgetdetails = (BudgetCategoryDetails)View.CurrentObject;
+                    IObjectSpace os = Application.CreateObjectSpace();
+                    BudgetCategoryDetails trx = os.FindObject<BudgetCategoryDetails>(new BinaryOperator("Oid", budgetdetails.Oid));
+
+                    string command = "SELECT MAX(YEAR) FROM BudgetCategoryAmount WHERE BudgetCategoryDetails = " + budgetdetails.Oid;
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(command, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (maxyear == null)
+                        {
+                            maxyear = reader.GetString(0);
+                        }
+                    }
+                    conn.Close();
+
+                    foreach (BudgetCategoryAmount dtl in trx.BudgetCategoryAmount)
+                    {
+                        if ((dtl.Month != CategoryMonth.January && dtl.Month != CategoryMonth.February && dtl.Month != CategoryMonth.March) && dtl.Year == (Int32.Parse(maxyear) - 1).ToString() ||
+                                (dtl.Month == CategoryMonth.January || dtl.Month == CategoryMonth.February || dtl.Month == CategoryMonth.March) && dtl.Year == maxyear)
+                        {
+                            BudgetCategoryAmount newbudgetamount = ObjectSpace.CreateObject<BudgetCategoryAmount>();
+
+                            newbudgetamount.Month = dtl.Month;
+                            if (dtl.Month != CategoryMonth.January && dtl.Month != CategoryMonth.February && dtl.Month != CategoryMonth.March)
+                            {
+                                newbudgetamount.Year = maxyear;
+                            }
+                            else
+                            {
+                                newbudgetamount.Year = (Int32.Parse(maxyear) + 1).ToString();
+                            }
+                            newbudgetamount.Budget = dtl.Budget;
+                            newbudgetamount.MonthlyBudgetBalance = dtl.Budget;
+
+                            budgetdetails.BudgetCategoryAmount.Add(newbudgetamount);
+                        }
+                    }
+
+                    ObjectSpace.CommitChanges();
+                    genCon.showMsg("Success", "Duplicate Success.", InformationType.Success);
+                }
+                catch (Exception)
+                {
+                    genCon.showMsg("Fail", "Duplicate Fail.", InformationType.Error);
+                }
+            }
+            else
+            {
+                genCon.showMsg("Fail", "No item selected.", InformationType.Error);
+            }
+        }
+        // End ver 0.13
     }
 }

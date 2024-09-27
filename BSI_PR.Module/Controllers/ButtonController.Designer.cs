@@ -70,6 +70,7 @@ namespace BSI_PR.Module.Controllers
             this.DuplicateBudget = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             this.DuplicateBudgetData = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             this.PrintDepartmentBudgetExcel = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
+            this.DuplicateBudgetAmt = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             // 
             // Pass
             // 
@@ -466,6 +467,14 @@ namespace BSI_PR.Module.Controllers
             this.PrintDepartmentBudgetExcel.ToolTip = null;
             this.PrintDepartmentBudgetExcel.Execute += new DevExpress.ExpressApp.Actions.SimpleActionExecuteEventHandler(this.PrintDepartmentBudgetExcel_Execute);
             // 
+            // DuplicateBudgetAmt
+            // 
+            this.DuplicateBudgetAmt.Caption = "Duplicate Yearly Budget";
+            this.DuplicateBudgetAmt.ConfirmationMessage = null;
+            this.DuplicateBudgetAmt.Id = "DuplicateBudgetAmt";
+            this.DuplicateBudgetAmt.ToolTip = null;
+            this.DuplicateBudgetAmt.Execute += new DevExpress.ExpressApp.Actions.SimpleActionExecuteEventHandler(this.DuplicateBudgetAmt_Execute);
+            // 
             // ButtonController
             // 
             this.Actions.Add(this.Pass);
@@ -508,6 +517,7 @@ namespace BSI_PR.Module.Controllers
             this.Actions.Add(this.DuplicateBudget);
             this.Actions.Add(this.DuplicateBudgetData);
             this.Actions.Add(this.PrintDepartmentBudgetExcel);
+            this.Actions.Add(this.DuplicateBudgetAmt);
 
         }
 
@@ -553,5 +563,6 @@ namespace BSI_PR.Module.Controllers
         private DevExpress.ExpressApp.Actions.SimpleAction DuplicateBudget;
         private DevExpress.ExpressApp.Actions.SimpleAction DuplicateBudgetData;
         private DevExpress.ExpressApp.Actions.SimpleAction PrintDepartmentBudgetExcel;
+        private DevExpress.ExpressApp.Actions.SimpleAction DuplicateBudgetAmt;
     }
 }

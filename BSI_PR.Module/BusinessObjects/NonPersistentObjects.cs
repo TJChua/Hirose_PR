@@ -13,6 +13,8 @@ using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.Validation;
 using DevExpress.ExpressApp.ConditionalAppearance;
 
+// 20240926 - new enhancement - ver 0.1
+
 namespace BSI_PR.Module.BusinessObjects
 {
     //[DomainComponent]
@@ -181,6 +183,9 @@ namespace BSI_PR.Module.BusinessObjects
         public ApprovalActions AppStatus { get; set; }
 
         [XafDisplayName("Remarks")]
+        // Start ver 0.1
+        [Size(200)]
+        // End ver 0.1
         [Appearance("ParamString", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide, Criteria = "IsErr")]
         public string ParamString { get; set; }
 

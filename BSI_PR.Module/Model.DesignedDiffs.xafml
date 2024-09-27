@@ -355,6 +355,11 @@
         </LayoutGroup>
       </Layout>
     </DetailView>
+    <DetailView Id="ApprovalParameters_DetailView">
+      <Items>
+        <PropertyEditor Id="ParamString" RowCount="2" />
+      </Items>
+    </DetailView>
     <DetailView Id="Approvals_DetailView">
       <Items>
         <PropertyEditor Id="DocAmount" DisplayFormat="{0:n2}" />
@@ -370,6 +375,21 @@
         <ColumnInfo Id="DocAmount" DisplayFormat="{0:n2}" />
       </Columns>
     </ListView>
+    <DetailView Id="BudgetCategoryDetails_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="14.256619144602851">
+            <LayoutGroup Id="BudgetCategoryDetails" RelativeSize="100">
+              <LayoutItem Id="BudgetCategory" RelativeSize="51.428571428571431" />
+              <LayoutItem Id="IsActive" RelativeSize="48.571428571428569" />
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="BudgetCategoryAmount_Group" Direction="Vertical" RelativeSize="85.743380855397149">
+            <LayoutItem Id="BudgetCategoryAmount" RelativeSize="100" />
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
     <DetailView Id="BudgetCategoryReport_DetailView">
       <Items>
         <PropertyEditor Id="FromDate" Caption="From Date" />
@@ -1143,7 +1163,6 @@
                     <LayoutGroup Id="Autoba92f24e-b753-4bf4-9a09-a549b1fe2d0f" ShowCaption="False" Caption="Autoba92f24e-b753-4bf4-9a09-a549b1fe2d0f(34)" Direction="Horizontal" Index="0" RelativeSize="100" IsNewNode="True" />
                   </LayoutGroup>
                 </LayoutGroup>
-                <LayoutItem Id="ItemDesc" ViewItem="ItemDesc" Index="1" RelativeSize="6.4516129032258061" Removed="True" />
                 <LayoutItem Id="Amount" Index="2" RelativeSize="30.078740157480315" Removed="True" />
                 <LayoutItem Id="DocDate" ViewItem="DocDate" Index="3" RelativeSize="6.4516129032258061" Removed="True" />
                 <LayoutItem Id="DelDate" ViewItem="DelDate" Index="4" RelativeSize="6.4516129032258061" Removed="True" />

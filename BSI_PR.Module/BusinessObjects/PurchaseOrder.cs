@@ -13,6 +13,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+// 20240926 - new enhancement - ver 0.1
+
 namespace BSI_PR.Module.BusinessObjects
 {
     [DefaultClassOptions]
@@ -423,6 +425,9 @@ namespace BSI_PR.Module.BusinessObjects
         private string _QuoNo;
         [Index(30), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
         //[Appearance("RefNo", Enabled = false, Criteria = "(not IsNew and not IsRequestorChecking) or DocPassed or Accepted")]
+        // Start ver 0.1
+        [RuleRequiredField(DefaultContexts.Save)]
+        // End ver 0.1
         [Appearance("Quotation No")]
         public string QuoNo
         {
@@ -440,7 +445,9 @@ namespace BSI_PR.Module.BusinessObjects
         [Size(200)]
         [Index(44), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
         //[Appearance("RefNo", Enabled = false, Criteria = "(not IsNew and not IsRequestorChecking) or DocPassed or Accepted")]
-        //[RuleRequiredField(DefaultContexts.Save)]
+        // Start ver 0.1
+        [RuleRequiredField(DefaultContexts.Save)]
+        // End ver 0.1
         [Appearance("Remarks", Enabled = false, Criteria = "IsPassed")]
         public string Remarks
         {
@@ -798,7 +805,7 @@ namespace BSI_PR.Module.BusinessObjects
         [Index(60), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(false)]
         [XafDisplayName("Budget Balance")]
         [Appearance("BudgetBalance", Enabled = false)]
-        //[Appearance("BudgetBalance1", BackColor = "#FF4433", FontColor = "Black", Criteria = "BudgetBalance < Amount")]
+        [Appearance("BudgetBalance1", BackColor = "#FF4433", FontColor = "Black", Criteria = "IsValid7")]
         [DbType("numeric(19,6)")]
         [ModelDefault("DisplayFormat", "{0:n4}")]
         public double BudgetBalance
@@ -1161,6 +1168,23 @@ namespace BSI_PR.Module.BusinessObjects
 
         [Browsable(false)]
         public bool IsValid6
+        {
+            get
+            {
+                if (BudgetCategoryData != null)
+                {
+                    if (MonthlyBudgetBalance < (double)FinalAmount * CurrRate)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsValid7
         {
             get
             {

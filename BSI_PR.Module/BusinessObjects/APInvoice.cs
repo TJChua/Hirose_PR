@@ -14,6 +14,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+// 20240926 - new enhancement - ver 0.1
+
 namespace BSI_PR.Module.BusinessObjects
 {
     [DefaultClassOptions]
@@ -32,8 +34,10 @@ namespace BSI_PR.Module.BusinessObjects
     //[Appearance("HidePost2", AppearanceItemType = "Action", TargetItems = "Post_Invoice", Criteria = "APInvoiceStatus = 'Posted' or APInvoiceStatus = 'New'", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideEditButton5", AppearanceItemType = "Action", TargetItems = "SwitchToEditMode; Edit", Criteria = "(APInvoiceStatus = 'Cancel') ", Context = "DetailView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [RuleCriteria("InvCurrencyRateRule", DefaultContexts.Save, "IsValid2 = 0", "Incorrect currency rate.")]
-    [RuleCriteria("INVOutsideRange", DefaultContexts.Save, "IsValid3 = 1", "Posting Period Locked")]
-    
+    [RuleCriteria("InvOutsideRange", DefaultContexts.Save, "IsValid3 = 1", "Posting Period Locked")]
+    // Start ver 0.1
+    [RuleCriteria("InvDupInvNo", DefaultContexts.Save, "IsValid4 = 0", "Same vendor Inv. No. found.")]
+    // End ver 0.1
 
 
 
@@ -722,6 +726,27 @@ namespace BSI_PR.Module.BusinessObjects
                 //}
             }
         }
+
+        // Start ver 0.1
+        [Browsable(false)]
+        public bool IsValid4
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(this.DOInvoice))
+                {
+                     APInvoice invoice = Session.FindObject<APInvoice>(CriteriaOperator.Parse("DOInvoice = ?", this.DOInvoice));
+
+                    if (invoice != null)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+        // End ver 0.1
 
         [Association("APInvoice-APInvoiceDetails")]
         [XafDisplayName("AP Invoice Details")]
