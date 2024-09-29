@@ -71,6 +71,7 @@ namespace BSI_PR.Module.Controllers
             this.DuplicateBudgetData = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             this.PrintDepartmentBudgetExcel = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             this.DuplicateBudgetAmt = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
+            this.MultiFileUpload = new DevExpress.ExpressApp.Actions.PopupWindowShowAction(this.components);
             // 
             // Pass
             // 
@@ -475,6 +476,18 @@ namespace BSI_PR.Module.Controllers
             this.DuplicateBudgetAmt.ToolTip = null;
             this.DuplicateBudgetAmt.Execute += new DevExpress.ExpressApp.Actions.SimpleActionExecuteEventHandler(this.DuplicateBudgetAmt_Execute);
             // 
+            // MultiFileUpload
+            // 
+            this.MultiFileUpload.AcceptButtonCaption = null;
+            this.MultiFileUpload.CancelButtonCaption = null;
+            this.MultiFileUpload.Caption = "Upload File";
+            this.MultiFileUpload.Category = "ObjectsCreation";
+            this.MultiFileUpload.ConfirmationMessage = null;
+            this.MultiFileUpload.Id = "MultiFileUpload";
+            this.MultiFileUpload.ToolTip = null;
+            this.MultiFileUpload.CustomizePopupWindowParams += new DevExpress.ExpressApp.Actions.CustomizePopupWindowParamsEventHandler(this.MultiFileUpload_CustomizePopupWindowParams);
+            this.MultiFileUpload.Execute += new DevExpress.ExpressApp.Actions.PopupWindowShowActionExecuteEventHandler(this.MultiFileUpload_Execute);
+            // 
             // ButtonController
             // 
             this.Actions.Add(this.Pass);
@@ -518,6 +531,7 @@ namespace BSI_PR.Module.Controllers
             this.Actions.Add(this.DuplicateBudgetData);
             this.Actions.Add(this.PrintDepartmentBudgetExcel);
             this.Actions.Add(this.DuplicateBudgetAmt);
+            this.Actions.Add(this.MultiFileUpload);
 
         }
 
@@ -564,5 +578,6 @@ namespace BSI_PR.Module.Controllers
         private DevExpress.ExpressApp.Actions.SimpleAction DuplicateBudgetData;
         private DevExpress.ExpressApp.Actions.SimpleAction PrintDepartmentBudgetExcel;
         private DevExpress.ExpressApp.Actions.SimpleAction DuplicateBudgetAmt;
+        private DevExpress.ExpressApp.Actions.PopupWindowShowAction MultiFileUpload;
     }
 }

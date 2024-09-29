@@ -2,9 +2,9 @@
 <Application>
   <Options CollectionsEditMode="Edit" />
   <SchemaModules>
-    <SchemaModule Name="CloneObjectModule" Version="20.2.5.0" IsNewNode="True" />
-    <SchemaModule Name="SystemAspNetModule" Version="20.2.5.0" IsNewNode="True" />
-    <SchemaModule Name="SystemModule" Version="20.2.5.0" IsNewNode="True" />
+    <SchemaModule Name="CloneObjectModule" Version="22.2.3.0" IsNewNode="True" />
+    <SchemaModule Name="SystemAspNetModule" Version="22.2.3.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="22.2.3.0" IsNewNode="True" />
   </SchemaModules>
   <ViewItems>
     <PropertyEditor Name="PropertyEditors">
@@ -56,6 +56,65 @@
         <ColumnInfo Id="Quantity" Width="71" />
       </Columns>
     </ListView>
+    <DetailView Id="PurchaseOrder_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="50.918635170603672">
+            <LayoutGroup Id="PurchaseOrder">
+              <LayoutGroup Id="PurchaseOrder_col1" RelativeSize="65.195460277427486">
+                <LayoutGroup Id="Autoe10caa51-17e8-4767-aa38-6d4628138a10" RelativeSize="48.16247582205029">
+                  <LayoutItem Id="Vendor" RelativeSize="16.470588235294116" />
+                  <LayoutItem Id="Adress" RelativeSize="40" />
+                  <LayoutItem Id="BudgetCategoryData" RelativeSize="13.529411764705882" />
+                  <LayoutItem Id="BudgetBalance" RelativeSize="13.529411764705882" />
+                  <LayoutItem Id="MonthlyBudgetBalance" RelativeSize="16.470588235294116" />
+                </LayoutGroup>
+                <LayoutGroup Id="Auto96f5cbd7-9c2b-4a7d-ab4c-8d4cb8327b66" RelativeSize="51.83752417794971">
+                  <LayoutItem Id="Department" RelativeSize="16.470588235294116" />
+                  <LayoutItem Id="RefNo" RelativeSize="13.529411764705882" />
+                  <LayoutItem Id="PaymentTerms" RelativeSize="13.529411764705882" />
+                  <LayoutItem Id="QuoNo" RelativeSize="13.529411764705882" />
+                  <LayoutItem Id="Requestor" RelativeSize="13.529411764705882" />
+                  <LayoutItem Id="Item1" RelativeSize="29.411764705882351" />
+                </LayoutGroup>
+              </LayoutGroup>
+              <LayoutGroup Id="PurchaseOrder_col2" RelativeSize="34.804539722572507">
+                <LayoutItem Id="DocNum" RelativeSize="16.470588235294116" />
+                <LayoutItem Id="DocDate" RelativeSize="13.529411764705882" />
+                <LayoutItem Id="PurchaseRequestStatus" RelativeSize="13.529411764705882" />
+                <LayoutItem Id="ApprovalStatus" RelativeSize="13.529411764705882" />
+                <LayoutItem Id="Escalate" RelativeSize="42.941176470588232" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" RelativeSize="49.081364829396328">
+            <LayoutGroup Id="PurchaseOrderDetails">
+              <LayoutItem Id="PurchaseOrderDetails" RelativeSize="32.716049382716051" />
+              <LayoutGroup Id="Auto8c3c360c-6de4-463e-987e-fbc2253b48ff" RelativeSize="67.283950617283949">
+                <LayoutGroup Id="Auto091d816a-dc6c-4dc0-9112-26d910a16657" RelativeSize="54.350567465321561" />
+                <LayoutGroup Id="Auto0fcf89e7-0888-4516-bae6-395979dbf412" RelativeSize="45.649432534678439">
+                  <LayoutGroup Id="Autobb8de7da-1bfa-44c0-b2e6-3d68760a42ce">
+                    <LayoutGroup Id="Auto8979afd0-4283-4395-ad80-b460f5aa7e1f" RelativeSize="48.895027624309392">
+                      <LayoutItem Id="Currency" RelativeSize="24.770642201834864" />
+                      <LayoutItem Id="CurrRate" RelativeSize="75.22935779816514" />
+                    </LayoutGroup>
+                    <LayoutGroup Id="Autodef6f5b0-7ce4-490f-b624-daef98a95389" RelativeSize="51.104972375690608">
+                      <LayoutItem Id="Amount" RelativeSize="24.770642201834864" />
+                      <LayoutGroup Id="Autoc220d287-8085-43fe-a933-58bfc5f5be05" RelativeSize="28.440366972477065" />
+                      <LayoutItem Id="TotalTaxAmount" RelativeSize="21.100917431192659" />
+                      <LayoutItem Id="FinalAmount" RelativeSize="25.688073394495412" />
+                    </LayoutGroup>
+                  </LayoutGroup>
+                </LayoutGroup>
+              </LayoutGroup>
+            </LayoutGroup>
+            <LayoutGroup Id="PurchaseOrderAttachments">
+              <LayoutItem Id="PurchaseOrderAttachments" Index="0" RelativeSize="100" />
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
     <DetailView Id="PurchaseOrderDetails_DetailView">
       <Items>
         <PropertyEditor Id="LineAmount" DisplayFormat="{0:n6}" />

@@ -115,6 +115,9 @@
     <Reference Include="DevExpress.Printing.v20.2.Core">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="DevExpress.Drawing.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="DevExpress.Data.v20.2">
       <SpecificVersion>False</SpecificVersion>
     </Reference>

@@ -114,6 +114,7 @@ namespace BSI_PR.Module.Controllers
             // End ver 0.12
             // Start ver 0.13
             this.DuplicateBudgetAmt.Active.SetItemValue("Enabled", false);
+            this.MultiFileUpload.Active.SetItemValue("Enabled", false);
             // End ver 0.13
 
 
@@ -508,6 +509,14 @@ namespace BSI_PR.Module.Controllers
                 if (View.ObjectTypeInfo.Type == typeof(BudgetCategoryDetails))
                 {
                     this.DuplicateBudgetAmt.Active.SetItemValue("Enabled", true);
+                }
+            }
+
+            if (typeof(PurchaseOrderAttachments).IsAssignableFrom(View.ObjectTypeInfo.Type))
+            {
+                if (View.ObjectTypeInfo.Type == typeof(PurchaseOrderAttachments))
+                {
+                    this.MultiFileUpload.Active.SetItemValue("Enabled", true);
                 }
             }
             // End ver 0.13
@@ -3776,6 +3785,25 @@ namespace BSI_PR.Module.Controllers
             {
                 genCon.showMsg("Fail", "No item selected.", InformationType.Error);
             }
+        }
+
+        private void MultiFileUpload_Execute(object sender, PopupWindowShowActionExecuteEventArgs e)
+        {
+
+        }
+
+        private void MultiFileUpload_CustomizePopupWindowParams(object sender, CustomizePopupWindowParamsEventArgs e)
+        {
+            PurchaseOrderJapan selectedObject = (PurchaseOrderJapan)View.CurrentObject;
+            SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
+
+            IObjectSpace os = Application.CreateObjectSpace();
+            DetailView dv = Application.CreateDetailView(os, os.CreateObject<MultiUpload>(), true);
+            dv.ViewEditMode = DevExpress.ExpressApp.Editors.ViewEditMode.Edit;
+
+            ((MultiUpload)dv.CurrentObject).Remainder = "The maximum supported file size: 5.00 MB (5,242,880 bytes).   File Name should not include symbol as !*'();:@&=+$,/?#[]";
+
+            e.View = dv;
         }
         // End ver 0.13
     }

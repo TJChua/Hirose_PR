@@ -9,11 +9,11 @@
 <configuration>
   <configSections>
     <sectionGroup name="devExpress">
-      <section name="compression" requirePermission="false" type="DevExpress.Web.CompressionConfigurationSection, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-      <section name="themes" requirePermission="false" type="DevExpress.Web.ThemesConfigurationSection, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-      <section name="settings" requirePermission="false" type="DevExpress.Web.SettingsConfigurationSection, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-      <section name="resources" requirePermission="false" type="DevExpress.Web.ResourcesConfigurationSection, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-      <section name="errors" type="DevExpress.Web.ErrorsConfigurationSection, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
+      <section name="compression" requirePermission="false" type="DevExpress.Web.CompressionConfigurationSection, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <section name="themes" requirePermission="false" type="DevExpress.Web.ThemesConfigurationSection, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <section name="settings" requirePermission="false" type="DevExpress.Web.SettingsConfigurationSection, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <section name="resources" requirePermission="false" type="DevExpress.Web.ResourcesConfigurationSection, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <section name="errors" type="DevExpress.Web.ErrorsConfigurationSection, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
     </sectionGroup>
   </configSections>
   <devExpress>
@@ -30,6 +30,7 @@
     <add key="Modules" value="" />
     <add key="ErrorReportEmail" value="" />
     <add key="ErrorReportEmailServer" value="" />
+	<add key="EnableAuditTrail" value="False" />
     <!--
     <add key="ErrorReportEmailSubject" value="{0:ExceptionMessage}"/>
     <add key="ErrorReportEmailFrom" value="null@nospam.com"/>
@@ -86,7 +87,7 @@
     <add key="DefDept" value="NA" />
     <add key="ReportPath" value="D:\\\\Attachment\\Portal\\" />
     <add key="ReportDB" value="HRS_PR" />
-    <add key="AttachmentFile" value="D:\\Projects\\HIROSE\\BSI_PR\\BSI_PR.Web\\Attachments\\" />
+    <add key="AttachmentFile" value="D:\\Desktop\\Projects\\Hirose\\BSI_PR\\BSI_PR.Web\\Attachments\\" />
 	
   </appSettings>
   <connectionStrings>
@@ -104,23 +105,23 @@
     <switches>
       <!-- Use the one of predefined values: 0-Off, 1-Errors, 2-Warnings, 3-Info, 4-Verbose. The default value is 3. -->
       <add name="eXpressAppFramework" value="3" />
-      <!--
+
       <add name="XPO" value="3" />
-    -->
+
     </switches>
   </system.diagnostics>
   <system.webServer>
     <handlers>
-      <add name="ASPxUploadProgressHandler" verb="GET,POST" path="ASPxUploadProgressHandlerPage.ashx" type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
-      <add name="XafHttpHandler" path="DXX.axd" verb="*" type="DevExpress.ExpressApp.Web.XafHttpHandler, DevExpress.ExpressApp.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
-      <add name="ASPxHttpHandlerModuleXAF" path="DXXRD.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
-      <add name="ASPxWebDocumentViewerHandlerModule" path="DXXRDV.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
-      <add name="ASPxQueryBuilderDesignerHandlerModule" path="DXQB.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
+      <add name="ASPxUploadProgressHandler" verb="GET,POST" path="ASPxUploadProgressHandlerPage.ashx" type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
+      <add name="XafHttpHandler" path="DXX.axd" verb="*" type="DevExpress.ExpressApp.Web.XafHttpHandler, DevExpress.ExpressApp.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
+      <add name="ASPxHttpHandlerModuleXAF" path="DXXRD.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
+      <add name="ASPxWebDocumentViewerHandlerModule" path="DXXRDV.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
+      <add name="ASPxQueryBuilderDesignerHandlerModule" path="DXQB.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" preCondition="integratedMode" />
     </handlers>
     <validation validateIntegratedModeConfiguration="false" />
     <modules>
-      <add name="ASPxHttpHandlerModule" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-      <add name="XafHttpModule" type="DevExpress.ExpressApp.Web.XafHttpModule, DevExpress.ExpressApp.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <add name="ASPxHttpHandlerModule" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <add name="XafHttpModule" type="DevExpress.ExpressApp.Web.XafHttpModule, DevExpress.ExpressApp.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     </modules>
   </system.webServer>
   <system.web>
@@ -130,15 +131,15 @@
 	
     <pages controlRenderingCompatibilityVersion="3.5" clientIDMode="AutoID" validateRequest="false" />
     <httpHandlers>
-      <add path="DXX.axd" verb="*" type="DevExpress.ExpressApp.Web.XafHttpHandler, DevExpress.ExpressApp.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-      <add verb="GET,POST" path="ASPxUploadProgressHandlerPage.ashx" validate="false" type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-      <add path="DXXRD.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" validate="false" />
-      <add path="DXXRDV.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" validate="false" />
-      <add path="DXQB.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" validate="false" />
+      <add path="DXX.axd" verb="*" type="DevExpress.ExpressApp.Web.XafHttpHandler, DevExpress.ExpressApp.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <add verb="GET,POST" path="ASPxUploadProgressHandlerPage.ashx" validate="false" type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <add path="DXXRD.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" validate="false" />
+      <add path="DXXRDV.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" validate="false" />
+      <add path="DXQB.axd" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" validate="false" />
     </httpHandlers>
     <httpModules>
-      <add name="ASPxHttpHandlerModule" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-      <add name="XafHttpModule" type="DevExpress.ExpressApp.Web.XafHttpModule, DevExpress.ExpressApp.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <add name="ASPxHttpHandlerModule" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+      <add name="XafHttpModule" type="DevExpress.ExpressApp.Web.XafHttpModule, DevExpress.ExpressApp.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     </httpModules>
     <!--
     Set compilation debug="true" to insert debugging
@@ -148,41 +149,42 @@
     -->
     <compilation debug="true" targetFramework="4.6.1">
       <assemblies>
-        <add assembly="DevExpress.ExpressApp.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Persistent.Base.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Images.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Printing.v21.2.Core, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Data.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Utils.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.RichEdit.v21.2.Core, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Web.ASPxTreeList.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Web.ASPxGantt.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Web.ASPxThemes.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Xpo.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.Xpo.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.AuditTrail.Xpo.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.Objects.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.Chart.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.Chart.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.CloneObject.Xpo.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.ConditionalAppearance.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.Dashboards.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.Dashboards.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.FileAttachment.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.HtmlPropertyEditor.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.PivotChart.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.PivotChart.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.PivotGrid.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.PivotGrid.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.ReportsV2.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.ReportsV2.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.TreeListEditors.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.TreeListEditors.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.Validation.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.Validation.Web.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.ExpressApp.ViewVariantsModule.v21.2, Version=21.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Persistent.Base.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Images.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Printing.v22.2.Core, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Data.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Drawing.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Utils.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.RichEdit.v22.2.Core, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Web.ASPxTreeList.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Web.ASPxGantt.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Web.ASPxThemes.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Xpo.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.Xpo.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.AuditTrail.Xpo.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.Objects.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.Chart.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.Chart.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.CloneObject.Xpo.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.ConditionalAppearance.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.Dashboards.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.Dashboards.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.FileAttachment.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.HtmlPropertyEditor.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.PivotChart.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.PivotChart.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.PivotGrid.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.PivotGrid.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.ReportsV2.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.ReportsV2.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.TreeListEditors.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.TreeListEditors.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.Validation.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.Validation.Web.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.ExpressApp.ViewVariantsModule.v22.2, Version=22.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
       </assemblies>
     </compilation>
     <!--
