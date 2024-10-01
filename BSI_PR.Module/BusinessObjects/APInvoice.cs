@@ -380,6 +380,22 @@ namespace BSI_PR.Module.BusinessObjects
             }
         }
 
+        // Start ver 0.1
+        private string _PONum;
+        [XafDisplayName("PO No.")]
+        [Size(9999)]
+        [Appearance("PONum", Enabled = false)]
+        [Index(16), VisibleInListView(true), VisibleInDetailView(false), VisibleInLookupListView(false)]
+        public string PONum
+        {
+            get { return _PONum; }
+            set
+            {
+                SetPropertyValue("PONum", ref _PONum, value);
+            }
+        }
+        // Start ver 0.1
+
         private string _DOInvoice;
         [Index(18), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(false)]
         [XafDisplayName("Invoice No")]
@@ -402,6 +418,7 @@ namespace BSI_PR.Module.BusinessObjects
             get { return _DeliveryNo; }
             set { SetPropertyValue("DeliveryNo", ref _DeliveryNo, value); }
         }
+
 
         private double _CurrRate;
         [Index(20), VisibleInListView(false), VisibleInDetailView(true), VisibleInLookupListView(false)]

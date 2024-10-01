@@ -246,10 +246,20 @@ namespace BSI_PR.Module.BusinessObjects
             }
         }
 
+        private string _LinkOid;
+        [Index(87), VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
+        public string LinkOid
+        {
+            get { return _LinkOid; }
+            set
+            {
+                SetPropertyValue("LinkOid", ref _LinkOid, value);
+            }
+        }
+
         [NonPersistent]
         [Appearance("Remainder", Enabled = false, FontColor = "Red")]
         public string Remainder { get; set; }
     }
-
     // End ver 0.1
 }

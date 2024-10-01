@@ -511,14 +511,6 @@ namespace BSI_PR.Module.Controllers
                     this.DuplicateBudgetAmt.Active.SetItemValue("Enabled", true);
                 }
             }
-
-            if (typeof(PurchaseOrderAttachments).IsAssignableFrom(View.ObjectTypeInfo.Type))
-            {
-                if (View.ObjectTypeInfo.Type == typeof(PurchaseOrderAttachments))
-                {
-                    this.MultiFileUpload.Active.SetItemValue("Enabled", true);
-                }
-            }
             // End ver 0.13
         }
         protected override void OnViewControlsCreated()
@@ -636,6 +628,74 @@ namespace BSI_PR.Module.Controllers
                 }
             }
             // End ver 0.7
+
+            // Start ver 0.13
+            if (typeof(PurchaseOrder).IsAssignableFrom(View.ObjectTypeInfo.Type))
+            {
+                if (View.ObjectTypeInfo.Type == typeof(PurchaseOrder))
+                {
+                    if (View.Id == "PurchaseOrder_DetailView")
+                    {
+                        if (((DetailView)View).ViewEditMode == DevExpress.ExpressApp.Editors.ViewEditMode.Edit)
+                        {
+                            this.MultiFileUpload.Active.SetItemValue("Enabled", true);
+                        }
+                        else
+                        {
+                            this.MultiFileUpload.Active.SetItemValue("Enabled", false);
+                        }
+                    }
+                    else
+                    {
+                        this.MultiFileUpload.Active.SetItemValue("Enabled", false);
+                    }
+                }
+            }
+
+            if (typeof(PurchaseOrderJapan).IsAssignableFrom(View.ObjectTypeInfo.Type))
+            {
+                if (View.ObjectTypeInfo.Type == typeof(PurchaseOrderJapan))
+                {
+                    if (View.Id == "PurchaseOrderJapan_DetailView")
+                    {
+                        if (((DetailView)View).ViewEditMode == DevExpress.ExpressApp.Editors.ViewEditMode.Edit)
+                        {
+                            this.MultiFileUpload.Active.SetItemValue("Enabled", true);
+                        }
+                        else
+                        {
+                            this.MultiFileUpload.Active.SetItemValue("Enabled", false);
+                        }
+                    }
+                    else
+                    {
+                        this.MultiFileUpload.Active.SetItemValue("Enabled", false);
+                    }
+                }
+            }
+
+            if (typeof(APInvoice).IsAssignableFrom(View.ObjectTypeInfo.Type))
+            {
+                if (View.ObjectTypeInfo.Type == typeof(APInvoice))
+                {
+                    if (View.Id == "APInvoice_DetailView")
+                    {
+                        if (((DetailView)View).ViewEditMode == DevExpress.ExpressApp.Editors.ViewEditMode.Edit)
+                        {
+                            this.MultiFileUpload.Active.SetItemValue("Enabled", true);
+                        }
+                        else
+                        {
+                            this.MultiFileUpload.Active.SetItemValue("Enabled", false);
+                        }
+                    }
+                    else
+                    {
+                        this.MultiFileUpload.Active.SetItemValue("Enabled", false);
+                    }
+                }
+            }
+            // End ver 0.13
         }
         protected override void OnDeactivated()
         {
@@ -1433,6 +1493,9 @@ namespace BSI_PR.Module.Controllers
 
 
                     decimal Discount = 0;
+                    // Start ver 0.13
+                    string PONo = null;
+                    // End ver 0.13
 
                     foreach (vw_POInv dtl in e.PopupWindowViewSelectedObjects)
                     {
@@ -3789,12 +3852,63 @@ namespace BSI_PR.Module.Controllers
 
         private void MultiFileUpload_Execute(object sender, PopupWindowShowActionExecuteEventArgs e)
         {
+            if (View.ObjectTypeInfo.Type == typeof(PurchaseOrder))
+            {
+                foreach (PurchaseOrder hdr in e.SelectedObjects)
+                {
+                    MultiUpload upload = (MultiUpload)e.PopupWindow.View.CurrentObject;
+                    IList<AttachmentStaging> attachment = ObjectSpace.GetObjects<AttachmentStaging>(CriteriaOperator.Parse("LinkOid = ?", upload.LinkOid));
 
+                    foreach(AttachmentStaging dtl in attachment)
+                    {
+                        PurchaseOrderAttachments fileData = ObjectSpace.CreateObject<PurchaseOrderAttachments>();
+                        fileData.Remarks = dtl.Remarks;
+                        fileData.File = ObjectSpace.FindObject<FileData>(CriteriaOperator.Parse("Oid = ?", Guid.Parse(dtl.FileOid)));
+
+                        hdr.PurchaseOrderAttachments.Add(fileData);
+                    }
+                }
+            }
+
+            if (View.ObjectTypeInfo.Type == typeof(PurchaseOrderJapan))
+            {
+                foreach (PurchaseOrderJapan hdr in e.SelectedObjects)
+                {
+                    MultiUpload upload = (MultiUpload)e.PopupWindow.View.CurrentObject;
+                    IList<AttachmentStaging> attachment = ObjectSpace.GetObjects<AttachmentStaging>(CriteriaOperator.Parse("LinkOid = ?", upload.LinkOid));
+
+                    foreach (AttachmentStaging dtl in attachment)
+                    {
+                        PurchaseOrderJapanAttachments fileData = ObjectSpace.CreateObject<PurchaseOrderJapanAttachments>();
+                        fileData.Remarks = dtl.Remarks;
+                        fileData.File = ObjectSpace.FindObject<FileData>(CriteriaOperator.Parse("Oid = ?", Guid.Parse(dtl.FileOid)));
+
+                        hdr.PurchaseOrderJapanAttachments.Add(fileData);
+                    }
+                }
+            }
+
+            if (View.ObjectTypeInfo.Type == typeof(APInvoice))
+            {
+                foreach (APInvoice hdr in e.SelectedObjects)
+                {
+                    MultiUpload upload = (MultiUpload)e.PopupWindow.View.CurrentObject;
+                    IList<AttachmentStaging> attachment = ObjectSpace.GetObjects<AttachmentStaging>(CriteriaOperator.Parse("LinkOid = ?", upload.LinkOid));
+
+                    foreach (AttachmentStaging dtl in attachment)
+                    {
+                        APInvoiceAttachment fileData = ObjectSpace.CreateObject<APInvoiceAttachment>();
+                        fileData.Remarks = dtl.Remarks;
+                        fileData.File = ObjectSpace.FindObject<FileData>(CriteriaOperator.Parse("Oid = ?", Guid.Parse(dtl.FileOid)));
+
+                        hdr.APInvoiceAttachment.Add(fileData);
+                    }
+                }
+            }
         }
 
         private void MultiFileUpload_CustomizePopupWindowParams(object sender, CustomizePopupWindowParamsEventArgs e)
         {
-            PurchaseOrderJapan selectedObject = (PurchaseOrderJapan)View.CurrentObject;
             SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
 
             IObjectSpace os = Application.CreateObjectSpace();
@@ -3802,6 +3916,8 @@ namespace BSI_PR.Module.Controllers
             dv.ViewEditMode = DevExpress.ExpressApp.Editors.ViewEditMode.Edit;
 
             ((MultiUpload)dv.CurrentObject).Remainder = "The maximum supported file size: 5.00 MB (5,242,880 bytes).   File Name should not include symbol as !*'();:@&=+$,/?#[]";
+            ((MultiUpload)dv.CurrentObject).LinkOid = Guid.NewGuid().ToString();
+            e.DialogController.CancelAction.Active["NothingToCancel"] = false;
 
             e.View = dv;
         }

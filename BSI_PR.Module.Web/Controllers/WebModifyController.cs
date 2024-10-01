@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -413,6 +415,37 @@ namespace BSI_PR.Module.Web.Controllers
                 //    base.Save(args);
                 //}
 
+                IObjectSpace trxos = Application.CreateObjectSpace();
+                APInvoice trx = trxos.FindObject<APInvoice>(new BinaryOperator("Oid", newinv.Oid));
+
+                if (trx != null)
+                {
+                    trx.PONum = null;
+                    SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ToString());
+                    string getporef = "SELECT DocNum FROM APInvoiceDetails WHERE APInvoice = '" + trx.Oid + "' GROUP BY DocNum";
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(getporef, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (trx.PONum != null)
+                        {
+                            trx.PONum = trx.PONum + ", " + reader.GetString(0);
+                        }
+                        else
+                        {
+                            trx.PONum = reader.GetString(0);
+                        }
+                    }
+                    cmd.Dispose();
+                    conn.Close();
+                }
+
+                trxos.CommitChanges();
 
                 ((DetailView)View).ViewEditMode = ViewEditMode.View;
                 View.BreakLinksToControls();

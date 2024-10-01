@@ -1,8 +1,10 @@
 ﻿using BSI_PR.Module.BusinessObjects;
+using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Layout;
 using DevExpress.ExpressApp.Web;
 using DevExpress.ExpressApp.Web.Templates;
+using DevExpress.Persistent.BaseImpl;
 using DevExpress.Web;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,8 @@ namespace BSI_PR.Module.Controllers
 {
     public class FileAttachmentsController : ObjectViewController <DetailView, MultiUpload>
     {
+        GenControllers genCon;
+
         public FileAttachmentsController()
         {
             TargetViewId = "MultiUpload_DetailView";
@@ -25,6 +29,8 @@ namespace BSI_PR.Module.Controllers
         protected override void OnViewControlsCreated()
         {
             base.OnViewControlsCreated();
+            genCon = Frame.GetController<GenControllers>();
+
             ControlViewItem fileAttachmentsControl = (ControlViewItem)View.FindItem("FileAttachmentsControl");
             if (fileAttachmentsControl.Control != null)
             {
@@ -44,15 +50,42 @@ namespace BSI_PR.Module.Controllers
         private void UploadControl_FilesUploadComplete(object sender, FilesUploadCompleteEventArgs e)
         {
             ASPxUploadControl uploadControl = (ASPxUploadControl)sender;
+
             foreach (UploadedFile uploadedFile in uploadControl.UploadedFiles)
             {
-                //PortfolioFileData fileData = ObjectSpace.CreateObject<PortfolioFileData>();
-                //fileData.Resume = ViewCurrentObject;
-                //fileData.DocumentType = DocumentType.Unknown;
-                //fileData.File = ObjectSpace.CreateObject<FileData>();
-                //fileData.File.LoadFromStream(uploadedFile.FileName, uploadedFile.FileContent);
+                if (uploadedFile.FileName == "" || uploadedFile.FileName.Contains('!') || uploadedFile.FileName.Contains('*') ||
+                    uploadedFile.FileName.Contains('(') || uploadedFile.FileName.Contains(')') || uploadedFile.FileName.Contains(';') ||
+                    uploadedFile.FileName.Contains(':') || uploadedFile.FileName.Contains('@') || uploadedFile.FileName.Contains('&') ||
+                    uploadedFile.FileName.Contains('=') || uploadedFile.FileName.Contains('+') || uploadedFile.FileName.Contains('$') ||
+                    uploadedFile.FileName.Contains(',') || uploadedFile.FileName.Contains('/') || uploadedFile.FileName.Contains('?') ||
+                    uploadedFile.FileName.Contains('#') || uploadedFile.FileName.Contains('[') || uploadedFile.FileName.Contains(']'))
+                {
+                    genCon.showMsg("Fail", "Invalid file name. File Name should not include symbol as !*'();:@&=+$,/?#[], please reupload again.", InformationType.Error);
+                    return;
+                }
             }
-            ObjectSpace.CommitChanges();
+
+            try
+            {
+                IObjectSpace os = Application.CreateObjectSpace();
+
+                foreach (UploadedFile uploadedFile in uploadControl.UploadedFiles)
+                {
+                    AttachmentStaging fileData = os.CreateObject<AttachmentStaging>();
+                    fileData.Remarks = ViewCurrentObject.Remarks;
+                    fileData.File = os.CreateObject<FileData>();
+                    fileData.File.LoadFromStream(uploadedFile.FileName, uploadedFile.FileContent);
+                    fileData.LinkOid = ViewCurrentObject.LinkOid;
+                    fileData.FileOid = fileData.File.Oid.ToString();
+                }
+                os.CommitChanges();
+
+                genCon.showMsg("Success", "Upload Success.", InformationType.Success);
+            }
+            catch(Exception ex)
+            {
+                genCon.showMsg("Fail", ex.Message, InformationType.Error);
+            }
         }
     }
 }

@@ -481,7 +481,7 @@ namespace BSI_PR.Module.Controllers
             this.MultiFileUpload.AcceptButtonCaption = null;
             this.MultiFileUpload.CancelButtonCaption = null;
             this.MultiFileUpload.Caption = "Upload File";
-            this.MultiFileUpload.Category = "ObjectsCreation";
+            this.MultiFileUpload.Category = "ListView";
             this.MultiFileUpload.ConfirmationMessage = null;
             this.MultiFileUpload.Id = "MultiFileUpload";
             this.MultiFileUpload.ToolTip = null;
