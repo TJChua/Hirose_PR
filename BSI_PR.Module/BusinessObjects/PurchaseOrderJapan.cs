@@ -13,6 +13,8 @@ using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.Validation;
 using DevExpress.ExpressApp.ConditionalAppearance;
 
+// 20240926 - new enhancement - ver 0.1
+
 namespace BSI_PR.Module.BusinessObjects
 {
     [DefaultClassOptions]
@@ -27,7 +29,9 @@ namespace BSI_PR.Module.BusinessObjects
     [Appearance("HideApproval", AppearanceItemType = "Action", TargetItems = "Approval_POJapan", Criteria = "((PurchaseRequestStatus != 'Accepted') or (ApprovalStatus != 'Required_Approval' ))", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideApproval1", AppearanceItemType = "Action", TargetItems = "Approval_POJapan", Context = "PurchaseOrderJapan_ListView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideApproval2", AppearanceItemType = "Action", TargetItems = "Approval_POJapan", Context = "PurchaseOrderJapan_ListView_Approved", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
-    [Appearance("HideApproval3", AppearanceItemType = "Action", TargetItems = "Approval_POJapan", Context = "DetailView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
+    // Start ver 0.1
+    [Appearance("HideApproval3", AppearanceItemType = "Action", TargetItems = "Approval_POJapan", Context = "PurchaseOrderJapan_DetailView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
+    // End ver 0.1
     [Appearance("HideEditButton", AppearanceItemType = "Action", TargetItems = "Edit", Criteria = "1=1", Context = "ListView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideEditButton2", AppearanceItemType = "Action", TargetItems = "SwitchToEditMode; Edit", Criteria = "(PurchaseRequestStatus = 'Cancelled') or (PurchaseRequestStatus = 'Posted') or (PurchaseRequestStatus = 'Closed') or ((PurchaseRequestStatus == 'Accepted') and (ApprovalStatus != 'Required_Approval'))", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideEditButton3", AppearanceItemType = "Action", TargetItems = "SwitchToEditMode; Edit", Criteria = "not IsPRUserCheck", Context = "DetailView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
@@ -652,65 +656,100 @@ namespace BSI_PR.Module.BusinessObjects
             }
         }
 
-        //private BudgetCategoryData _BudgetCategoryData;
-        //[ImmediatePostData]
+        // Start ver 0.1
+        private vw_BudgetData _BudgetCategoryData;
+        [ImmediatePostData]
+        [NoForeignKey]
         //[RuleRequiredField(DefaultContexts.Save)]
-        //[Index(58), VisibleInListView(false), VisibleInDetailView(true), VisibleInLookupListView(false)]
-        //[Appearance("BudgetCategoryData", Enabled = false, Criteria = "IsPassed")]
-        //[XafDisplayName("Expenses Budget Category")]
-        //public BudgetCategoryData BudgetCategoryData
-        //{
-        //    get { return _BudgetCategoryData; }
-        //    set
-        //    {
-        //        SetPropertyValue("BudgetCategoryData", ref _BudgetCategoryData, value);
-        //        if (!IsLoading && value != null)
-        //        {
-        //            BudgetBalance = 0;
-        //            MonthlyBudgetBalance = 0;
-        //            if (Department != null)
-        //            {
-        //                BudgetCategory budget;
-        //                budget = Session.FindObject<BudgetCategory>
-        //                    (CriteriaOperator.Parse("Department.Oid = ? and IsActive = ?", this.Department.Oid, "True"));
+        [Index(58), VisibleInListView(false), VisibleInDetailView(true), VisibleInLookupListView(false)]
+        [Appearance("BudgetCategoryData", Enabled = false, Criteria = "IsPassed")]
+        [DataSourceCriteria("Department = '@this.Department.BoName' and IsActive = '1'")]
+        [XafDisplayName("Expenses Budget Category")]
+        public vw_BudgetData BudgetCategoryData
+        {
+            get { return _BudgetCategoryData; }
+            set
+            {
+                SetPropertyValue("BudgetCategoryData", ref _BudgetCategoryData, value);
+                if (!IsLoading && value != null)
+                {
+                    BudgetBal = 0;
+                    if (Department != null)
+                    {
+                        BudgetCategory budget;
+                        budget = Session.FindObject<BudgetCategory>
+                            (CriteriaOperator.Parse("Department.Oid = ? and IsActive = ?", this.Department.Oid, "True"));
 
-        //                if (budget != null)
-        //                {
-        //                    foreach (BudgetCategoryDetails dtl in budget.BudgetCategoryDetails)
-        //                    {
-        //                        if (dtl.BudgetCategory.BudgetCategoryName == this.BudgetCategoryData.BudgetCategoryName)
-        //                        {
-        //                            decimal remainbudget = 0;
-        //                            decimal currmonth = 0;
-        //                            decimal yearbalance = 0;
-        //                            foreach (BudgetCategoryAmount dtl2 in dtl.BudgetCategoryAmount)
-        //                            {
-        //                                if (((int)dtl2.Month) + 1 < this.DocDate.Month && dtl2.Year == this.DocDate.Year.ToString())
-        //                                {
-        //                                    remainbudget += dtl2.MonthlyBudgetBalance;
-        //                                }
+                        if (budget != null)
+                        {
+                            foreach (BudgetCategoryDetails dtl in budget.BudgetCategoryDetails)
+                            {
+                                if (dtl.BudgetCategory.BudgetCategoryName == this.BudgetCategoryData.BudgetCategoryName)
+                                {
+                                    decimal remainbudget = 0;
+                                    decimal currmonth = 0;
+                                    decimal yearbalance = 0;
+                                    foreach (BudgetCategoryAmount dtl2 in dtl.BudgetCategoryAmount)
+                                    {
+                                        //Start From April
+                                        if ((((int)dtl2.Month) + 1 < this.DocDate.Month && dtl2.Year == this.DocDate.Year.ToString() &&
+                                            dtl2.Month != CategoryMonth.January && dtl2.Month != CategoryMonth.February && dtl2.Month != CategoryMonth.March))
+                                        {
+                                            remainbudget += dtl2.MonthlyBudgetBalance;
+                                        }
 
-        //                                if (((int)dtl2.Month) == this.DocDate.Month - 1 && dtl2.Year == this.DocDate.Year.ToString())
-        //                                {
-        //                                    currmonth = dtl2.MonthlyBudgetBalance;
-        //                                }
+                                        if ((dtl2.Year == this.DocDate.Year.ToString() &&
+                                            (dtl2.Month != CategoryMonth.January && dtl2.Month != CategoryMonth.February && dtl2.Month != CategoryMonth.March)) ||
+                                            (dtl2.Year == this.DocDate.AddYears(1).Year.ToString() &&
+                                            (dtl2.Month == CategoryMonth.January || dtl2.Month == CategoryMonth.February || dtl2.Month == CategoryMonth.March)))
+                                        {
+                                            yearbalance = yearbalance + dtl2.MonthlyBudgetBalance;
+                                        }
 
-        //                                if (dtl2.Year == this.DocDate.Year.ToString())
-        //                                {
-        //                                    yearbalance = yearbalance + dtl2.MonthlyBudgetBalance;
-        //                                }
-        //                            }
+                                        // Before April
+                                        if (this.DocDate.Month < 4)
+                                        {
+                                            if (dtl2.Year == this.DocDate.AddYears(-1).Year.ToString() &&
+                                            (dtl2.Month != CategoryMonth.January && dtl2.Month != CategoryMonth.February && dtl2.Month != CategoryMonth.March))
+                                            {
+                                                remainbudget += dtl2.MonthlyBudgetBalance;
+                                            }
 
-        //                            BudgetBalance = (double)yearbalance;
-        //                            MonthlyBudgetBalance = (double)currmonth + (double)remainbudget;
-        //                            break;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+                                            if (dtl2.Year == this.DocDate.Year.ToString() && ((int)dtl2.Month) + 1 < this.DocDate.Month)
+                                            {
+                                                remainbudget += dtl2.MonthlyBudgetBalance;
+                                            }
+
+                                            if ((dtl2.Year == this.DocDate.Year.ToString() &&
+                                                (dtl2.Month == CategoryMonth.January || dtl2.Month == CategoryMonth.February || dtl2.Month == CategoryMonth.March)) ||
+                                                (dtl2.Year == this.DocDate.AddYears(-1).Year.ToString() &&
+                                                (dtl2.Month != CategoryMonth.January && dtl2.Month != CategoryMonth.February && dtl2.Month != CategoryMonth.March)))
+                                            {
+                                                yearbalance = yearbalance + dtl2.MonthlyBudgetBalance;
+                                            }
+                                        }
+
+                                        // Current month
+                                        if (((int)dtl2.Month) == this.DocDate.Month - 1 && dtl2.Year == this.DocDate.Year.ToString())
+                                        {
+                                            currmonth = dtl2.MonthlyBudgetBalance;
+                                        }
+                                    }
+
+                                    BudgetBal = yearbalance;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (!IsLoading && value != null)
+                {
+                    BudgetBal = 0;
+                }
+            }
+        }
+        // End ver 0.1
 
         //private double _BudgetBalance;
         //[Index(60), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(false)]
@@ -975,24 +1014,49 @@ namespace BSI_PR.Module.BusinessObjects
         [Index(41), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
         [DbType("numeric(18,6)")]
         [ModelDefault("DisplayFormat", "{0:n2}")]
+        // Start ver 0.1
+        [Appearance("ExecutionAmount", Enabled = false)]
+        // End ver 0.1
         public decimal ExecutionAmount
         {
-            get { return _ExecutionAmount; }
+            get
+            {
+                // Start ver 0.1
+                if (Session.IsObjectsSaving != true)
+                {
+                    decimal rtn = 0;
+                    decimal rate = 1;
+                    if (PurchaseOrderJapanDetails != null)
+                        rtn += PurchaseOrderJapanDetails.Sum(p => p.LineTotal);
+
+                    if (CurrRate > 1)
+                    {
+                        rate = (decimal)CurrRate;
+                    }
+
+                    BudgetBalInHand = BudgetBal - (rtn * rate);
+
+                    return rtn * rate;
+                }
+                else
+                {
+                    return _ExecutionAmount;
+                }
+                // End ver 0.1
+            }
             set
             {
                 SetPropertyValue("ExecutionAmount", ref _ExecutionAmount, value);
-                if (!IsLoading)
-                {
-                    BudgetBalInHand = BudgetBal - ExecutionAmount;
-                }
             }
         }
 
         private decimal _BudgetBalInHand;
         [Index(41), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
-
         [DbType("numeric(18,6)")]
         [ModelDefault("DisplayFormat", "{0:n2}")]
+        // Start ver 0.1
+        [Appearance("BudgetBalInHand", Enabled = false)]
+        // End ver 0.1
         public decimal BudgetBalInHand
         {
             get { return _BudgetBalInHand; }

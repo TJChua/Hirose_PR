@@ -29,7 +29,9 @@ namespace BSI_PR.Module.BusinessObjects
     [Appearance("HideApproval", AppearanceItemType = "Action", TargetItems = "Approval_PO", Criteria = "((PurchaseRequestStatus != 'Accepted') or (ApprovalStatus != 'Required_Approval' ))", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideApproval1", AppearanceItemType = "Action", TargetItems = "Approval_PO", Context = "PurchaseOrder_ListView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideApproval2", AppearanceItemType = "Action", TargetItems = "Approval_PO", Context = "PurchaseOrder_ListView_Approved", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
-    [Appearance("HideApproval3", AppearanceItemType = "Action", TargetItems = "Approval_PO", Context = "DetailView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
+    // Start ver 0.1
+    [Appearance("HideApproval3", AppearanceItemType = "Action", TargetItems = "Approval_PO", Context = "PurchaseOrder_DetailView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
+    // End ver 0.1
     [Appearance("HideEditButton", AppearanceItemType = "Action", TargetItems = "Edit", Criteria = "1=1", Context = "ListView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideEditButton2", AppearanceItemType = "Action", TargetItems = "SwitchToEditMode; Edit", Criteria = "(PurchaseRequestStatus = 'Cancelled') or (PurchaseRequestStatus = 'Posted') or (PurchaseRequestStatus = 'Closed') or ((PurchaseRequestStatus == 'Accepted') and (ApprovalStatus != 'Required_Approval'))", Context = "Any", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]
     [Appearance("HideEditButton3", AppearanceItemType = "Action", TargetItems = "SwitchToEditMode; Edit", Criteria = "not IsPRUserCheck", Context = "DetailView", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide)]

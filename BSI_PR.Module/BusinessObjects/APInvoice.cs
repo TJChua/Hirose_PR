@@ -752,7 +752,7 @@ namespace BSI_PR.Module.BusinessObjects
             {
                 if (!string.IsNullOrEmpty(this.DOInvoice))
                 {
-                     APInvoice invoice = Session.FindObject<APInvoice>(CriteriaOperator.Parse("DOInvoice = ?", this.DOInvoice));
+                     APInvoice invoice = Session.FindObject<APInvoice>(CriteriaOperator.Parse("DOInvoice = ? and DocNum != ?", this.DOInvoice, this.DocNum));
 
                     if (invoice != null)
                     {

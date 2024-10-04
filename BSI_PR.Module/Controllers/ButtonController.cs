@@ -1670,6 +1670,39 @@ namespace BSI_PR.Module.Controllers
                 if (string.IsNullOrEmpty(user.CurrDept))
                     user.CurrDept = user.DefaultDept == null ? "" : user.DefaultDept.BoCode;
 
+                // Start ver 0.13
+                SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ToString());
+                string command = "SELECT T0.DocNum, T1.DocNum, ISNULL(T2.POTotal, 0) + ISNULL(T3.INVTotal, 0) as Total FROM APInvoice T0 " +
+                    "INNER JOIN APInvoiceDetails T1 on T0.OID = T1.APInvoice " +
+                    "LEFT JOIN ( " +
+                    "SELECT P0.DocNum, SUM(P0.FinalAmount) as POTotal FROM PurchaseOrder P0 " +
+                    "WHERE P0.GCRecord is null " +
+                    "GROUP BY P0.DocNum) T2 on T2.DocNum = T1.DocNum " +
+                    "LEFT JOIN ( " +
+                    "SELECT T0.DocNum, SUM(T0.LineAmount) as INVTotal FROM APInvoiceDetails T0 " +
+                    "INNER JOIN APInvoice T1 on T0.APInvoice = T1.OID " +
+                    "WHERE T0.GCRecord is null and IsSubmit = 1 and IsCancel = 0 " +
+                    "GROUP BY T0.DocNum) T3 on T2.DocNum = T3.DocNum " +
+                    "WHERE T0.DocNum = '" + selectedObject.DocNum + "' " +
+                    "GROUP BY T0.DocNum, T1.DocNum, ISNULL(T2.POTotal, 0), ISNULL(T3.INVTotal, 0)";
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(command, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (selectedObject.FinalAmount > reader.GetDecimal(2))
+                    {
+                        genCon.showMsg("Fail", "Invoice amount not allow over PO amount.", InformationType.Error);
+                        return;
+                    }
+                }
+                conn.Close();
+                // End ver 0.13
+
                 #region post invoice
                 //if (genCon.ConnectSAP(user.CurrDept))
                 //{
@@ -2677,6 +2710,18 @@ namespace BSI_PR.Module.Controllers
                 ///
 
                 WebWindow.CurrentRequestWindow.RegisterStartupScript("ViewAtt", GetAttactment(selectedObject.DocNum));
+
+                // Start ver 0.13
+                SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
+                IObjectSpace os = Application.CreateObjectSpace();
+                AttachmentHistory atthistory = os.CreateObject<AttachmentHistory>();
+
+                atthistory.DocType = os.FindObject<DocTypes>(CriteriaOperator.Parse("PRType = ?", PRTypes.PO));
+                atthistory.DocNum = selectedObject.DocNum;
+                atthistory.ApprovalUser = user.Oid.ToString();
+
+                os.CommitChanges();
+                // End ver 0.13
             }
             else
             {
@@ -2721,12 +2766,12 @@ namespace BSI_PR.Module.Controllers
                 try
                 {
                     SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
-                    ApprovalParameters p = (ApprovalParameters)e.PopupWindow.View.CurrentObject;
+                    StringParameters p = (StringParameters)e.PopupWindow.View.CurrentObject;
 
                     int cnt = 0;
                     foreach (LeaveApplication dtl in e.SelectedObjects)
                     {
-                        if (dtl.Status != LeaveStatus.Open)
+                        if (dtl.Status == LeaveStatus.Open)
                         {
                             IObjectSpace los = Application.CreateObjectSpace();
                             LeaveApplication leave = los.FindObject<LeaveApplication>(new BinaryOperator("Oid", dtl.Oid));
@@ -3303,10 +3348,33 @@ namespace BSI_PR.Module.Controllers
                 SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
                 ApprovalParameters p = (ApprovalParameters)e.PopupWindow.View.CurrentObject;
 
+                // Start ver 0.13
+                PermissionPolicyRole DirectorRole = ObjectSpace.FindObject<PermissionPolicyRole>(CriteriaOperator.Parse("IsCurrentUserInRole('DirectorRole')"));
+
+                if (DirectorRole == null && e.SelectedObjects.Count > 1)
+                {
+                    genCon.showMsg("Fail", "Unable to aprove due to only director allow to do multiple approval.", InformationType.Error);
+                    return;
+                }
+                // End ver 0.13
+
                 foreach (PurchaseOrderJapan dtl in e.SelectedObjects)
                 {
                     IObjectSpace pos = Application.CreateObjectSpace();
                     PurchaseOrderJapan po = pos.FindObject<PurchaseOrderJapan>(new BinaryOperator("Oid", dtl.Oid));
+
+                    // Start ver 0.13
+                    AttachmentHistory history = pos.FindObject<AttachmentHistory>(CriteriaOperator.Parse("DocType.PRType = ? and DocNum = ? and ApprovalUser = ?", 
+                        PRTypes.Japan, po.DocNum, Guid.Parse(user.Oid.ToString())));
+                    if (history == null)
+                    {
+                        if (DirectorRole == null)
+                        {
+                            genCon.showMsg("Fail", "Unable to submit without attachment checking.", InformationType.Error);
+                            return;
+                        }
+                    }
+                    // End ver 0.13
 
                     // Start ver 0.4
                     if (po.NextApprover != null)
@@ -3421,14 +3489,14 @@ namespace BSI_PR.Module.Controllers
                                     // Start ver 0.13
                                     {
                                         //emailsubject = "Purchase Order Japan Approval";
-                                        emailsubject = "Purchase Order Japan Approval (承　認　申　請　書)";
+                                        emailsubject = "Purchase Order Japan Approval (承　認　申　請　書 - 承認)";
                                     }
                                     // End ver 0.13
                                     else if (appstatus == ApprovalStatuses.Rejected)
                                     {
                                         // Start ver 0.13
                                         //emailsubject = "Purchase Order Japan Approval Rejected";
-                                        emailsubject = "Purchase Order Japan Approval (承　認　申　請　書)";
+                                        emailsubject = "Purchase Order Japan Approval (承　認　申　請　書 - 差戻)";
                                         // End ver 0.13
                                     }
 
@@ -3568,6 +3636,18 @@ namespace BSI_PR.Module.Controllers
                 ///
 
                 WebWindow.CurrentRequestWindow.RegisterStartupScript("ViewAtt", GetAttactment(selectedObject.DocNum));
+
+                // Start ver 0.13
+                SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
+                IObjectSpace os = Application.CreateObjectSpace();
+                AttachmentHistory atthistory = os.CreateObject<AttachmentHistory>();
+
+                atthistory.DocType = os.FindObject<DocTypes>(CriteriaOperator.Parse("PRType = ?", PRTypes.Japan));
+                atthistory.DocNum = selectedObject.DocNum;
+                atthistory.ApprovalUser = user.Oid.ToString();
+
+                os.CommitChanges();
+                // End ver 0.13
             }
             else
             {

@@ -215,6 +215,7 @@
     <Compile Include="BusinessObjects\APInvoiceDetails.cs" />
     <Compile Include="BusinessObjects\APInvoiceDocStatues.cs" />
     <Compile Include="BusinessObjects\Approvals.cs" />
+    <Compile Include="BusinessObjects\AttachmentHistory.cs" />
     <Compile Include="BusinessObjects\AttachmentStaging.cs" />
     <Compile Include="BusinessObjects\BudgetCategory.cs" />
     <Compile Include="BusinessObjects\BudgetCategoryAmount.cs" />
