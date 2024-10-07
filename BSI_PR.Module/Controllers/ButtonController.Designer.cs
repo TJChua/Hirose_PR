@@ -72,6 +72,9 @@ namespace BSI_PR.Module.Controllers
             this.PrintDepartmentBudgetExcel = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             this.DuplicateBudgetAmt = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             this.MultiFileUpload = new DevExpress.ExpressApp.Actions.PopupWindowShowAction(this.components);
+            this.DocumentDateFrom = new DevExpress.ExpressApp.Actions.ParametrizedAction(this.components);
+            this.DocumentDateTo = new DevExpress.ExpressApp.Actions.ParametrizedAction(this.components);
+            this.DocumentFilter = new DevExpress.ExpressApp.Actions.SimpleAction(this.components);
             // 
             // Pass
             // 
@@ -205,6 +208,7 @@ namespace BSI_PR.Module.Controllers
             // EscalateUser_PO
             // 
             this.EscalateUser_PO.Caption = "Escalate";
+            this.EscalateUser_PO.Category = "ObjectsCreation";
             this.EscalateUser_PO.ConfirmationMessage = null;
             this.EscalateUser_PO.Id = "EscalateUser_PO";
             this.EscalateUser_PO.ToolTip = null;
@@ -257,6 +261,7 @@ namespace BSI_PR.Module.Controllers
             // Escalate_SystemUser
             // 
             this.Escalate_SystemUser.Caption = "Escalate User";
+            this.Escalate_SystemUser.Category = "ObjectsCreation";
             this.Escalate_SystemUser.ConfirmationMessage = null;
             this.Escalate_SystemUser.Id = "Escalate_SystemUser";
             this.Escalate_SystemUser.ToolTip = null;
@@ -396,6 +401,7 @@ namespace BSI_PR.Module.Controllers
             // EscalateUserJapan
             // 
             this.EscalateUserJapan.Caption = "Escalate";
+            this.EscalateUserJapan.Category = "ObjectsCreation";
             this.EscalateUserJapan.ConfirmationMessage = null;
             this.EscalateUserJapan.Id = "EscalateUserJapan";
             this.EscalateUserJapan.ToolTip = null;
@@ -488,6 +494,39 @@ namespace BSI_PR.Module.Controllers
             this.MultiFileUpload.CustomizePopupWindowParams += new DevExpress.ExpressApp.Actions.CustomizePopupWindowParamsEventHandler(this.MultiFileUpload_CustomizePopupWindowParams);
             this.MultiFileUpload.Execute += new DevExpress.ExpressApp.Actions.PopupWindowShowActionExecuteEventHandler(this.MultiFileUpload_Execute);
             // 
+            // DocumentDateFrom
+            // 
+            this.DocumentDateFrom.Caption = "From";
+            this.DocumentDateFrom.Category = "ObjectsCreation";
+            this.DocumentDateFrom.ConfirmationMessage = null;
+            this.DocumentDateFrom.Id = "DocumentDateFrom";
+            this.DocumentDateFrom.NullValuePrompt = null;
+            this.DocumentDateFrom.ShortCaption = null;
+            this.DocumentDateFrom.ToolTip = null;
+            this.DocumentDateFrom.ValueType = typeof(System.DateTime);
+            this.DocumentDateFrom.Execute += new DevExpress.ExpressApp.Actions.ParametrizedActionExecuteEventHandler(this.DocumentDateFrom_Execute);
+            // 
+            // DocumentDateTo
+            // 
+            this.DocumentDateTo.Caption = "To";
+            this.DocumentDateTo.Category = "ObjectsCreation";
+            this.DocumentDateTo.ConfirmationMessage = null;
+            this.DocumentDateTo.Id = "DocumentDateTo";
+            this.DocumentDateTo.NullValuePrompt = null;
+            this.DocumentDateTo.ShortCaption = null;
+            this.DocumentDateTo.ToolTip = null;
+            this.DocumentDateTo.ValueType = typeof(System.DateTime);
+            this.DocumentDateTo.Execute += new DevExpress.ExpressApp.Actions.ParametrizedActionExecuteEventHandler(this.DocumentDateTo_Execute);
+            // 
+            // DocumentFilter
+            // 
+            this.DocumentFilter.Caption = "Filter";
+            this.DocumentFilter.Category = "ObjectsCreation";
+            this.DocumentFilter.ConfirmationMessage = null;
+            this.DocumentFilter.Id = "DocumentFilter";
+            this.DocumentFilter.ToolTip = null;
+            this.DocumentFilter.Execute += new DevExpress.ExpressApp.Actions.SimpleActionExecuteEventHandler(this.DocumentFilter_Execute);
+            // 
             // ButtonController
             // 
             this.Actions.Add(this.Pass);
@@ -532,6 +571,9 @@ namespace BSI_PR.Module.Controllers
             this.Actions.Add(this.PrintDepartmentBudgetExcel);
             this.Actions.Add(this.DuplicateBudgetAmt);
             this.Actions.Add(this.MultiFileUpload);
+            this.Actions.Add(this.DocumentDateFrom);
+            this.Actions.Add(this.DocumentDateTo);
+            this.Actions.Add(this.DocumentFilter);
 
         }
 
@@ -579,5 +621,8 @@ namespace BSI_PR.Module.Controllers
         private DevExpress.ExpressApp.Actions.SimpleAction PrintDepartmentBudgetExcel;
         private DevExpress.ExpressApp.Actions.SimpleAction DuplicateBudgetAmt;
         private DevExpress.ExpressApp.Actions.PopupWindowShowAction MultiFileUpload;
+        private DevExpress.ExpressApp.Actions.ParametrizedAction DocumentDateFrom;
+        private DevExpress.ExpressApp.Actions.ParametrizedAction DocumentDateTo;
+        private DevExpress.ExpressApp.Actions.SimpleAction DocumentFilter;
     }
 }

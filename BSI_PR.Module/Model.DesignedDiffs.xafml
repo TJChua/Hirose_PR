@@ -58,6 +58,7 @@
           <Item Id="APInvoiceAttachment_ListView" Removed="True" />
           <Item Id="APInvoiceDetails_ListView" Removed="True" />
           <Item Id="APInvoiceDocStatues_ListView" Removed="True" />
+          <Item Id="AttachmentHistory_ListView" Removed="True" />
           <Item Id="AttachmentStaging_ListView" Removed="True" />
           <Item Id="BudgetCategoryAmount_ListView" Removed="True" />
           <Item Id="BudgetCategoryDetails_ListView" Removed="True" />
@@ -101,14 +102,14 @@
       </Item>
       <Item Id="Purchase Order" Index="2">
         <Items>
-          <Item Id="PurchaseOrder_ListView" Index="0" />
+          <Item Id="PurchaseOrder_ListView" Index="0" Caption="Purchase Order" />
           <Item Id="Purchase Order Approved" Caption="Purchase Order Approved" ViewId="PurchaseOrder_ListView_Approved" Index="1" IsNewNode="True" />
           <Item Id="Purchase Order Pending Approval" ViewId="PurchaseOrder_ListView_PendingApp" Caption="Purchase Order Pending Approval" Index="2" IsNewNode="True" />
         </Items>
       </Item>
       <Item Id="Japan Purchase Order" Index="3">
         <Items>
-          <Item Id="PurchaseOrderJapan_ListView" Index="0" />
+          <Item Id="PurchaseOrderJapan_ListView" Index="0" Caption="Japan Purchase Order" />
           <Item Id="Japan Purchase Order Approved" Caption="Japan Purchase Order Approved" ViewId="PurchaseOrderJapan_ListView_Approved" Index="1" IsNewNode="True" />
           <Item Id="Japan Purchase Order Pending Approval" Caption="Japan Purchase Order Pending Approval" ViewId="PurchaseOrderJapan_ListView_PendingApp" Index="2" IsNewNode="True" />
         </Items>
@@ -1059,7 +1060,7 @@
         </LayoutGroup>
       </Layout>
     </DetailView>
-    <ListView Id="PurchaseOrder_ListView" AllowEdit="False">
+    <ListView Id="PurchaseOrder_ListView" AllowEdit="False" Caption="PO">
       <Columns>
         <ColumnInfo Id="Adress" Index="-1" />
         <ColumnInfo Id="CreateUser.FName" PropertyName="CreateUser.FName" Index="-1" Width="94" AllowEdit="False" SortIndex="-1" SortOrder="None" IsNewNode="True" />
@@ -1087,7 +1088,7 @@
         <ColumnInfo Id="NextApprover" Index="18" />
       </Columns>
     </ListView>
-    <ListView Id="PurchaseOrder_ListView_Approved" ClassName="BSI_PR.Module.BusinessObjects.PurchaseOrder" IsNewNode="True">
+    <ListView Id="PurchaseOrder_ListView_Approved" ClassName="BSI_PR.Module.BusinessObjects.PurchaseOrder" Caption="PO" IsNewNode="True">
       <Columns IsNewNode="True">
         <ColumnInfo Id="Adress" PropertyName="Adress" Width="70" Index="-1" IsNewNode="True" />
         <ColumnInfo Id="AppUser" PropertyName="AppUser" Width="70" Index="-1" IsNewNode="True" />
@@ -1137,7 +1138,7 @@
         <ColumnInfo Id="NextApprover" PropertyName="NextApprover" Width="70" Index="18" IsNewNode="True" />
       </Columns>
     </ListView>
-    <ListView Id="PurchaseOrder_ListView_PendingApp" ClassName="BSI_PR.Module.BusinessObjects.PurchaseOrder" DetailViewID="PurchaseOrder_DetailView_Approval" MasterDetailView="PurchaseOrder_DetailView" IsNewNode="True">
+    <ListView Id="PurchaseOrder_ListView_PendingApp" ClassName="BSI_PR.Module.BusinessObjects.PurchaseOrder" DetailViewID="PurchaseOrder_DetailView_Approval" MasterDetailView="PurchaseOrder_DetailView" Caption="PO" IsNewNode="True">
       <Columns IsNewNode="True">
         <ColumnInfo Id="Adress" PropertyName="Adress" Width="70" Index="-1" IsNewNode="True" />
         <ColumnInfo Id="AppUser" PropertyName="AppUser" Width="70" Index="-1" IsNewNode="True" />
@@ -1595,7 +1596,8 @@
         </LayoutGroup>
       </Layout>
     </DetailView>
-    <ListView Id="PurchaseOrderJapan_ListView_Approved" ClassName="BSI_PR.Module.BusinessObjects.PurchaseOrderJapan" MasterDetailView="PurchaseOrderJapan_DetailView" DetailViewID="PurchaseOrderJapan_DetailView" IsNewNode="True">
+    <ListView Id="PurchaseOrderJapan_ListView" Caption="JP PO" />
+    <ListView Id="PurchaseOrderJapan_ListView_Approved" ClassName="BSI_PR.Module.BusinessObjects.PurchaseOrderJapan" MasterDetailView="PurchaseOrderJapan_DetailView" DetailViewID="PurchaseOrderJapan_DetailView" Caption="JP PO" IsNewNode="True">
       <Columns IsNewNode="True">
         <ColumnInfo Id="AppUser" PropertyName="AppUser" Index="-1" IsNewNode="True" />
         <ColumnInfo Id="BudgetNo" PropertyName="BudgetNo" Index="-1" IsNewNode="True" />
@@ -1646,7 +1648,7 @@
         <ColumnInfo Id="PO_TYPE" PropertyName="PO_TYPE" Index="25" IsNewNode="True" />
       </Columns>
     </ListView>
-    <ListView Id="PurchaseOrderJapan_ListView_PendingApp" ClassName="BSI_PR.Module.BusinessObjects.PurchaseOrderJapan" DetailViewID="PurchaseOrderJapan_DetailView_Approval" MasterDetailView="PurchaseOrderJapan_DetailView" IsNewNode="True">
+    <ListView Id="PurchaseOrderJapan_ListView_PendingApp" ClassName="BSI_PR.Module.BusinessObjects.PurchaseOrderJapan" DetailViewID="PurchaseOrderJapan_DetailView_Approval" MasterDetailView="PurchaseOrderJapan_DetailView" Caption="JP PO" IsNewNode="True">
       <Columns IsNewNode="True">
         <ColumnInfo Id="AppUser" PropertyName="AppUser" Index="-1" IsNewNode="True" />
         <ColumnInfo Id="BudgetNo" PropertyName="BudgetNo" Index="-1" IsNewNode="True" />

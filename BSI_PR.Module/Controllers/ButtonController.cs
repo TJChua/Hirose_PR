@@ -28,6 +28,9 @@ using DevExpress.Persistent.BaseImpl;
 using DevExpress.ExpressApp.Model;
 using System.Data.SqlClient;
 using System.Data;
+using DevExpress.ExpressApp.Web.Templates.ActionContainers.Menu;
+using DevExpress.ExpressApp.Web.Templates.ActionContainers;
+using DevExpress.Web;
 
 
 #region update log
@@ -52,6 +55,11 @@ namespace BSI_PR.Module.Controllers
     public partial class ButtonController : ViewController
     {
         GenControllers genCon;
+        // Start ver 0.13
+        private DateTime Fromdate;
+        private DateTime Todate;
+        // End ver 0.13
+
         public ButtonController()
         {
             InitializeComponent();
@@ -115,6 +123,9 @@ namespace BSI_PR.Module.Controllers
             // Start ver 0.13
             this.DuplicateBudgetAmt.Active.SetItemValue("Enabled", false);
             this.MultiFileUpload.Active.SetItemValue("Enabled", false);
+            this.DocumentDateFrom.Active.SetItemValue("Enabled", false);
+            this.DocumentDateTo.Active.SetItemValue("Enabled", false);
+            this.DocumentFilter.Active.SetItemValue("Enabled", false);
             // End ver 0.13
 
 
@@ -180,8 +191,25 @@ namespace BSI_PR.Module.Controllers
 
                             this.EscalateUser_PO.Active.SetItemValue("Enabled", true);
                             this.Escalate_SystemUser.Active.SetItemValue("Enabled", true);
-                           
+                            // Start ver 0.13
+                            Escalate_SystemUser.CustomizeControl += escalateuseraction_CustomizeControl;
+                            // End ver 0.13
+
                         }
+
+                        // Start ver 0.13
+                        this.DocumentDateFrom.Active.SetItemValue("Enabled", true);
+                        this.DocumentDateFrom.Value = DateTime.Today.AddDays(-7);
+                        DocumentDateFrom.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
+                        this.DocumentDateFrom.CustomizeControl += DateActionFrom_CustomizeControl;
+
+                        this.DocumentDateTo.Active.SetItemValue("Enabled", true);
+                        this.DocumentDateTo.Value = DateTime.Today;
+                        DocumentDateTo.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
+                        this.DocumentDateTo.CustomizeControl += DateActionTo_CustomizeControl;
+
+                        this.DocumentFilter.Active.SetItemValue("Enabled", true);
+                        // End ver 0.13
                     }
                     if (approle != null)
                     {
@@ -231,7 +259,9 @@ namespace BSI_PR.Module.Controllers
                         // End ver 0.6
 
                         this.DepartmantFilter.Active.SetItemValue("Enabled", true);
-                     
+                        // Start ver 0.13
+                        DepartmantFilter.CustomizeControl += departmentaction_CustomizeControl;
+                        // End ver 0.13
                     }
 
                     // Start ver 0.5
@@ -319,6 +349,21 @@ namespace BSI_PR.Module.Controllers
                         // End ver 0.6
 
                         this.DepartmantFilter.Active.SetItemValue("Enabled", true);
+                        // Start ver 0.13
+                        DepartmantFilter.CustomizeControl += departmentaction_CustomizeControl;
+
+                        this.DocumentDateFrom.Active.SetItemValue("Enabled", true);
+                        this.DocumentDateFrom.Value = DateTime.Today.AddDays(-7);
+                        DocumentDateFrom.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
+                        this.DocumentDateFrom.CustomizeControl += DateActionFrom_CustomizeControl;
+
+                        this.DocumentDateTo.Active.SetItemValue("Enabled", true);
+                        this.DocumentDateTo.Value = DateTime.Today;
+                        DocumentDateTo.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
+                        this.DocumentDateTo.CustomizeControl += DateActionTo_CustomizeControl;
+
+                        this.DocumentFilter.Active.SetItemValue("Enabled", true);
+                        // End ver 0.13
                     }
                 }
             }
@@ -421,8 +466,25 @@ namespace BSI_PR.Module.Controllers
 
                             this.EscalateUserJapan.Active.SetItemValue("Enabled", true);
                             this.Escalate_SystemUser.Active.SetItemValue("Enabled", true);
+                            // Start ver 0.13
+                            Escalate_SystemUser.CustomizeControl += escalateuseraction_CustomizeControl;
+                            // End ver 0.13
 
                         }
+
+                        // Start ver 0.13
+                        this.DocumentDateFrom.Active.SetItemValue("Enabled", true);
+                        this.DocumentDateFrom.Value = DateTime.Today.AddDays(-7);
+                        DocumentDateFrom.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
+                        this.DocumentDateFrom.CustomizeControl += DateActionFrom_CustomizeControl;
+
+                        this.DocumentDateTo.Active.SetItemValue("Enabled", true);
+                        this.DocumentDateTo.Value = DateTime.Today;
+                        DocumentDateTo.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
+                        this.DocumentDateTo.CustomizeControl += DateActionTo_CustomizeControl;
+
+                        this.DocumentFilter.Active.SetItemValue("Enabled", true);
+                        // End ver 0.13
                     }
 
                     if (approle != null)
@@ -702,6 +764,66 @@ namespace BSI_PR.Module.Controllers
             // Unsubscribe from previously subscribed events and release other references and resources.
             base.OnDeactivated();
         }
+
+        // Start ver 0.13
+        void departmentaction_CustomizeControl(object sender, CustomizeControlEventArgs e)
+        {
+            SingleChoiceActionAsModeMenuActionItem actionItem = e.Control as SingleChoiceActionAsModeMenuActionItem;
+            if (actionItem != null)
+            {
+                DropDownSingleChoiceActionControlBase control = (DropDownSingleChoiceActionControlBase)actionItem.Control;
+                control.ComboBox.Width = 70;
+            }
+        }
+
+        void escalateuseraction_CustomizeControl(object sender, CustomizeControlEventArgs e)
+        {
+            SingleChoiceActionAsModeMenuActionItem actionItem = e.Control as SingleChoiceActionAsModeMenuActionItem;
+            if (actionItem != null)
+            {
+                DropDownSingleChoiceActionControlBase control = (DropDownSingleChoiceActionControlBase)actionItem.Control;
+                control.ComboBox.Width = 130;
+            }
+        }
+
+        private void DateActionFrom_CustomizeControl(object sender, CustomizeControlEventArgs e)
+        {
+            ParametrizedActionMenuActionItem actionItem = e.Control as ParametrizedActionMenuActionItem;
+
+            if (actionItem != null)
+            {
+                ASPxDateEdit dateEdit = actionItem.Control.Editor as ASPxDateEdit;
+                if (dateEdit != null)
+                {
+                    dateEdit.Width = 110;
+                    dateEdit.Buttons.Clear();
+                    if (dateEdit.Text != "")
+                    {
+                        Fromdate = Convert.ToDateTime(dateEdit.Text);
+                    }
+                }
+            }
+        }
+
+        private void DateActionTo_CustomizeControl(object sender, CustomizeControlEventArgs e)
+        {
+            ParametrizedActionMenuActionItem actionItem = e.Control as ParametrizedActionMenuActionItem;
+
+            if (actionItem != null)
+            {
+                ASPxDateEdit dateEdit = actionItem.Control.Editor as ASPxDateEdit;
+                if (dateEdit != null)
+                {
+                    dateEdit.Width = 110;
+                    dateEdit.Buttons.Clear();
+                    if (dateEdit.Text != "")
+                    {
+                        Todate = Convert.ToDateTime(dateEdit.Text);
+                    }
+                }
+            }
+        }
+        // End ver 0.13
 
         private void Pass_Execute(object sender, PopupWindowShowActionExecuteEventArgs e)
         {
@@ -2472,20 +2594,28 @@ namespace BSI_PR.Module.Controllers
             //}
             if (e.SelectedChoiceActionItem.Id != "All")
             {
-                ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[Department.BoCode] = ?",
-                    e.SelectedChoiceActionItem.Id);
+                // Start ver 0.13
+                //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[Department.BoCode] = ?",
+                //    e.SelectedChoiceActionItem.Id);
+                ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ? and Department.BoCode = ?",
+                    Fromdate, Todate.AddDays(1), e.SelectedChoiceActionItem.Id);
+                // End ver 0.13
             }
             else
             {
                 //if (View.Id == "PurchaseOrder_ListView")
                 //{
-                    //IObjectSpace os = Application.CreateObjectSpace();
-                    //CollectionSourceBase cs = Application.CreateCollectionSource(os, typeof(PurchaseOrder), "PurchaseOrder_ListView");
-                    //IModelListView listViewModel = (IModelListView)Application.Model.Views["PurchaseOrder_ListView"];
-                    //ListView lv = Application.CreateListView(listViewModel, cs, true);
-                    //Application.MainWindow.SetView(lv);
+                //IObjectSpace os = Application.CreateObjectSpace();
+                //CollectionSourceBase cs = Application.CreateCollectionSource(os, typeof(PurchaseOrder), "PurchaseOrder_ListView");
+                //IModelListView listViewModel = (IModelListView)Application.Model.Views["PurchaseOrder_ListView"];
+                //ListView lv = Application.CreateListView(listViewModel, cs, true);
+                //Application.MainWindow.SetView(lv);
 
-                    ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[Department.BoCode] != ?", "All");
+                // Start ver 0.13
+                //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[Department.BoCode] != ?", "All");
+                ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ?",
+                    Fromdate, Todate.AddDays(1));
+                // End ver 0.13
                 //}
                 //else if (View.Id == "APInvoice_ListView")
                 //{
@@ -4000,6 +4130,30 @@ namespace BSI_PR.Module.Controllers
             e.DialogController.CancelAction.Active["NothingToCancel"] = false;
 
             e.View = dv;
+        }
+
+        private void DocumentDateFrom_Execute(object sender, ParametrizedActionExecuteEventArgs e)
+        {
+
+        }
+
+        private void DocumentDateTo_Execute(object sender, ParametrizedActionExecuteEventArgs e)
+        {
+
+        }
+
+        private void DocumentFilter_Execute(object sender, SimpleActionExecuteEventArgs e)
+        {
+            if (DepartmantFilter.SelectedItem.Id != "All")
+            {
+                ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ? and Department.BoCode = ?",
+                    Fromdate, Todate.AddDays(1), DepartmantFilter.SelectedItem.Id);
+            }
+            else
+            {
+                ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ?",
+                    Fromdate, Todate.AddDays(1));
+            }
         }
         // End ver 0.13
     }
