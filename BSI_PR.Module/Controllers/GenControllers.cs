@@ -20,7 +20,7 @@ using BSI_PR.Module.BusinessObjects;
 using DevExpress.Xpo.DB;
 using System.Data;
 using System.Data.SqlClient;
-
+using System.Configuration;
 
 namespace BSI_PR.Module.Controllers
 {
@@ -966,17 +966,42 @@ namespace BSI_PR.Module.Controllers
                             {
                                 if (((int)dtl2.Month) + 1 == month && dtl2.Year == year)
                                 {
-                                    if (status == "Cancel")
-                                    {
-                                        dtl2.MonthlyBudgetBalance = dtl2.MonthlyBudgetBalance + total;
-                                        break;
-                                    }
+                                    //TJC
+                                    //if (status == "Cancel")
+                                    //{
+                                    //    dtl2.MonthlyBudgetBalance = dtl2.MonthlyBudgetBalance + total;
+                                    //    break;
+                                    //}
 
-                                    if (status == "Add")
+                                    //if (status == "Add")
+                                    //{
+                                    //    dtl2.MonthlyBudgetBalance = dtl2.MonthlyBudgetBalance - total;
+                                    //    break;
+                                    //}
+
+                                    dtl2.MonthlyBudgetBalance = dtl2.Budget;
+
+                                    SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ToString());
+
+                                    string budgetbalance = "SELECT SUM(T1.LineTotal * ISNULL(NULLIF(T0.CurrRate, 0), 1)) as Total, " +
+                                        "YEAR(T0.DocDate) as [Year], MONTH(T0.DocDate) as [Month] FROM PurchaseOrder T0 " +
+                                        "INNER JOIN PurchaseOrderDetails T1 on T0.OID = T1.PurchaseOrder " +
+                                        "WHERE ISNULL(BudgetCategoryData,'') <> '' AND T0.IsCancelled = 0 " +
+                                        "AND T0.IsAccepted = 1 AND T0.IsRejected = 0 AND YEAR(T0.DocDate) = '" + year + "' AND MONTH(T0.DocDate) = " + month + " " +
+                                        "GROUP BY YEAR(T0.DocDate), MONTH(T0.DocDate)";
+                                    if (conn.State == ConnectionState.Open)
                                     {
-                                        dtl2.MonthlyBudgetBalance = dtl2.MonthlyBudgetBalance - total;
-                                        break;
+                                        conn.Close();
                                     }
+                                    conn.Open();
+                                    SqlCommand cmd = new SqlCommand(budgetbalance, conn);
+                                    SqlDataReader reader = cmd.ExecuteReader();
+                                    while (reader.Read())
+                                    {
+                                        dtl2.MonthlyBudgetBalance = dtl2.Budget - reader.GetDecimal(0);
+                                    }
+                                    conn.Close();
+                                    //TJC END
                                 }
                             }
                         }
