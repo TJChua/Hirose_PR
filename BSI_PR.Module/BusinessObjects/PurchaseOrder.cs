@@ -460,25 +460,52 @@ namespace BSI_PR.Module.BusinessObjects
             }
         }
 
-        [NonPersistent]
-        [ImmediatePostData]
-        [Index(40), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(false)]
+        //[NonPersistent]
+        //[ImmediatePostData]
+        //[Index(40), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(false)]
+        //public decimal Amount
+        //{
+        //    get
+        //    {
+        //        decimal rtn = 0;
+        //        if (PurchaseOrderDetails != null)
+        //            rtn += PurchaseOrderDetails.Sum(p => p.LineTotal);
+
+        //        //if (PurchaseRequestDetail != null)
+        //        //    rtn += PurchaseRequestDetail.Sum(p => p.LineTotal);
+
+        //        return rtn;
+        //    }
+        //}
+
+        private decimal _Amount;
+        [XafDisplayName("Total")]
+        [Appearance("Total", Enabled = false)]
+        [DbType("numeric(18,6)")]
+        [ModelDefault("DisplayFormat", "{0:n2}")]
+        [Index(40), VisibleInDetailView(true), VisibleInListView(true), VisibleInLookupListView(false)]
         public decimal Amount
         {
             get
             {
-                decimal rtn = 0;
-                if (PurchaseOrderDetails != null)
-                    rtn += PurchaseOrderDetails.Sum(p => p.LineTotal);
+                if (Session.IsObjectsSaving != true)
+                {
+                    decimal rtn = 0;
+                    if (PurchaseOrderDetails != null)
+                        rtn += PurchaseOrderDetails.Sum(p => p.LineTotal);
 
-                //if (PurchaseRequestDetail != null)
-                //    rtn += PurchaseRequestDetail.Sum(p => p.LineTotal);
-
-                return rtn;
+                    return rtn;
+                }
+                else
+                {
+                    return _Amount;
+                }
+            }
+            set
+            {
+                SetPropertyValue("Total", ref _Amount, value);
             }
         }
-
-
 
         private decimal _DocDisc;
         [ImmediatePostData]
