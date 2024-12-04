@@ -4144,15 +4144,105 @@ namespace BSI_PR.Module.Controllers
 
         private void DocumentFilter_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
-            if (DepartmantFilter.SelectedItem.Id != "All")
+            SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
+
+            if (View.Id == "PurchaseOrder_ListView_Approved" || View.Id == "PurchaseOrderJapan_ListView_Approved")
             {
-                ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ? and Department.BoCode = ?",
-                    Fromdate, Todate.AddDays(1), DepartmantFilter.SelectedItem.Id);
+                PermissionPolicyRole PRSuperUserRole = ObjectSpace.FindObject<PermissionPolicyRole>(CriteriaOperator.Parse("IsCurrentUserInRole('PRSuperUserRole')"));
+
+                if (DepartmantFilter.SelectedItem != null)
+                {
+                    if (DepartmantFilter.SelectedItem.Id != "All")
+                    {
+                        if (PRSuperUserRole != null)
+                        {
+                            ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[ApprovalStatus] = ? and " +
+                                "DocDate >= ? and DocDate <= ? and Department.BoCode = ?",
+                                "Approved", Fromdate, Todate.AddDays(1), DepartmantFilter.SelectedItem.Id);
+                        }
+                        else
+                        {
+                            ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and" +
+                                " DocDate <= ? and Department.BoCode = ?",
+                                Fromdate, Todate.AddDays(1), DepartmantFilter.SelectedItem.Id);
+                        }
+                    }
+                    else
+                    {
+                        if (PRSuperUserRole != null)
+                        {
+                            ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[ApprovalStatus] = ? and " +
+                                "DocDate >= ? and DocDate <= ? and Department.BoCode = ?",
+                                "Approved", Fromdate, Todate.AddDays(1), user.DefaultDept.BoCode);
+                        }
+                        else
+                        {
+                            ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("Contains([WhoApprove],?) and " +
+                                "DocDate >= ? and DocDate <= ?",
+                                user.UserName, Fromdate, Todate.AddDays(1));
+                        }
+                    }
+                }
+                else
+                {
+                    if (PRSuperUserRole != null)
+                    {
+                        ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[ApprovalStatus] = ? and " +
+                            "DocDate >= ? and DocDate <= ?  and Department.BoCode = ?",
+                            "Approved", Fromdate, Todate.AddDays(1), user.DefaultDept.BoCode);
+                    }
+                    else
+                    {
+                        ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("Contains([WhoApprove],?) and " +
+                            "DocDate >= ? and DocDate <= ?",
+                            user.UserName, Fromdate, Todate.AddDays(1));
+                    }
+                }
+            }
+            else if (View.Id == "PurchaseOrderJapan_ListView_PendingApp" || View.Id == "PurchaseOrder_ListView_PendingApp")
+            {
+                if (DepartmantFilter.SelectedItem != null)
+                {
+                    if (DepartmantFilter.SelectedItem.Id != "All")
+                    {
+                        ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[ApprovalStatus] = ? and Contains([AppUser],?) and " +
+                            "DocDate >= ? and DocDate <= ? and Department.BoCode = ?",
+                             2, user.UserName, Fromdate, Todate.AddDays(1), DepartmantFilter.SelectedItem.Id);
+                    }
+                    else
+                    {
+                        ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[ApprovalStatus] = ? and Contains([AppUser],?) and " +
+                            "DocDate >= ? and DocDate <= ?",
+                             2, user.UserName, Fromdate, Todate.AddDays(1));
+                    }
+                }
+                else
+                {
+                    ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("[ApprovalStatus] = ? and Contains([AppUser],?) and " + 
+                        "DocDate >= ? and DocDate <= ?", 
+                        2, user.UserName, Fromdate, Todate.AddDays(1));
+                }
             }
             else
             {
-                ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ?",
-                    Fromdate, Todate.AddDays(1));
+                if (DepartmantFilter.SelectedItem != null)
+                {
+                    if (DepartmantFilter.SelectedItem.Id != "All")
+                    {
+                        ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ? and Department.BoCode = ?",
+                            Fromdate, Todate.AddDays(1), DepartmantFilter.SelectedItem.Id);
+                    }
+                    else
+                    {
+                        ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ?",
+                            Fromdate, Todate.AddDays(1));
+                    }
+                }
+                else
+                {
+                    ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ?", 
+                        Fromdate, Todate.AddDays(1));
+                }
             }
         }
         // End ver 0.13
