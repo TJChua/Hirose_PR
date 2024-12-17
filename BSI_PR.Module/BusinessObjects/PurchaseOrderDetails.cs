@@ -218,6 +218,7 @@ namespace BSI_PR.Module.BusinessObjects
         }
 
         private string _Remarks;
+        [Size(1000)]
         [Index(11), VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
         //[Appearance("RefNo", Enabled = false, Criteria = "(not IsNew and not IsRequestorChecking) or DocPassed or Accepted")]
         // [RuleRequiredField(DefaultContexts.Save, TargetCriteria = "Amount > 0")]

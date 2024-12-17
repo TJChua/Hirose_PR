@@ -444,7 +444,7 @@ namespace BSI_PR.Module.BusinessObjects
 
 
         private string _Remarks;
-        [Size(200)]
+        [Size(500)]
         [Index(44), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
         //[Appearance("RefNo", Enabled = false, Criteria = "(not IsNew and not IsRequestorChecking) or DocPassed or Accepted")]
         // Start ver 0.1

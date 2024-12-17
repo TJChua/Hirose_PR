@@ -184,7 +184,7 @@ namespace BSI_PR.Module.BusinessObjects
 
         [XafDisplayName("Remarks")]
         // Start ver 0.1
-        [Size(200)]
+        [Size(500)]
         // End ver 0.1
         [Appearance("ParamString", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide, Criteria = "IsErr")]
         public string ParamString { get; set; }

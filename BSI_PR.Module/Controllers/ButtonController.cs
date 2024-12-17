@@ -1357,11 +1357,34 @@ namespace BSI_PR.Module.Controllers
                 SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
                 ApprovalParameters p = (ApprovalParameters)e.PopupWindow.View.CurrentObject;
 
+                // Start ver 0.13
+                PermissionPolicyRole DirectorRole = ObjectSpace.FindObject<PermissionPolicyRole>(CriteriaOperator.Parse("IsCurrentUserInRole('DirectorRole')"));
+
+                if (DirectorRole == null && e.SelectedObjects.Count > 1)
+                {
+                    genCon.showMsg("Fail", "Unable to aprove due to only director allow to do multiple approval.", InformationType.Error);
+                    return;
+                }
+                // End ver 0.13
+
                 foreach (PurchaseOrder dtl in e.SelectedObjects)
                 {
                     IObjectSpace pos = Application.CreateObjectSpace();
                     PurchaseOrder po = pos.FindObject<PurchaseOrder>(new BinaryOperator("Oid", dtl.Oid));
-               
+
+                    // Start ver 0.13
+                    AttachmentHistory history = pos.FindObject<AttachmentHistory>(CriteriaOperator.Parse("DocType.PRType = ? and DocNum = ? and ApprovalUser = ?",
+                        PRTypes.PO, po.DocNum, Guid.Parse(user.Oid.ToString())));
+                    if (history == null)
+                    {
+                        if (DirectorRole == null)
+                        {
+                            genCon.showMsg("Fail", "Unable to submit without attachment checking.", InformationType.Error);
+                            return;
+                        }
+                    }
+                    // End ver 0.13
+
                     // Start ver 0.4
                     if (po.NextApprover != null)
                     {
