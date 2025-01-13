@@ -262,7 +262,7 @@ namespace BSI_PR.Module.BusinessObjects
         [Index(11), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(true)]
         [RuleRequiredField(DefaultContexts.Save)]
         [XafDisplayName("Document Date"), ToolTip("Enter Text")]
-        [Appearance("DocDate", Enabled = false, Criteria = "IsPassed")]
+        [Appearance("DocDate", Enabled = false)]
         public DateTime DocDate
         {
             get { return _DocDate; }

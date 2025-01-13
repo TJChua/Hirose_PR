@@ -4248,23 +4248,33 @@ namespace BSI_PR.Module.Controllers
             }
             else
             {
-                if (DepartmantFilter.SelectedItem != null)
+                PermissionPolicyRole approle = ObjectSpace.FindObject<PermissionPolicyRole>(CriteriaOperator.Parse("IsCurrentUserInRole('ApprovalUserRole')"));
+
+                if (approle != null)
                 {
-                    if (DepartmantFilter.SelectedItem.Id != "All")
+                    if (DepartmantFilter.SelectedItem != null)
                     {
-                        ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ? and Department.BoCode = ?",
-                            Fromdate, Todate.AddDays(1), DepartmantFilter.SelectedItem.Id);
+                        if (DepartmantFilter.SelectedItem.Id != "All")
+                        {
+                            ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ? and Department.BoCode = ?",
+                                Fromdate, Todate.AddDays(1), DepartmantFilter.SelectedItem.Id);
+                        }
+                        else
+                        {
+                            ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ?",
+                                Fromdate, Todate.AddDays(1));
+                        }
                     }
                     else
                     {
-                        ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ?",
-                            Fromdate, Todate.AddDays(1));
+                        ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ? and [Department.BoCode] = ?",
+                            Fromdate, Todate.AddDays(1), user.DefaultDept.BoCode);
                     }
                 }
                 else
                 {
-                    ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ?", 
-                        Fromdate, Todate.AddDays(1));
+                    ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("DocDate >= ? and DocDate <= ? and [Department.BoCode] = ?",
+                        Fromdate, Todate.AddDays(1), user.DefaultDept.BoCode);
                 }
             }
         }

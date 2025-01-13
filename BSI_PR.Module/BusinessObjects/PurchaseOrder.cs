@@ -294,7 +294,7 @@ namespace BSI_PR.Module.BusinessObjects
         //[ModelDefault("DisplayFormat", "{0: ddd, dd MMMM yyyy hh:mm:ss tt}")]
         //[ModelDefault("EditMask", "ddd, dd MMMM yyyy hh:mm:ss tt")]
         [XafDisplayName("Document Date"), ToolTip("Enter Text")]
-        [Appearance("DocDate", Enabled = false, Criteria = "IsPassed")]
+        [Appearance("DocDate", Enabled = false)]
         public DateTime DocDate
         {
             get { return _DocDate; }
