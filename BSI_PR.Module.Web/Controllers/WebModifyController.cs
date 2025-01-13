@@ -71,6 +71,8 @@ namespace BSI_PR.Module.Web.Controllers
         protected override void Save(SimpleActionExecuteEventArgs args)
         {
             SystemUsers user = (SystemUsers)SecuritySystem.CurrentUser;
+            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ToString());
+
             if (View.ObjectTypeInfo.Type == typeof(PurchaseRequests))
             {
                 PurchaseRequests newPR = (PurchaseRequests)args.CurrentObject;
@@ -221,7 +223,6 @@ namespace BSI_PR.Module.Web.Controllers
                     }
                     //New added
                     //-------------------------------------------------------------------------------
-
                     foreach (PurchaseOrderDetails dtl in newPO.PurchaseOrderDetails)
                     {
                         dtl.PODocNum = newPO.DocNum;
@@ -288,8 +289,24 @@ namespace BSI_PR.Module.Web.Controllers
                     base.Save(args);
                 }
 
+                string UpdAmount = "UPDATE T0 SET T0.Amount = T1.LineTotal, T0.FinalAmount = T1.LineTotal FROM PurchaseOrder T0 " +
+                    "INNER JOIN " +
+                    "( " +
+                    "SELECT SUM(LineTotal) as LineTotal, PurchaseOrder FRom PurchaseOrderDetails D0 " +
+                    "WHERE D0.GCRecord is null and PurchaseOrder is not null " +
+                    "GROUP BY PurchaseOrder " +
+                    ") T1 on T0.OID = PurchaseOrder " +
+                    "WHERE T0.DocNum = '" + newPO.DocNum + "'";
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                conn.Open();
+                SqlCommand cmdupd = new SqlCommand(UpdAmount, conn);
+                SqlDataReader readerupd = cmdupd.ExecuteReader();
+                conn.Close();
 
-               ((DetailView)View).ViewEditMode = ViewEditMode.View;
+                ((DetailView)View).ViewEditMode = ViewEditMode.View;
                 View.BreakLinksToControls();
                 View.CreateControls();
             }
@@ -421,7 +438,6 @@ namespace BSI_PR.Module.Web.Controllers
                 if (trx != null)
                 {
                     trx.PONum = null;
-                    SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ToString());
                     string getporef = "SELECT DocNum FROM APInvoiceDetails WHERE APInvoice = '" + trx.Oid + "' GROUP BY DocNum";
                     if (conn.State == ConnectionState.Open)
                     {
@@ -661,6 +677,22 @@ namespace BSI_PR.Module.Web.Controllers
                     base.Save(args);
                 }
 
+                string UpdAmount = "UPDATE T0 SET T0.Amount = T1.LineTotal, T0.FinalAmount = T1.LineTotal FROM PurchaseOrderJapan T0 " +
+                    "INNER JOIN " +
+                    "( " +
+                    "SELECT SUM(LineTotal) as LineTotal, PurchaseOrderJapan FRom PurchaseOrderJapanDetails D0 " +
+                    "WHERE D0.GCRecord is null and PurchaseOrderJapan is not null " +
+                    "GROUP BY PurchaseOrderJapan " +
+                    ") T1 on T0.OID = PurchaseOrderJapan " +
+                    "WHERE T0.DocNum = '" + newPO.DocNum +"'";
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                conn.Open();
+                SqlCommand cmdupd = new SqlCommand(UpdAmount, conn);
+                SqlDataReader readerupd = cmdupd.ExecuteReader();
+                conn.Close();
 
                 ((DetailView)View).ViewEditMode = ViewEditMode.View;
                 View.BreakLinksToControls();
