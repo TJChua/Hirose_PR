@@ -86,7 +86,7 @@ namespace BSI_PR.Module.Controllers
                     {
                         // Start ver 0.2
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and [Department.BoCode] = ? " +
-                            "and [DocDate] >= ?", "Approved", user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            "and [DocDate] >= ?", "Approved", user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                     else
@@ -99,7 +99,7 @@ namespace BSI_PR.Module.Controllers
                             //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ?", "Approved");
                             // Start ver 0.2
                             ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("Contains([WhoApprove],?) and [DocDate] >= ?", 
-                                user.UserName, DateTime.Now.AddDays(-7));
+                                user.UserName, DateTime.Now.AddMonths(-1));
                             // End ver 0.2
 
                         }
@@ -155,7 +155,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=?", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=? and [DocDate] >= ?", 
-                            user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
 
 
@@ -190,7 +190,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and Contains([AppUser],?)", 2, user.UserName);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and Contains([AppUser],?) and [DocDate] >= ?", 
-                            2, user.UserName, DateTime.Now.AddDays(-7));
+                            2, user.UserName, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                 }
@@ -208,7 +208,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=?", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=? and [DocDate] >= ?", 
-                            user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                     else if (ViewRole != null)
@@ -216,7 +216,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=?", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=? and [DocDate] >= ?", 
-                            user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
 
@@ -237,7 +237,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and [Department.BoCode] = ?", "Approved", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and [Department.BoCode] = ? and [DocDate] >= ?", 
-                            "Approved", user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            "Approved", user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                     else
@@ -249,7 +249,7 @@ namespace BSI_PR.Module.Controllers
                             // Start ver 0.2
                             //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("Contains([WhoApprove],?)", user.UserName);
                             ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("Contains([WhoApprove],?) and [DocDate] >= ?", 
-                                user.UserName, DateTime.Now.AddDays(-7));
+                                user.UserName, DateTime.Now.AddMonths(-1));
                             // End ver 0.2
 
                         }
@@ -269,7 +269,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and Contains([AppUser],?)", 2, user.UserName);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and Contains([AppUser],?) and [DocDate] >= ?", 
-                            2, user.UserName, DateTime.Now.AddDays(-7));
+                            2, user.UserName, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                 }
@@ -288,7 +288,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=?", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=? and [DocDate] >= ?", 
-                            user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                     else if (ViewRole != null)
@@ -296,7 +296,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=?", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=? and [DocDate] >= ?", 
-                            user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                 }
@@ -313,7 +313,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and [Department.BoCode] = ?", "Approved", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and [Department.BoCode] = ? and [DocDate] >= ?", 
-                            "Approved", user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            "Approved", user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                     else
@@ -325,7 +325,7 @@ namespace BSI_PR.Module.Controllers
                             // Start ver 0.2
                             //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("Contains([WhoApprove],?)", user.UserName);
                             ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse("Contains([WhoApprove],?) and [DocDate] >= ?", 
-                                user.UserName, DateTime.Now.AddDays(-7));
+                                user.UserName, DateTime.Now.AddMonths(-1));
                             // End ver 0.2
 
                         }
@@ -345,7 +345,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and Contains([AppUser],?)", 2, user.UserName);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [ApprovalStatus] = ? and Contains([AppUser],?) and [DocDate] >= ?", 
-                            2, user.UserName, DateTime.Now.AddDays(-7));
+                            2, user.UserName, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                 }
@@ -363,7 +363,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=?", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=? and [DocDate] >= ?", 
-                            user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                 }
@@ -380,7 +380,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=?", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=? and [DocDate] >= ?", 
-                            user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                 }
@@ -398,7 +398,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=?", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=? and [DocDate] >= ?", 
-                            user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                     else if (invReadOnlyrole != null)
@@ -406,7 +406,7 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.2
                         //((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=?", user.DefaultDept.BoCode);
                         ((ListView)View).CollectionSource.Criteria["Filter1"] = CriteriaOperator.Parse(" [Department.BoCode]=? and [DocDate] >= ?", 
-                            user.DefaultDept.BoCode, DateTime.Now.AddDays(-7));
+                            user.DefaultDept.BoCode, DateTime.Now.AddMonths(-1));
                         // End ver 0.2
                     }
                 }

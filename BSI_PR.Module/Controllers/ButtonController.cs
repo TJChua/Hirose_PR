@@ -199,7 +199,7 @@ namespace BSI_PR.Module.Controllers
 
                         // Start ver 0.13
                         this.DocumentDateFrom.Active.SetItemValue("Enabled", true);
-                        this.DocumentDateFrom.Value = DateTime.Today.AddDays(-7);
+                        this.DocumentDateFrom.Value = DateTime.Today.AddMonths(-1);
                         DocumentDateFrom.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
                         this.DocumentDateFrom.CustomizeControl += DateActionFrom_CustomizeControl;
 
@@ -353,7 +353,7 @@ namespace BSI_PR.Module.Controllers
                         DepartmantFilter.CustomizeControl += departmentaction_CustomizeControl;
 
                         this.DocumentDateFrom.Active.SetItemValue("Enabled", true);
-                        this.DocumentDateFrom.Value = DateTime.Today.AddDays(-7);
+                        this.DocumentDateFrom.Value = DateTime.Today.AddMonths(-1);
                         DocumentDateFrom.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
                         this.DocumentDateFrom.CustomizeControl += DateActionFrom_CustomizeControl;
 
@@ -474,7 +474,7 @@ namespace BSI_PR.Module.Controllers
 
                         // Start ver 0.13
                         this.DocumentDateFrom.Active.SetItemValue("Enabled", true);
-                        this.DocumentDateFrom.Value = DateTime.Today.AddDays(-7);
+                        this.DocumentDateFrom.Value = DateTime.Today.AddMonths(-1);
                         DocumentDateFrom.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
                         this.DocumentDateFrom.CustomizeControl += DateActionFrom_CustomizeControl;
 
