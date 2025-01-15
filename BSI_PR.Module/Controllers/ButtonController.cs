@@ -1007,7 +1007,7 @@ namespace BSI_PR.Module.Controllers
                     //genCon.UpdateBudget(trx.Department.Oid, trx.BudgetCategoryData.BudgetCategoryName,
                     //    trx.DocDate.Month, trx.DocDate.Year.ToString(), trx.Amount, pos, "Add");
                     genCon.UpdateBudget(trx.Department.Oid, trx.BudgetCategoryData.BudgetCategoryName,
-                        trx.DocDate.Month, trx.DocDate.Year.ToString(), amount, pos, "Add");
+                        trx.DocDate.Month, trx.DocDate.Year.ToString(), amount, pos, "Add", trx.BudgetCategoryData.PriKey);
                     // End ver 0.11
                 }
                 // End ver 0.9
@@ -1455,7 +1455,7 @@ namespace BSI_PR.Module.Controllers
                                 //genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName,
                                 //    po.DocDate.Month, po.DocDate.Year.ToString(), po.Amount, pos, "Cancel");
                                 genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName, 
-                                    po.DocDate.Month, po.DocDate.Year.ToString(), amount, pos, "Cancel");
+                                    po.DocDate.Month, po.DocDate.Year.ToString(), amount, pos, "Cancel", po.BudgetCategoryData.PriKey);
                                 // End ver 0.11
                             }
                             // End ver 0.9
@@ -2403,7 +2403,7 @@ namespace BSI_PR.Module.Controllers
                             //genCon.UpdateBudget(trx.Department.Oid, trx.BudgetCategoryData.BudgetCategoryName,
                             //    trx.DocDate.Month, trx.DocDate.Year.ToString(), trx.Amount, pos, "Cancel");
                             genCon.UpdateBudget(trx.Department.Oid, trx.BudgetCategoryData.BudgetCategoryName, 
-                                trx.DocDate.Month, trx.DocDate.Year.ToString(), amount, pos, "Cancel");
+                                trx.DocDate.Month, trx.DocDate.Year.ToString(), amount, pos, "Cancel", trx.BudgetCategoryData.PriKey);
                             // End ver 0.11
                         }
                     }

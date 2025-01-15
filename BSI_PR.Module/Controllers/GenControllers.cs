@@ -949,7 +949,7 @@ namespace BSI_PR.Module.Controllers
             }
         }
 
-        public int UpdateBudget(int department, string budgetcategoryname, int month, string year, decimal total, IObjectSpace os, string status)
+        public int UpdateBudget(int department, string budgetcategoryname, int month, string year, decimal total, IObjectSpace os, string status, string budgetprikey)
         {
             try
             {
@@ -986,7 +986,8 @@ namespace BSI_PR.Module.Controllers
                                     string budgetbalance = "SELECT SUM(T1.LineTotal * ISNULL(NULLIF(T0.CurrRate, 0), 1)) as Total, " +
                                         "YEAR(T0.DocDate) as [Year], MONTH(T0.DocDate) as [Month] FROM PurchaseOrder T0 " +
                                         "INNER JOIN PurchaseOrderDetails T1 on T0.OID = T1.PurchaseOrder " +
-                                        "WHERE ISNULL(BudgetCategoryData,'') <> '' AND T0.IsCancelled = 0 " +
+                                        "INNER JOIN vw_BudgetData T2 on T0.BudgetCategoryData = T2.Prikey " +
+                                        "WHERE ISNULL(BudgetCategoryData,'') <> '' AND T2.Prikey = '" + budgetprikey + "' AND T0.IsCancelled = 0 " +
                                         "AND T0.IsAccepted = 1 AND T0.IsRejected = 0 AND YEAR(T0.DocDate) = '" + year + "' AND MONTH(T0.DocDate) = " + month + " " +
                                         "GROUP BY YEAR(T0.DocDate), MONTH(T0.DocDate)";
                                     if (conn.State == ConnectionState.Open)
