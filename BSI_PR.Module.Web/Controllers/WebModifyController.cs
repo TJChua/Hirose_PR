@@ -463,6 +463,23 @@ namespace BSI_PR.Module.Web.Controllers
 
                 trxos.CommitChanges();
 
+                string UpdAmount = "UPDATE T0 SET T0.Amount = T1.LineTotal, T0.FinalAmount = T1.LineTotal FROM APInvoice T0 " +
+                    "INNER JOIN " +
+                    "( " +
+                    "SELECT SUM(LineAmount) as LineTotal, APInvoice FRom APInvoiceDetails D0 " +
+                    "WHERE D0.GCRecord is null and APInvoice is not null " +
+                    "GROUP BY APInvoice " +
+                    ") T1 on T0.OID = APInvoice " +
+                    "WHERE T0.DocNum = '" + trx.DocNum + "'";
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                conn.Open();
+                SqlCommand cmdupd = new SqlCommand(UpdAmount, conn);
+                SqlDataReader readerupd = cmdupd.ExecuteReader();
+                conn.Close();
+
                 ((DetailView)View).ViewEditMode = ViewEditMode.View;
                 View.BreakLinksToControls();
                 View.CreateControls();
