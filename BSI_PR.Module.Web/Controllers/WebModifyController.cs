@@ -289,11 +289,62 @@ namespace BSI_PR.Module.Web.Controllers
                     base.Save(args);
                 }
 
-                string UpdAmount = "UPDATE T0 SET T0.Amount = T1.LineTotal, T0.FinalAmount = T1.LineTotal FROM PurchaseOrder T0 " +
+                if (newPO.DocDiscAmount > 0)
+                {
+                    string Updtaxamount = "UPDATE T0 SET T0.TotalTaxAmount = T2.TaxAmount " +
+                        "FROM PurchaseOrder T0 " +
+                        "INNER JOIN " +
+                        "( " +
+                        "SELECT SUM(ISNULL(D0.LineTotal, 0) - (ISNULL(D1.DocDiscAmount, 0) / " +
+                        "D2.LineTotal * ISNULL(D0.LineTotal, 0))) * (ISNULL(D0.TaxRate, 0) / 100) as TaxAmount, " +
+                        "D0.PurchaseOrder FRom PurchaseOrderDetails D0 " +
+                        "INNER JOIN PurchaseOrder D1 on D0.PurchaseOrder = D1.OID " +
+                        "INNER JOIN " +
+                        "( " +
+                        "SELECT SUM(ISNULL(LineTotal, 0)) as LineTotal, PurchaseOrder FRom PurchaseOrderDetails D0 " +
+                        "WHERE D0.GCRecord is null and PurchaseOrder is not null and D0.PurchaseOrder = '" + newPO.Oid + "' " +
+                        "GROUP BY PurchaseOrder " +
+                        ") D2 on D1.OID = D2.PurchaseOrder " +
+                        "WHERE D0.GCRecord is null and D0.PurchaseOrder is not null and D0.PurchaseOrder = '" + newPO.Oid + "' " +
+                        "GROUP BY D0.PurchaseOrder, D1.DocDiscAmount, D2.LineTotal, ISNULL(D0.TaxRate, 0) " +
+                        ") T2 on T0.OID = T2.PurchaseOrder " +
+                        "WHERE T0.DocNum = '" + newPO.DocNum + "'";
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                    conn.Open();
+                    SqlCommand cmdtax = new SqlCommand(Updtaxamount, conn);
+                    SqlDataReader readertax = cmdtax.ExecuteReader();
+                    conn.Close();
+                }
+                else
+                {
+                    string Updtaxamount = "UPDATE T0 SET T0.TotalTaxAmount = T1.TaxAmount " +
+                        "FROM PurchaseOrder T0 " +
+                        "INNER JOIN " +
+                        "( " +
+                        "SELECT SUM(ISNULL(TaxAmount, 0)) as TaxAmount, PurchaseOrder FRom PurchaseOrderDetails D0 " +
+                        "WHERE D0.GCRecord is null and PurchaseOrder is not null and D0.PurchaseOrder = '" + newPO.Oid + "' " +
+                        "GROUP BY PurchaseOrder " +
+                        ") T1 on T0.OID = PurchaseOrder " +
+                        "WHERE T0.DocNum = '" + newPO.DocNum + "'";
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                    conn.Open();
+                    SqlCommand cmdtax = new SqlCommand(Updtaxamount, conn);
+                    SqlDataReader readertax = cmdtax.ExecuteReader();
+                    conn.Close();
+                }
+
+                string UpdAmount = "UPDATE T0 SET T0.Amount = T1.LineTotal, T0.FinalAmount = T1.LineTotal - ISNULL(T0.DocDiscAmount, 0) + ISNULL(TotalTaxAmount, 0) " +
+                    "FROM PurchaseOrder T0 " +
                     "INNER JOIN " +
                     "( " +
-                    "SELECT SUM(LineTotal) as LineTotal, PurchaseOrder FRom PurchaseOrderDetails D0 " +
-                    "WHERE D0.GCRecord is null and PurchaseOrder is not null " +
+                    "SELECT SUM(ISNULL(LineTotal, 0)) as LineTotal, PurchaseOrder FRom PurchaseOrderDetails D0 " +
+                    "WHERE D0.GCRecord is null and PurchaseOrder is not null and D0.PurchaseOrder = '" + newPO.Oid + "' " +
                     "GROUP BY PurchaseOrder " +
                     ") T1 on T0.OID = PurchaseOrder " +
                     "WHERE T0.DocNum = '" + newPO.DocNum + "'";
@@ -463,11 +514,62 @@ namespace BSI_PR.Module.Web.Controllers
 
                 trxos.CommitChanges();
 
-                string UpdAmount = "UPDATE T0 SET T0.Amount = T1.LineTotal, T0.FinalAmount = T1.LineTotal FROM APInvoice T0 " +
+                if (trx.DocDiscAmount > 0)
+                {
+                    string Updtaxamount = "UPDATE T0 SET T0.TotalTaxAmount = T2.TaxAmount " +
+                        "FROM APInvoice T0 " +
+                        "INNER JOIN " +
+                        "( " +
+                        "SELECT SUM(ISNULL(D0.LineAmount, 0) - (ISNULL(D1.DocDiscAmount, 0) / D2.LineTotal * ISNULL(D0.LineAmount, 0))) " +
+                        "* (ISNULL(D0.TaxRate, 0) / 100) as TaxAmount, " +
+                        "D0.APInvoice FRom APInvoiceDetails D0 " +
+                        "INNER JOIN APInvoice D1 on D0.APInvoice = D1.OID " +
+                        "INNER JOIN " +
+                        "( " +
+                        "SELECT SUM(ISNULL(LineAmount, 0)) as LineTotal, APInvoice FRom APInvoiceDetails D0 " +
+                        "WHERE D0.GCRecord is null and APInvoice is not null and D0.APInvoice = '" + trx.Oid + "' " +
+                        "GROUP BY APInvoice " +
+                        ") D2 on D1.OID = D2.APInvoice " +
+                        "WHERE D0.GCRecord is null and D0.APInvoice is not null and D0.APInvoice = '" + trx.Oid + "' " +
+                        "GROUP BY D0.APInvoice, D1.DocDiscAmount, D2.LineTotal, ISNULL(D0.TaxRate, 0) " +
+                        ") T2 on T0.OID = T2.APInvoice " +
+                        "WHERE T0.DocNum = '" + trx.DocNum + "'";
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                    conn.Open();
+                    SqlCommand cmdtax = new SqlCommand(Updtaxamount, conn);
+                    SqlDataReader readertax = cmdtax.ExecuteReader();
+                    conn.Close();
+                }
+                else
+                {
+                    string Updtaxamount = "UPDATE T0 SET T0.TotalTaxAmount = T1.TaxAmount " +
+                        "FROM APInvoice T0 " +
+                        "INNER JOIN " +
+                        "( " +
+                        "SELECT SUM(ISNULL(TaxAmount, 0)) as TaxAmount, APInvoice FRom APInvoiceDetails D0 " +
+                        "WHERE D0.GCRecord is null and APInvoice is not null and D0.APInvoice = '" + trx.Oid + "' " +
+                        "GROUP BY APInvoice " +
+                        ") T1 on T0.OID = APInvoice " +
+                        "WHERE T0.DocNum = '" + trx.DocNum + "'";
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                    conn.Open();
+                    SqlCommand cmdtax = new SqlCommand(Updtaxamount, conn);
+                    SqlDataReader readertax = cmdtax.ExecuteReader();
+                    conn.Close();
+                }
+
+                string UpdAmount = "UPDATE T0 SET T0.Amount = T1.LineTotal, T0.FinalAmount = T1.LineTotal - ISNULL(T0.DocDiscAmount, 0) + ISNULL(TotalTaxAmount, 0) " +
+                    "FROM APInvoice T0 " +
                     "INNER JOIN " +
                     "( " +
-                    "SELECT SUM(LineAmount) as LineTotal, APInvoice FRom APInvoiceDetails D0 " +
-                    "WHERE D0.GCRecord is null and APInvoice is not null " +
+                    "SELECT SUM(ISNULL(LineAmount, 0)) as LineTotal, APInvoice FRom APInvoiceDetails D0 " +
+                    "WHERE D0.GCRecord is null and APInvoice is not null and D0.APInvoice = '" + trx.Oid + "' " +
                     "GROUP BY APInvoice " +
                     ") T1 on T0.OID = APInvoice " +
                     "WHERE T0.DocNum = '" + trx.DocNum + "'";
@@ -694,14 +796,65 @@ namespace BSI_PR.Module.Web.Controllers
                     base.Save(args);
                 }
 
-                string UpdAmount = "UPDATE T0 SET T0.Amount = T1.LineTotal, T0.FinalAmount = T1.LineTotal FROM PurchaseOrderJapan T0 " +
+                if (newPO.DocDiscAmount > 0)
+                {
+                    string Updtaxamount = "UPDATE T0 SET T0.TotalTaxAmount = T2.TaxAmount " +
+                        "FROM PurchaseOrderJapan T0 " +
+                        "INNER JOIN " +
+                        "( " +
+                        "SELECT SUM(ISNULL(D0.LineTotal, 0) - (ISNULL(D1.DocDiscAmount, 0) / " +
+                        "D2.LineTotal * ISNULL(D0.LineTotal, 0))) * (ISNULL(D0.TaxRate, 0) / 100) as TaxAmount, " +
+                        "D0.PurchaseOrderJapan FRom PurchaseOrderJapanDetails D0 " +
+                        "INNER JOIN PurchaseOrderJapan D1 on D0.PurchaseOrderJapan = D1.OID " +
+                        "INNER JOIN " +
+                        "( " +
+                        "SELECT SUM(ISNULL(LineTotal, 0)) as LineTotal, PurchaseOrderJapan FRom PurchaseOrderJapanDetails D0 " +
+                        "WHERE D0.GCRecord is null and PurchaseOrderJapan is not null and D0.PurchaseOrderJapan = '" + newPO.Oid + "' " +
+                        "GROUP BY PurchaseOrderJapan " +
+                        ") D2 on D1.OID = D2.PurchaseOrderJapan " +
+                        "WHERE D0.GCRecord is null and D0.PurchaseOrderJapan is not null and D0.PurchaseOrderJapan = '" + newPO.Oid + "' " +
+                        "GROUP BY D0.PurchaseOrderJapan, D1.DocDiscAmount, D2.LineTotal, ISNULL(D0.TaxRate, 0) " +
+                        ") T2 on T0.OID = T2.PurchaseOrderJapan " +
+                        "WHERE T0.DocNum = '" + newPO.DocNum + "'";
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                    conn.Open();
+                    SqlCommand cmdtax = new SqlCommand(Updtaxamount, conn);
+                    SqlDataReader readertax = cmdtax.ExecuteReader();
+                    conn.Close();
+                }
+                else
+                {
+                    string Updtaxamount = "UPDATE T0 SET T0.TotalTaxAmount = T1.TaxAmount " +
+                        "FROM PurchaseOrderJapan T0 " +
+                        "INNER JOIN " +
+                        "( " +
+                        "SELECT SUM(ISNULL(TaxAmount, 0)) as TaxAmount, PurchaseOrderJapan FRom PurchaseOrderJapanDetails D0 " +
+                        "WHERE D0.GCRecord is null and PurchaseOrderJapan is not null and D0.PurchaseOrderJapan = '" + newPO.Oid + "' " +
+                        "GROUP BY PurchaseOrderJapan " +
+                        ") T1 on T0.OID = PurchaseOrderJapan " +
+                        "WHERE T0.DocNum = '" + newPO.DocNum + "'";
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                    conn.Open();
+                    SqlCommand cmdtax = new SqlCommand(Updtaxamount, conn);
+                    SqlDataReader readertax = cmdtax.ExecuteReader();
+                    conn.Close();
+                }
+
+                string UpdAmount = "UPDATE T0 SET T0.Amount = T1.LineTotal, T0.FinalAmount = T1.LineTotal - ISNULL(T0.DocDiscAmount, 0) + ISNULL(TotalTaxAmount, 0) " +
+                    "FROM PurchaseOrderJapan T0 " +
                     "INNER JOIN " +
                     "( " +
-                    "SELECT SUM(LineTotal) as LineTotal, PurchaseOrderJapan FRom PurchaseOrderJapanDetails D0 " +
-                    "WHERE D0.GCRecord is null and PurchaseOrderJapan is not null " +
+                    "SELECT SUM(ISNULL(LineTotal, 0)) as LineTotal, PurchaseOrderJapan FRom PurchaseOrderJapanDetails D0 " +
+                    "WHERE D0.GCRecord is null and PurchaseOrderJapan is not null and D0.PurchaseOrderJapan = '" + newPO.Oid + "' " +
                     "GROUP BY PurchaseOrderJapan " +
                     ") T1 on T0.OID = PurchaseOrderJapan " +
-                    "WHERE T0.DocNum = '" + newPO.DocNum +"'";
+                    "WHERE T0.DocNum = '" + newPO.DocNum + "'";
                 if (conn.State == ConnectionState.Open)
                 {
                     conn.Close();
