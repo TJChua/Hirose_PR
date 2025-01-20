@@ -1866,17 +1866,23 @@ namespace BSI_PR.Module.Controllers
 
                 //        ios.CommitChanges();
 
-                selectedObject.IsSubmit = true;
-                APInvoiceDocStatues ds = ObjectSpace.CreateObject<APInvoiceDocStatues>();
-                ds.DocStatus = "Submit";
-                ds.DocRemarks = p.ParamString;
-                selectedObject.APInvoiceDocStatues.Add(ds);
+                //selectedObject.IsSubmit = true;
+                //APInvoiceDocStatues ds = ObjectSpace.CreateObject<APInvoiceDocStatues>();
+                //ds.DocStatus = "Submit";
+                //ds.DocRemarks = p.ParamString;
+                //selectedObject.APInvoiceDocStatues.Add(ds);
 
                 ObjectSpace.CommitChanges();
                 ObjectSpace.Refresh();
 
                 IObjectSpace os = Application.CreateObjectSpace();
                 APInvoice prtrx = os.FindObject<APInvoice>(new BinaryOperator("Oid", selectedObject.Oid));
+
+                prtrx.IsSubmit = true;
+                APInvoiceDocStatues ds = os.CreateObject<APInvoiceDocStatues>();
+                ds.DocStatus = "Submit";
+                ds.DocRemarks = p.ParamString;
+                prtrx.APInvoiceDocStatues.Add(ds);
 
                 foreach (APInvoiceDetails dtl in prtrx.APInvoiceDetails)
                 {
@@ -1932,6 +1938,9 @@ namespace BSI_PR.Module.Controllers
                         po.PurchaseOrderDocStatuses.Add(pods);
                     }
                     POos.CommitChanges();
+
+                    os.CommitChanges();
+                    os.Refresh();
                 }
 
                 //    }
@@ -1946,9 +1955,9 @@ namespace BSI_PR.Module.Controllers
                 //}
                 #endregion
 
-                //IObjectSpace os = Application.CreateObjectSpace();
-                //APInvoice prtrx = os.FindObject<APInvoice>(new BinaryOperator("Oid", selectedObject.Oid));
-                genCon.openNewView(os, prtrx, ViewEditMode.View);
+                IObjectSpace invos = Application.CreateObjectSpace();
+                APInvoice trx = invos.FindObject<APInvoice>(new BinaryOperator("Oid", selectedObject.Oid));
+                genCon.openNewView(invos, trx, ViewEditMode.View);
                 genCon.showMsg("Successful", "Submit Done.", InformationType.Success);
 
                 // Start ver 0.3
