@@ -351,7 +351,12 @@ namespace BSI_PR.Module.Controllers
                         this.DepartmantFilter.Active.SetItemValue("Enabled", true);
                         // Start ver 0.13
                         DepartmantFilter.CustomizeControl += departmentaction_CustomizeControl;
+                        // End ver 0.13
+                    }
 
+                    // Start ver 0.13
+                    if (View.Id == "APInvoice_ListView")
+                    {
                         this.DocumentDateFrom.Active.SetItemValue("Enabled", true);
                         this.DocumentDateFrom.Value = DateTime.Today.AddMonths(-1);
                         DocumentDateFrom.PaintStyle = DevExpress.ExpressApp.Templates.ActionItemPaintStyle.Caption;
@@ -363,8 +368,8 @@ namespace BSI_PR.Module.Controllers
                         this.DocumentDateTo.CustomizeControl += DateActionTo_CustomizeControl;
 
                         this.DocumentFilter.Active.SetItemValue("Enabled", true);
-                        // End ver 0.13
                     }
+                    // End ver 0.13
                 }
             }
 
