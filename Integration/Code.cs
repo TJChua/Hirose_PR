@@ -171,7 +171,7 @@ namespace Integration
                                     {
                                         if (SendEmail(emailsubject, emailbody, ToEmails) == 1)
                                         {
-
+                                            WriteLog("[Error]", emailaddress + " email sent.");
                                         }
                                     }
                                 }
