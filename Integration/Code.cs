@@ -70,7 +70,7 @@ namespace Integration
                     IObjectSpace securedObjectSpace = ObjectSpaceProvider.CreateObjectSpace();
 
                     IList<PurchaseOrder> POlist = ListObjectSpace.GetObjects<PurchaseOrder>
-                        (CriteriaOperator.Parse("NextApprover is not null AND ApprovalStatus = ?", 1));
+                        (CriteriaOperator.Parse("NextApprover is not null AND ApprovalStatus = ?", 2));
 
 
                     string userpos = null;
@@ -89,7 +89,7 @@ namespace Integration
                             {
                                 if (users != null)
                                 {
-                                    string[] user = users.Split('/');
+                                    string[] user = users.Split('?');
 
                                     foreach (string dtluser in user)
                                     {
@@ -101,23 +101,23 @@ namespace Integration
 
                                     if (addusers == true)
                                     {
-                                        users = users + dtl2 + "/";
+                                        users = users + dtl2 + "?";
                                     }
                                 }
                                 else
                                 {
-                                    users = users + dtl2 + "/";
+                                    users = users + dtl2 + "?";
                                 }
 
-                                userpos = userpos + dtl2 + "@" + podtl.DocNum + "/";
+                                userpos = userpos + dtl2 + "@" + podtl.DocNum + "?";
                             }
                         }
                     }
 
                     if (userpos != null)
                     {
-                        string[] userpo = userpos.Split('/');
-                        string[] finaluser = users.Split('/');
+                        string[] userpo = userpos.Split('?');
+                        string[] finaluser = users.Split('?');
 
                         foreach (string dtlfinal in finaluser)
                         {
@@ -171,7 +171,7 @@ namespace Integration
                                     {
                                         if (SendEmail(emailsubject, emailbody, ToEmails) == 1)
                                         {
-                                            WriteLog("[Error]", emailaddress + " email sent.");
+                                            WriteLog("[INFO]", emailaddress + " email sent.");
                                         }
                                     }
                                 }
