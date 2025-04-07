@@ -283,7 +283,7 @@ namespace BSI_PR.Module.BusinessObjects
                         }
                         else
                         {
-                            CurrRate = 0;
+                            CurrRate = 1;
                         }
                     }
                 }
@@ -333,7 +333,7 @@ namespace BSI_PR.Module.BusinessObjects
                             }
                             else
                             {
-                                CurrRate = 0;
+                                CurrRate = 1;
                             }
                         }
 
