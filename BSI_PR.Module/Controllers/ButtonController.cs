@@ -1447,23 +1447,6 @@ namespace BSI_PR.Module.Controllers
                                 System.Environment.NewLine + "(Reject User: " + user.FName + ")" +
                                 System.Environment.NewLine + "(Reason: Approval Rejected)";
                             ds.CreateUser = pos.GetObjectByKey<SystemUsers>(Guid.Parse(" 02868725-036A-483B-A123-2932180D4A03"));
-
-                            // Start ver 0.9
-                            if (po.BudgetCategoryData != null)
-                            {
-                                // Start ver 0.11
-                                decimal amount = po.Amount;
-                                if (po.CurrRate != 0)
-                                {
-                                    amount = amount * (decimal)po.CurrRate;
-                                }
-                                //genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName,
-                                //    po.DocDate.Month, po.DocDate.Year.ToString(), po.Amount, pos, "Cancel");
-                                genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName, 
-                                    po.DocDate.Month, po.DocDate.Year.ToString(), amount, pos, "Cancel", po.BudgetCategoryData.PriKey);
-                                // End ver 0.11
-                            }
-                            // End ver 0.9
                         }
                         else
                         {
@@ -1474,6 +1457,26 @@ namespace BSI_PR.Module.Controllers
 
                         pos.CommitChanges();
                         pos.Refresh();
+
+                        // Start ver 0.9
+                        if (appstatus == ApprovalStatuses.Rejected)
+                        {
+                            if (po.BudgetCategoryData != null)
+                            {
+                                // Start ver 0.11
+                                decimal amount = po.Amount;
+                                if (po.CurrRate != 0)
+                                {
+                                    amount = amount * (decimal)po.CurrRate;
+                                }
+                                //genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName,
+                                //    po.DocDate.Month, po.DocDate.Year.ToString(), po.Amount, pos, "Cancel");
+                                genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName,
+                                    po.DocDate.Month, po.DocDate.Year.ToString(), amount, pos, "Cancel", po.BudgetCategoryData.PriKey);
+                                // End ver 0.11
+                            }
+                        }
+                        // End ver 0.9
 
                         totaldoc++;
 
