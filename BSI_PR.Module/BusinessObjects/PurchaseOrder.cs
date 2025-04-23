@@ -564,30 +564,37 @@ namespace BSI_PR.Module.BusinessObjects
         {
             get
             {
-                decimal rtn = 0;
-                decimal TaxSum = 0;
-
-                if (DocDiscAmount > 0)
+                if (Session.IsObjectsSaving != true)
                 {
-                    decimal subtotal = 0;
-                    if (PurchaseOrderDetails != null)
-                        subtotal += PurchaseOrderDetails.Sum(p => p.LineTotal);
+                    decimal rtn = 0;
+                    decimal TaxSum = 0;
 
-                    foreach (PurchaseOrderDetails dtl in PurchaseOrderDetails)
+                    if (DocDiscAmount > 0)
                     {
-                        TaxSum += Math.Round(((dtl.LineTotal - (DocDiscAmount / subtotal * dtl.LineTotal)) * (dtl.TaxRate / 100)),2);
+                        decimal subtotal = 0;
+                        if (PurchaseOrderDetails != null)
+                            subtotal += PurchaseOrderDetails.Sum(p => p.LineTotal);
+
+                        foreach (PurchaseOrderDetails dtl in PurchaseOrderDetails)
+                        {
+                            TaxSum += Math.Round(((dtl.LineTotal - (DocDiscAmount / subtotal * dtl.LineTotal)) * (dtl.TaxRate / 100)), 2);
+                        }
+
+                    }
+                    else
+                    {
+                        if (PurchaseOrderDetails != null)
+                            rtn += PurchaseOrderDetails.Sum(p => p.TaxAmount);
+
+                        TaxSum = rtn;
                     }
 
+                    return TaxSum;
                 }
                 else
                 {
-                    if (PurchaseOrderDetails != null)
-                        rtn += PurchaseOrderDetails.Sum(p => p.TaxAmount);
-
-                    TaxSum = rtn;
+                    return _TotalTaxAmount;
                 }
-
-                return TaxSum;
             }
             set
             {
@@ -604,19 +611,26 @@ namespace BSI_PR.Module.BusinessObjects
         {
             get
             {
+                if (Session.IsObjectsSaving != true)
+                {
 
-                decimal final = 0;
-                //if (_DocDisc > 0)
-                //{
+                    decimal final = 0;
+                    //if (_DocDisc > 0)
+                    //{
                     //final = Math.Round(TotalTaxAmount + (((100 - _DocDisc) / 100) * Amount), 2);
-                    final = Math.Round((Amount -DocDiscAmount + TotalTaxAmount),2);
-                //}
-                //else
-                //{
-                //    final = Math.Round((TotalTaxAmount + Amount), 2);
+                    final = Math.Round((Amount - DocDiscAmount + TotalTaxAmount), 2);
+                    //}
+                    //else
+                    //{
+                    //    final = Math.Round((TotalTaxAmount + Amount), 2);
 
-                //}
-                return final;
+                    //}
+                    return final;
+                }
+                else
+                {
+                    return _FinalAmount;
+                }
 
             }
             set

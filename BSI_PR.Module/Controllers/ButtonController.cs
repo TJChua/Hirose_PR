@@ -1461,18 +1461,21 @@ namespace BSI_PR.Module.Controllers
                         // Start ver 0.9
                         if (appstatus == ApprovalStatuses.Rejected)
                         {
+                            IObjectSpace os = Application.CreateObjectSpace();
+                            PurchaseOrder prtrx = os.FindObject<PurchaseOrder>(new BinaryOperator("Oid", dtl.Oid));
+
                             if (po.BudgetCategoryData != null)
                             {
                                 // Start ver 0.11
-                                decimal amount = po.Amount;
+                                decimal amount = prtrx.Amount;
                                 if (po.CurrRate != 0)
                                 {
-                                    amount = amount * (decimal)po.CurrRate;
+                                    amount = amount * (decimal)prtrx.CurrRate;
                                 }
                                 //genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName,
                                 //    po.DocDate.Month, po.DocDate.Year.ToString(), po.Amount, pos, "Cancel");
-                                genCon.UpdateBudget(po.Department.Oid, po.BudgetCategoryData.BudgetCategoryName,
-                                    po.DocDate.Month, po.DocDate.Year.ToString(), amount, pos, "Cancel", po.BudgetCategoryData.PriKey);
+                                genCon.UpdateBudget(prtrx.Department.Oid, prtrx.BudgetCategoryData.BudgetCategoryName,
+                                    prtrx.DocDate.Month, prtrx.DocDate.Year.ToString(), amount, os, "Cancel", prtrx.BudgetCategoryData.PriKey);
                                 // End ver 0.11
                             }
                         }
