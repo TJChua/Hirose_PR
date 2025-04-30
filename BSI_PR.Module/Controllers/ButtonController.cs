@@ -1557,11 +1557,6 @@ namespace BSI_PR.Module.Controllers
                         #endregion
                     }
 
-                    //IObjectSpace os = Application.CreateObjectSpace();
-                    //PurchaseOrder prtrx = os.FindObject<PurchaseOrder>(new BinaryOperator("Oid", selectedObject.Oid));
-                    //genCon.openNewView(os, prtrx, ViewEditMode.View);
-                    //genCon.showMsg("Successful", "Approval Done.", InformationType.Success);
-
                     ObjectSpace.CommitChanges(); //This line persists created object(s).
                     ObjectSpace.Refresh();
 
