@@ -68,7 +68,7 @@ namespace BSI_PR.Module.BusinessObjects
         [ImmediatePostData]
         [ModelDefault("DisplayFormat", "{0:n2}")]
         [ModelDefault("EditMask", "{0:n2}")]
-        [RuleValueComparison("", DefaultContexts.Save, ValueComparisonType.GreaterThan, "0")]
+        [RuleValueComparison("", DefaultContexts.Save, ValueComparisonType.GreaterThanOrEqual, "0")]
         [Index(5), VisibleInListView(true), VisibleInDetailView(true), VisibleInLookupListView(false)]
         [XafDisplayName("Budget")]
         public decimal Budget
