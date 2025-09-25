@@ -1,36 +1,38 @@
 ﻿using BSI_PR.Module.BusinessObjects;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
 using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Actions;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Layout;
+using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.Model.NodeGenerators;
 using DevExpress.ExpressApp.SystemModule;
 using DevExpress.ExpressApp.Templates;
 using DevExpress.ExpressApp.Utils;
+using DevExpress.ExpressApp.Web;
 using DevExpress.ExpressApp.Web.SystemModule;
+using DevExpress.ExpressApp.Web.Templates.ActionContainers;
+using DevExpress.ExpressApp.Web.Templates.ActionContainers.Menu;
 using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.Base;
+using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
 using DevExpress.Persistent.Validation;
+using DevExpress.Web;
+using DevExpress.Xpo;
 using DevExpress.Xpo.DB;
+using SAPbobsCOM;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
-using CrystalDecisions.Shared;
-using CrystalDecisions.CrystalReports.Engine;
 using System.Web;
-using System.IO;
-using DevExpress.ExpressApp.Web;
-using System.Configuration;
-using DevExpress.Persistent.BaseImpl;
-using DevExpress.ExpressApp.Model;
-using System.Data.SqlClient;
-using System.Data;
-using DevExpress.ExpressApp.Web.Templates.ActionContainers.Menu;
-using DevExpress.ExpressApp.Web.Templates.ActionContainers;
-using DevExpress.Web;
 
 
 #region update log
@@ -46,6 +48,7 @@ using DevExpress.Web;
 // TJC - 20231109 - budget convert with exchange rate ver 0.11
 // TJC - 20240126 - add export excel report ver 0.12
 // TJC - 20240926 - new enhancement - ver 0.13
+// TJC - 20250925 - block not allow submit if current month budget no configure - ver 0.14
 
 #endregion
 
@@ -838,6 +841,38 @@ namespace BSI_PR.Module.Controllers
                 StringParameters p = (StringParameters)e.PopupWindow.View.CurrentObject;
 
                 if (p.IsErr) return;
+
+                // Start ver 0.14
+                bool budgetavail = false;
+                BudgetCategory budget = ObjectSpace.FindObject<BudgetCategory>
+                         (CriteriaOperator.Parse("Department.Oid = ? and IsActive = ?", selectedObject.Department.Oid, "True"));
+
+                if (budget != null)
+                {
+                    foreach (BudgetCategoryDetails dtl in budget.BudgetCategoryDetails)
+                    {
+                        if (dtl.BudgetCategory.BudgetCategoryName == selectedObject.BudgetCategoryData.BudgetCategoryName)
+                        {
+                            budgetavail = true;
+                            BudgetCategoryAmount budgetamt = ObjectSpace.FindObject<BudgetCategoryAmount>
+                                (CriteriaOperator.Parse("BudgetCategoryDetails = ? and Month = ? and Year = ?", 
+                                dtl.Oid, selectedObject.DocDate.Month - 1, selectedObject.DocDate.Year));
+
+                            if (budgetamt == null)
+                            {
+                                genCon.showMsg("Error", "Current month budget no configure.", InformationType.Error);
+                                return;
+                            }
+                        }
+                    }
+
+                    if (budgetavail == false)
+                    {
+                        genCon.showMsg("Error", "Budget for the department no configure.", InformationType.Error);
+                        return;
+                    }
+                }
+                // End ver 0.14
 
                 // Start ver 0.10
                 if (selectedObject.BudgetCategoryData != null)
