@@ -31,6 +31,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Web;
 
@@ -49,7 +50,7 @@ using System.Web;
 // TJC - 20240126 - add export excel report ver 0.12
 // TJC - 20240926 - new enhancement - ver 0.13
 // TJC - 20250925 - block not allow submit if current month budget no configure - ver 0.14
-
+// TJC - 20251009 - not all reject if remarks no missing - ver 0.15
 #endregion
 
 namespace BSI_PR.Module.Controllers
@@ -1406,6 +1407,14 @@ namespace BSI_PR.Module.Controllers
                     return;
                 }
                 // End ver 0.13
+
+                // Start ver 0.15
+                if ((p.ParamString == null || p.ParamString == "") && p.AppStatus == ApprovalActions.No)
+                {
+                    genCon.showMsg("Fail", "Not allow reject due to missing remarks.", InformationType.Error);
+                    return;
+                }
+                // End ver 0.15
 
                 foreach (PurchaseOrder dtl in e.SelectedObjects)
                 {
@@ -3560,6 +3569,14 @@ namespace BSI_PR.Module.Controllers
                     return;
                 }
                 // End ver 0.13
+
+                // Start ver 0.15
+                if ((p.ParamString == null || p.ParamString == "") && p.AppStatus == ApprovalActions.No)
+                {
+                    genCon.showMsg("Fail", "Not allow reject due to missing remarks.", InformationType.Error);
+                    return;
+                }
+                // End ver 0.15
 
                 foreach (PurchaseOrderJapan dtl in e.SelectedObjects)
                 {

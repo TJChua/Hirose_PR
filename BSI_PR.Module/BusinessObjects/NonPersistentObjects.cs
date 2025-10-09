@@ -179,6 +179,7 @@ namespace BSI_PR.Module.BusinessObjects
         }
         // Add this property as the key member in the CustomizeTypesInfo event
         [XafDisplayName("Approval Status")]
+        [ImmediatePostData]
         [Appearance("Approved", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide, Criteria = "IsErr")]
         public ApprovalActions AppStatus { get; set; }
 
@@ -186,6 +187,7 @@ namespace BSI_PR.Module.BusinessObjects
         // Start ver 0.1
         [Size(500)]
         // End ver 0.1
+        [RuleRequiredField(DefaultContexts.Save,TargetCriteria = "AppStatus = 2")]
         [Appearance("ParamString", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide, Criteria = "IsErr")]
         public string ParamString { get; set; }
 

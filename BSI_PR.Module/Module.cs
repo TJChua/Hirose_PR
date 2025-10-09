@@ -28,9 +28,26 @@ namespace BSI_PR.Module {
             ModuleUpdater updater = new DatabaseUpdate.Updater(objectSpace, versionFromDB);
             return new ModuleUpdater[] { updater };
         }
+
+        private void Application_ObjectSpaceCreated(object sender, ObjectSpaceCreatedEventArgs e)
+        {
+            CompositeObjectSpace compositeObjectSpace = e.ObjectSpace as CompositeObjectSpace;
+            if (compositeObjectSpace != null)
+            {
+                if (!(compositeObjectSpace.Owner is CompositeObjectSpace))
+                {
+                    compositeObjectSpace.PopulateAdditionalObjectSpaces((XafApplication)sender);
+                }
+            }
+        }
+
         public override void Setup(XafApplication application) {
             base.Setup(application);
             // Manage various aspects of the application UI and behavior at the module level.
+
+            #region Show Persistent Objects in a Non-Persistent Object
+            application.ObjectSpaceCreated += Application_ObjectSpaceCreated;
+            #endregion
         }
         public override void CustomizeTypesInfo(ITypesInfo typesInfo) {
             base.CustomizeTypesInfo(typesInfo);
