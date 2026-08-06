@@ -1867,19 +1867,39 @@ namespace BSI_PR.Module.Controllers
 
                 // Start ver 0.13
                 SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ToString());
-                string command = "SELECT T0.DocNum, T1.DocNum, ISNULL(T2.POTotal, 0) + ISNULL(T3.INVTotal, 0) as Total FROM APInvoice T0 " +
+                //string command = "SELECT T0.DocNum, T1.DocNum, ISNULL(T2.POTotal, 0) + ISNULL(T3.INVTotal, 0) as Total FROM APInvoice T0 " +
+                //    "INNER JOIN APInvoiceDetails T1 on T0.OID = T1.APInvoice " +
+                //    "LEFT JOIN ( " +
+                //    "SELECT P0.DocNum, SUM(P0.FinalAmount) as POTotal FROM PurchaseOrder P0 " +
+                //    "WHERE P0.GCRecord is null " +
+                //    "GROUP BY P0.DocNum) T2 on T2.DocNum = T1.DocNum " +
+                //    "LEFT JOIN ( " +
+                //    "SELECT T0.DocNum, SUM(T0.LineAmount) as INVTotal FROM APInvoiceDetails T0 " +
+                //    "INNER JOIN APInvoice T1 on T0.APInvoice = T1.OID " +
+                //    "WHERE T0.GCRecord is null and IsSubmit = 1 and IsCancel = 0 " +
+                //    "GROUP BY T0.DocNum) T3 on T2.DocNum = T3.DocNum " +
+                //    "WHERE T0.DocNum = '" + selectedObject.DocNum + "' " +
+                //    "GROUP BY T0.DocNum, T1.DocNum, ISNULL(T2.POTotal, 0), ISNULL(T3.INVTotal, 0)";
+                string command = "SELECT T0.DocNum, T1.DocNum, SUM(ISNULL(T2.RemainTotal, 0)) - SUM(ISNULL(T1.LineAmount, 0)) as Balance " +
+                    "FROM APInvoice T0 " +
                     "INNER JOIN APInvoiceDetails T1 on T0.OID = T1.APInvoice " +
-                    "LEFT JOIN ( " +
-                    "SELECT P0.DocNum, SUM(P0.FinalAmount) as POTotal FROM PurchaseOrder P0 " +
-                    "WHERE P0.GCRecord is null " +
-                    "GROUP BY P0.DocNum) T2 on T2.DocNum = T1.DocNum " +
-                    "LEFT JOIN ( " +
+                    "LEFT JOIN " +
+                    "( " +
+                    "SELECT P0.DocNum, (SUM(P0.FinalAmount) - ISNULL(P1.INVTotal, 0)) as RemainTotal " +
+                    "FROM PurchaseOrder P0 " +
+                    "LEFT JOIN " +
+                    "( " +
                     "SELECT T0.DocNum, SUM(T0.LineAmount) as INVTotal FROM APInvoiceDetails T0 " +
                     "INNER JOIN APInvoice T1 on T0.APInvoice = T1.OID " +
                     "WHERE T0.GCRecord is null and IsSubmit = 1 and IsCancel = 0 " +
-                    "GROUP BY T0.DocNum) T3 on T2.DocNum = T3.DocNum " +
+                    "GROUP BY T0.DocNum" +
+                    ") P1 on P0.DocNum = P1.DocNum " +
+                    "WHERE P0.GCRecord is null " +
+                    "GROUP BY P0.DocNum, P1.INVTotal" +
+                    ") T2 on T1.DocNum = T2.DocNum " +
                     "WHERE T0.DocNum = '" + selectedObject.DocNum + "' " +
-                    "GROUP BY T0.DocNum, T1.DocNum, ISNULL(T2.POTotal, 0), ISNULL(T3.INVTotal, 0)";
+                    "GROUP BY T0.DocNum, T1.DocNum " +
+                    "HAVING SUM(ISNULL(T2.RemainTotal, 0)) - SUM(ISNULL(T1.LineAmount, 0)) <= 0";
                 if (conn.State == ConnectionState.Open)
                 {
                     conn.Close();
@@ -1889,11 +1909,11 @@ namespace BSI_PR.Module.Controllers
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    if (selectedObject.FinalAmount > reader.GetDecimal(2))
-                    {
-                        genCon.showMsg("Fail", "Invoice amount not allow over PO amount.", InformationType.Error);
+                    //if (selectedObject.FinalAmount > reader.GetDecimal(2))
+                    //{
+                        genCon.showMsg("Fail", "Invoice amount not allow over PO(" + reader.GetString(1) + ") amount.", InformationType.Error);
                         return;
-                    }
+                    //}
                 }
                 conn.Close();
                 // End ver 0.13

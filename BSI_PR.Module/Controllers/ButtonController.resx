@@ -121,7 +121,7 @@
     <value>189, 58</value>
   </metadata>
   <metadata name="Accept_PO.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1299, 58</value>
+    <value>1279, 58</value>
   </metadata>
   <metadata name="Pass_GRN.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 140</value>
@@ -211,7 +211,7 @@
     <value>17, 99</value>
   </metadata>
   <metadata name="PrintPOJapan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1152, 58</value>
+    <value>1132, 58</value>
   </metadata>
   <metadata name="EscalateUserJapan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>971, 58</value>
