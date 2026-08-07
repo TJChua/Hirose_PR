@@ -1899,7 +1899,7 @@ namespace BSI_PR.Module.Controllers
                     ") T2 on T1.DocNum = T2.DocNum " +
                     "WHERE T0.DocNum = '" + selectedObject.DocNum + "' " +
                     "GROUP BY T0.DocNum, T1.DocNum " +
-                    "HAVING SUM(ISNULL(T2.RemainTotal, 0)) - SUM(ISNULL(T1.LineAmount, 0)) <= 0";
+                    "HAVING SUM(ISNULL(T2.RemainTotal, 0)) - SUM(ISNULL(T1.LineAmount, 0)) < 0";
                 if (conn.State == ConnectionState.Open)
                 {
                     conn.Close();
