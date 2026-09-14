@@ -24,11 +24,12 @@ namespace BSI_PR.Module.BusinessObjects
     [Appearance("HideDelete", AppearanceItemType.Action, "True", TargetItems = "Delete", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide, Context = "Any")]
     [Appearance("HideCancelleave", AppearanceItemType.Action, "True", TargetItems = "CancelLeave", Visibility = DevExpress.ExpressApp.Editors.ViewItemVisibility.Hide, Context = "DetailView")]
     [RuleCriteria("EscalateUserOnleaveValidation", DefaultContexts.Save, "IsValid = 0", "User attended escalate task on his/her holiday date range.")]
-    [RuleCriteria("UserOnleaveValidation", DefaultContexts.Save, "IsValid1 = 0", "User on leave on that period.")]
+    [RuleCriteria("EscalateUserOnleaveValidation", DefaultContexts.Save, "IsValid1 = 0", "Escalate user on leave on that period.")]
     [RuleCriteria("DateOnleaveValidation", DefaultContexts.Save, "IsValid2 = 0", "No backdate allow.")]
     // Start ver 0.2
     [RuleCriteria("FromDateValidation", DefaultContexts.Save, "IsValid3 = 0", "From Date no backdate allow.")]
     // End ver 0.2
+    [RuleCriteria("UserOnleaveValidation", DefaultContexts.Save, "IsValid4 = 0", "Applicant user on leave on that period.")]
     public class LeaveApplication : XPObject
     { // Inherit from a different class to provide a custom primary key, concurrency and deletion behavior, etc. (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument113146.aspx).
         public LeaveApplication(Session session)
@@ -263,6 +264,31 @@ namespace BSI_PR.Module.BusinessObjects
             }
         }
         // End ver 0.2
+
+        [Browsable(false)]
+        public bool IsValid4
+        {
+            get
+            {
+                TimeSpan datecount;
+                datecount = ToDate.Date - FromDate.Date;
+
+                for (int i = 0; i <= datecount.Days; i++)
+                {
+                    LeaveApplication leave;
+                    leave = Session.FindObject<LeaveApplication>(CriteriaOperator.Parse(
+                        "Applicant.Oid = ? and ? >= FromDate and ? <= ToDate and Status = 0"
+                        , this.Applicant.Oid, FromDate.Date.AddDays(i), FromDate.Date.AddDays(i)));
+
+                    if (leave != null)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
 
         protected override void OnSaving()
         {
